@@ -1,0 +1,372 @@
+/* Hero Section */
+.hero {
+  background: linear-gradient(135deg, #f8fbff 0%, #e6f3ff 100%);
+  padding: 4rem 0;
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+}
+
+.hero .container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.hero-title {
+  font-size: 3.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+  color: #1a1a1a;
+}
+
+.hero-title .highlight {
+  color: #0077b6;
+}
+
+.hero-subtitle {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.hero-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-placeholder {
+  background: #0077b6;
+  color: white;
+  padding: 3rem;
+  border-radius: 20px;
+  font-size: 2rem;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0, 119, 182, 0.3);
+}
+
+/* Features Section */
+.features {
+  padding: 5rem 0;
+  background: white;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.feature-card {
+  text-align: center;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+  background: white;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+}
+
+.centered-card {
+  margin: 0 auto;
+  max-width: 360px;
+}
+
+.feature-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.feature-card h3 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: #1a1a1a;
+}
+
+.feature-card p {
+  color: #666;
+  line-height: 1.6;
+}
+
+/* Insurance Types Section */
+.insurance-types {
+  padding: 5rem 0;
+  background: linear-gradient(135deg, #f8fbff 0%, #e6f3ff 100%);
+}
+
+.pricing-info {
+  text-align: left;
+  margin: 2rem auto 4rem;
+  max-width: 800px;
+}
+
+.pricing-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pricing-list li {
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.pricing-list li::before {
+  content: "•";
+  color: #0077b6;
+  font-weight: bold;
+  font-size: 1.3rem;
+  position: absolute;
+  left: 0;
+  top: -0.1rem;
+}
+
+.pricing-list li strong {
+  color: #0077b6;
+  font-weight: 600;
+}
+
+.pricing-list li:last-child {
+  margin-bottom: 0;
+}
+
+.insurance-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.insurance-card {
+  text-align: center;
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+  background: white;
+  border: 2px solid transparent;
+}
+
+.insurance-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0, 119, 182, 0.15);
+  border-color: #0077b6;
+}
+
+.insurance-icon {
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+}
+
+.insurance-card h3 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: #1a1a1a;
+  font-weight: 600;
+}
+
+.insurance-card p {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.insurance-card .more-info-btn {
+  background: #0077b6;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.insurance-card .more-info-btn:hover {
+  background: #005a8b;
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+
+/* Insurance Options List */
+.insurance-options {
+  margin-top: 3rem;
+}
+
+.insurance-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 1.5rem;
+}
+
+.insurance-list li {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 119, 182, 0.1);
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  line-height: 1.6;
+}
+
+.insurance-list li:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0, 119, 182, 0.15);
+  border-color: #0077b6;
+}
+
+.insurance-list li strong {
+  color: #0077b6;
+  font-size: 1.1rem;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.more-info-link {
+  color: #0077b6;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.more-info-link:hover {
+  color: #005a8b;
+  text-decoration: underline;
+}
+
+.more-info-btn {
+  background: none;
+  border: none;
+  color: #0077b6;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  cursor: pointer;
+  font-size: inherit;
+  font-family: inherit;
+  padding: 0;
+}
+
+.more-info-btn:hover {
+  color: #005a8b;
+  text-decoration: underline;
+}
+
+/* Testimonials Section */
+.testimonials {
+  padding: 5rem 0;
+  background: #f8f9fa;
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+}
+
+.testimonial-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.stars {
+  color: #ffd700;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.testimonial-card p {
+  font-style: italic;
+  margin-bottom: 1.5rem;
+  color: #444;
+  line-height: 1.6;
+}
+
+.testimonial-author strong {
+  color: #1a1a1a;
+  display: block;
+}
+
+.testimonial-author span {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+/* CTA Section */
+.cta {
+  background: linear-gradient(135deg, #0077b6 0%, #005f8a 100%);
+  color: white;
+  padding: 4rem 0;
+  text-align: center;
+}
+
+.cta h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.cta p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+
+.cta .btn-primary {
+  background: #FF6600;
+  color: white;
+}
+
+.cta .btn-primary:hover {
+  background: #E55100;
+  transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hero .container {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 2rem;
+  }
+  
+  .hero-title {
+    font-size: 2.5rem;
+  }
+  
+  .hero-placeholder {
+    padding: 2rem;
+    font-size: 1.5rem;
+  }
+  
+  .features-grid,
+  .testimonials-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .cta h2 {
+    font-size: 2rem;
+  }
+}

@@ -1,0 +1,18 @@
+const { override } = require('customize-cra');
+
+module.exports = override(
+  (config) => {
+    // Fix for webpack-dev-server compatibility issue
+    if (config.devServer) {
+      // Remove problematic properties
+      delete config.devServer.onAfterSetupMiddleware;
+      delete config.devServer.onBeforeSetupMiddleware;
+      
+      // Use the new setupMiddlewares function
+      config.devServer.setupMiddlewares = (middlewares, devServer) => {
+        return middlewares;
+      };
+    }
+    return config;
+  }
+);

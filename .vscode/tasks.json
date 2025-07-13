@@ -1,0 +1,62 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Start Development Server",
+			"type": "shell",
+			"command": "cmd",
+			"args": ["/c", "npm start"],
+			"group": "build",
+			"isBackground": true,
+			"problemMatcher": {
+				"owner": "webpack",
+				"pattern": {
+					"regexp": "^ERROR in (.+)$",
+					"file": 1
+				},
+				"background": {
+					"activeOnStart": true,
+					"beginsPattern": "webpack: Compiling...",
+					"endsPattern": "webpack: (Compiled successfully|Failed to compile)"
+				}
+			},
+			"options": {
+				"cwd": "${workspaceFolder}",
+				"shell": {
+					"executable": "cmd.exe",
+					"args": ["/d", "/c"]
+				}
+			}
+		},
+		{
+			"label": "Install Dependencies",
+			"type": "shell",
+			"command": "cmd",
+			"args": ["/c", "npm install"],
+			"group": "build",
+			"isBackground": false,
+			"options": {
+				"cwd": "${workspaceFolder}",
+				"shell": {
+					"executable": "cmd.exe",
+					"args": ["/d", "/c"]
+				}
+			}
+		},
+		{
+			"label": "Fix Security Issues",
+			"type": "shell", 
+			"command": "cmd",
+			"args": ["/c", "npm audit fix"],
+			"group": "build",
+			"isBackground": false,
+			"options": {
+				"cwd": "${workspaceFolder}",
+				"shell": {
+					"executable": "cmd.exe",
+					"args": ["/d", "/c"]
+				}
+			}
+		}
+	]
+}

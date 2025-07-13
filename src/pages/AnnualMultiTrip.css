@@ -1,0 +1,457 @@
+/* Annual Multi-Trip Page Styles */
+.annual-multitrip {
+  padding: 2rem 0;
+  background: #f8f9fa;
+  min-height: 100vh;
+}
+
+.annual-multitrip .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.page-header {
+  background: linear-gradient(135deg, #0077b6 0%, #005a8b 100%);
+  color: white;
+  padding: 4rem 0;
+  text-align: center;
+  margin-bottom: 3rem;
+  border-radius: 12px;
+}
+
+.page-header h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.page-subtitle {
+  font-size: 1.3rem;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+
+.key-points {
+  margin-bottom: 2rem;
+}
+
+.key-points ul {
+  list-style: none;
+  padding: 0;
+  display: inline-block;
+  text-align: left;
+}
+
+.key-points li {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.key-points li::before {
+  content: "✓";
+  color: #00f5ff;
+  font-weight: bold;
+  position: absolute;
+  left: 0;
+}
+
+.content-sections {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.section-nav {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.section-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.section-nav a {
+  color: #0077b6;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.section-nav a:hover {
+  background: #0077b6;
+  color: white;
+}
+
+.content-section {
+  padding: 3rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.content-section:last-child {
+  border-bottom: none;
+}
+
+.content-section h2 {
+  color: #0077b6;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+.content-section h3 {
+  color: #0077b6;
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+  font-weight: 600;
+}
+
+.content-section p {
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.price-highlight {
+  background: linear-gradient(135deg, #e6f3ff 0%, #cce7ff 100%);
+  padding: 1.5rem;
+  border-radius: 8px;
+  border-left: 4px solid #0077b6;
+  margin: 2rem 0;
+}
+
+.price-highlight p {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.price-highlight h3 {
+  margin-top: 0;
+}
+
+.highlight-box {
+  background: linear-gradient(135deg, #0077b6 0%, #005a8b 100%);
+  color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  margin: 2rem 0;
+  text-align: center;
+}
+
+.highlight-box h3 {
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+  color: white;
+  margin-top: 0;
+}
+
+.highlight-box p {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Pricing Factors */
+.pricing-factors {
+  list-style: none;
+  padding: 0;
+  margin: 2rem 0;
+}
+
+.pricing-factors li {
+  padding: 1rem;
+  background: #f8f9fa;
+  margin-bottom: 0.5rem;
+  border-left: 4px solid #0077b6;
+  border-radius: 0 8px 8px 0;
+}
+
+/* Geographical Definitions Styles */
+.geographical-definitions {
+  margin-top: 2rem;
+  padding: 2rem;
+  background: #f8fbff;
+  border-radius: 8px;
+  border: 1px solid #e6f3ff;
+}
+
+.geographical-definitions h3 {
+  color: #0077b6;
+  font-size: 1.6rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+.area-definition {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(0, 119, 182, 0.1);
+  border-left: 4px solid #0077b6;
+}
+
+.area-definition:last-child {
+  margin-bottom: 0;
+}
+
+.area-definition h4 {
+  color: #0077b6;
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+.area-definition h4::before {
+  content: "🌍";
+  margin-right: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.area-definition p {
+  color: #333;
+  line-height: 1.6;
+  margin: 0;
+  text-align: justify;
+}
+
+/* Different icons for different areas */
+.area-definition:nth-child(2) h4::before {
+  content: "🇪🇺";
+}
+
+.area-definition:nth-child(3) h4::before {
+  content: "🌍";
+}
+
+.area-definition:nth-child(4) h4::before {
+  content: "🌎";
+}
+
+/* Policy Wording Section Styles */
+.policy-wording-content {
+  background: #f8fbff;
+  padding: 2rem;
+  border-radius: 8px;
+  border: 1px solid #e6f3ff;
+}
+
+.policy-wording-content h3 {
+  color: #0077b6;
+  font-size: 1.6rem;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+.policy-wording-content p {
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.uk-link, .email-link {
+  color: #0077b6;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.uk-link:hover, .email-link:hover {
+  color: #005a8b;
+  text-decoration: underline;
+}
+
+.policy-note {
+  background: #fff3cd;
+  border: 1px solid #ffc107;
+  border-radius: 6px;
+  padding: 1rem;
+  font-size: 0.95rem;
+  color: #856404;
+  margin: 1.5rem 0;
+}
+
+.policy-downloads {
+  margin-top: 2rem;
+}
+
+.download-item {
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 119, 182, 0.05);
+}
+
+.download-item:hover {
+  border-color: #0077b6;
+  box-shadow: 0 5px 15px rgba(0, 119, 182, 0.15);
+  transform: translateY(-2px);
+}
+
+.download-item:last-child {
+  margin-bottom: 0;
+}
+
+.download-info h4 {
+  color: #333;
+  font-size: 1rem;
+  margin: 0;
+  font-weight: 500;
+  line-height: 1.4;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.download-btn {
+  background: linear-gradient(135deg, #0077b6 0%, #005a8b 100%);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+  min-width: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
+.download-btn:hover {
+  background: linear-gradient(135deg, #005a8b 0%, #004670 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 119, 182, 0.3);
+}
+
+.download-btn::after {
+  content: "⬇️";
+  font-size: 0.8rem;
+}
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.btn-primary {
+  background: #0077b6;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #005a8b;
+  transform: translateY(-2px);
+}
+
+.btn-large {
+  padding: 16px 32px;
+  font-size: 1.1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .annual-multitrip .container {
+    padding: 0 1rem;
+  }
+  
+  .page-header h1 {
+    font-size: 2rem;
+  }
+  
+  .page-subtitle {
+    font-size: 1.1rem;
+  }
+  
+  .content-section {
+    padding: 2rem 1.5rem;
+  }
+  
+  .section-nav ul {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .geographical-definitions {
+    padding: 1.5rem 1rem;
+  }
+  
+  .geographical-definitions h3 {
+    font-size: 1.4rem;
+  }
+  
+  .area-definition {
+    padding: 1rem;
+  }
+  
+  .area-definition h4 {
+    font-size: 1.2rem;
+  }
+  
+  .area-definition p {
+    font-size: 0.95rem;
+  }
+  
+  .policy-wording-content {
+    padding: 1.5rem 1rem;
+  }
+  
+  .download-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  
+  .download-info h4 {
+    font-size: 0.95rem;
+  }
+  
+  .download-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .policy-note {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+  }
+}

@@ -1,0 +1,566 @@
+/* Regular Stay Page Styles */
+.regular-stay {
+  padding: 2rem 0;
+  background: #f8f9fa;
+  min-height: 100vh;
+}
+
+.page-header {
+  background: linear-gradient(135deg, #0077b6 0%, #005a8b 100%);
+  color: white;
+  padding: 4rem 0;
+  text-align: center;
+  margin-bottom: 3rem;
+  border-radius: 12px;
+}
+
+.page-header h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.page-subtitle {
+  font-size: 1.3rem;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+
+.key-points {
+  margin-bottom: 2rem;
+}
+
+.key-points ul {
+  list-style: none;
+  padding: 0;
+  display: inline-block;
+  text-align: left;
+}
+
+.key-points li {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.key-points li::before {
+  content: "✓";
+  color: #00f5ff;
+  font-weight: bold;
+  position: absolute;
+  left: 0;
+}
+
+.content-sections {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.section-nav {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.section-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.section-nav a {
+  color: #0077b6;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.section-nav a:hover {
+  background: #0077b6;
+  color: white;
+}
+
+.content-section {
+  padding: 3rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.content-section:last-child {
+  border-bottom: none;
+}
+
+.content-section h2 {
+  color: #0077b6;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+.content-section p {
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.price-highlight {
+  background: linear-gradient(135deg, #e6f3ff 0%, #cce7ff 100%);
+  padding: 1.5rem;
+  border-radius: 8px;
+  border-left: 4px solid #0077b6;
+  margin: 2rem 0;
+}
+
+.price-highlight p {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.benefits-section {
+  padding: 3rem;
+  background: #f8fbff;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.benefits-section h2 {
+  color: #0077b6;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.benefit-item {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 119, 182, 0.1);
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.benefit-item:hover {
+  transform: translateY(-5px);
+}
+
+.benefit-item h3 {
+  color: #0077b6;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.benefit-item p {
+  color: #333;
+  font-size: 1rem;
+  margin: 0;
+  font-weight: 500;
+}
+
+.coverage-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.coverage-list li {
+  background: white;
+  padding: 1rem 1.5rem;
+  margin-bottom: 0.5rem;
+  border-radius: 6px;
+  border-left: 4px solid #0077b6;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  font-size: 1.1rem;
+}
+
+/* Schedule Table Styles */
+.schedule-table {
+  margin-top: 3rem;
+}
+
+.schedule-table h3 {
+  color: #0077b6;
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.table-subtitle {
+  color: #666;
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  font-style: italic;
+}
+
+.table-responsive {
+  overflow-x: auto;
+  box-shadow: 0 5px 15px rgba(0, 119, 182, 0.1);
+  border-radius: 8px;
+}
+
+.coverage-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  font-size: 0.95rem;
+}
+
+.coverage-table thead {
+  background: linear-gradient(135deg, #0077b6 0%, #005a8b 100%);
+  color: white;
+}
+
+.coverage-table th {
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 2px solid #005a8b;
+}
+
+.coverage-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #e9ecef;
+  vertical-align: top;
+  line-height: 1.5;
+}
+
+.coverage-table tbody tr:hover {
+  background-color: #f8fbff;
+}
+
+.coverage-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.section-code {
+  background: #e6f3ff;
+  color: #0077b6;
+  font-weight: bold;
+  text-align: center;
+  font-size: 1.1rem;
+  min-width: 60px;
+}
+
+.sub-item {
+  color: #666;
+  font-size: 0.9rem;
+  display: block;
+  margin-top: 0.25rem;
+  padding-left: 0.5rem;
+}
+
+.note {
+  color: #856404;
+  font-size: 0.85rem;
+  font-style: italic;
+  display: block;
+  margin-top: 0.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .page-header h1 {
+    font-size: 2rem;
+  }
+  
+  .page-subtitle {
+    font-size: 1.1rem;
+  }
+  
+  .content-section {
+    padding: 2rem 1.5rem;
+  }
+  
+  .benefits-section {
+    padding: 2rem 1.5rem;
+  }
+  
+  .benefits-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .section-nav ul {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .attention-box {
+    margin: 2rem 1rem;
+    padding: 1.5rem;
+  }
+  
+  .cta-section {
+    padding: 3rem 1.5rem;
+  }
+  
+  .cta-section h2 {
+    font-size: 2rem;
+  }
+  
+  .coverage-table {
+    font-size: 0.85rem;
+  }
+  
+  .coverage-table th,
+  .coverage-table td {
+    padding: 0.75rem 0.5rem;
+  }
+  
+  .coverage-table th:first-child,
+  .coverage-table td:first-child {
+    min-width: 50px;
+  }
+  
+  .sub-item {
+    font-size: 0.8rem;
+  }
+  
+  .note {
+    font-size: 0.75rem;
+  }
+}
+
+/* Geographical Definitions Styles */
+.geographical-definitions {
+  margin-top: 2rem;
+  padding: 2rem;
+  background: #f8fbff;
+  border-radius: 8px;
+  border: 1px solid #e6f3ff;
+}
+
+.geographical-definitions h3 {
+  color: #0077b6;
+  font-size: 1.6rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+.area-definition {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(0, 119, 182, 0.1);
+  border-left: 4px solid #0077b6;
+}
+
+.area-definition:last-child {
+  margin-bottom: 0;
+}
+
+.area-definition h4 {
+  color: #0077b6;
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+.area-definition h4::before {
+  content: "🌍";
+  margin-right: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.area-definition p {
+  color: #333;
+  line-height: 1.6;
+  margin: 0;
+  text-align: justify;
+}
+
+/* Different icons for different areas */
+.area-definition:nth-child(1) h4::before {
+  content: "🇪🇺";
+}
+
+.area-definition:nth-child(2) h4::before {
+  content: "🌍";
+}
+
+.area-definition:nth-child(3) h4::before {
+  content: "🌎";
+}
+
+/* Mobile responsiveness for geographical section */
+@media (max-width: 768px) {
+  .geographical-definitions {
+    padding: 1.5rem 1rem;
+  }
+  
+  .geographical-definitions h3 {
+    font-size: 1.4rem;
+  }
+  
+  .area-definition {
+    padding: 1rem;
+  }
+  
+  .area-definition h4 {
+    font-size: 1.2rem;
+  }
+  
+  .area-definition p {
+    font-size: 0.95rem;
+  }
+}
+
+/* Policy Wording Section Styles */
+.policy-wording-content {
+  background: #f8fbff;
+  padding: 2rem;
+  border-radius: 8px;
+  border: 1px solid #e6f3ff;
+}
+
+.policy-wording-content h3 {
+  color: #0077b6;
+  font-size: 1.6rem;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+.policy-wording-content p {
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.uk-link, .email-link {
+  color: #0077b6;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.uk-link:hover, .email-link:hover {
+  color: #005a8b;
+  text-decoration: underline;
+}
+
+.policy-note {
+  background: #fff3cd;
+  border: 1px solid #ffc107;
+  border-radius: 6px;
+  padding: 1rem;
+  font-size: 0.95rem;
+  color: #856404;
+  margin: 1.5rem 0;
+}
+
+.policy-downloads {
+  margin-top: 2rem;
+}
+
+.download-item {
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 119, 182, 0.05);
+}
+
+.download-item:hover {
+  border-color: #0077b6;
+  box-shadow: 0 5px 15px rgba(0, 119, 182, 0.15);
+  transform: translateY(-2px);
+}
+
+.download-item:last-child {
+  margin-bottom: 0;
+}
+
+.download-info h4 {
+  color: #333;
+  font-size: 1rem;
+  margin: 0;
+  font-weight: 500;
+  line-height: 1.4;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.download-btn {
+  background: linear-gradient(135deg, #0077b6 0%, #005a8b 100%);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+  min-width: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
+.download-btn:hover {
+  background: linear-gradient(135deg, #005a8b 0%, #004670 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 119, 182, 0.3);
+}
+
+.download-btn::after {
+  content: "⬇️";
+  font-size: 0.8rem;
+}
+
+/* Mobile responsiveness for policy section */
+@media (max-width: 768px) {
+  .policy-wording-content {
+    padding: 1.5rem 1rem;
+  }
+  
+  .download-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  
+  .download-info h4 {
+    font-size: 0.95rem;
+  }
+  
+  .download-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .policy-note {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+  }
+}

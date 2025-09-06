@@ -1,9 +1,8 @@
+"use client";
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import PolicyModal from '../components/PolicyModal';
 import './Home.css';
-import heroBg from '../assets/hero_bcgr.jpg';
-
 
 const Home: React.FC = () => {
   useEffect(() => {
@@ -56,7 +55,7 @@ const Home: React.FC = () => {
       {/* Hero Section */}
       <section className="hero"
         style={{
-    backgroundImage: `linear-gradient(135deg, rgba(248,251,255,0) 0%,rgba(230,243,255,0) 100%), url(${heroBg})`,
+    backgroundImage: `linear-gradient(135deg, rgba(248,251,255,0) 0%,rgba(230,243,255,0) 100%), url('/hero_bcgr.jpg')`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat'
@@ -70,10 +69,10 @@ const Home: React.FC = () => {
            With Secmondo Insurance, you're settled. Never worry about a thing.
           </h2>
           <div className="hero-buttons">
-            <Link to="/quote" className="btn btn-primary">
+            <Link href="/quote" className="btn btn-primary">
               Get Quote
             </Link>
-            <Link to="/learn-more" className="btn btn-secondary">
+            <Link href="/learn-more" className="btn btn-secondary">
               Learn More
             </Link>
           </div>
@@ -176,7 +175,7 @@ const Home: React.FC = () => {
         <div className="container">
           <h2>Ready to Travel with Confidence?</h2>
           <p>Get a personalized quote in under 2 minutes</p>
-          <Link to="/quote" className="btn btn-primary btn-large">
+          <Link href="/quote" className="btn btn-primary btn-large">
             Get Your Quote Now
           </Link>
         </div>

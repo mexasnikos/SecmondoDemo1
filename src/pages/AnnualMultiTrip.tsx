@@ -1,5 +1,6 @@
+"use client";
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import './AnnualMultiTrip.css';
 
 const AnnualMultiTrip: React.FC = () => {
@@ -38,7 +39,7 @@ const AnnualMultiTrip: React.FC = () => {
                 </div>
               </div>
               <div className="hero-actions">
-                <Link to="/quote" className="btn-primary">Get Quote Now</Link>
+                <Link href="/quote" className="btn-primary">Get Quote Now</Link>
                 <a href="#features" className="btn-secondary">Learn More</a>
               </div>
             </div>
@@ -138,7 +139,7 @@ const AnnualMultiTrip: React.FC = () => {
                   <li>✅ Cruise cover included</li>
                   <li>✅ Winter sports (17 days)</li>
                 </ul>
-                <Link to="/quote" className="plan-btn">Choose Europe</Link>
+                <Link href="/quote" className="plan-btn">Choose Europe</Link>
               </div>
               <div className="plan-column featured">
                 <div className="plan-header">
@@ -153,7 +154,7 @@ const AnnualMultiTrip: React.FC = () => {
                   <li>✅ Cruise cover included</li>
                   <li>✅ Winter sports (17 days)</li>
                 </ul>
-                <Link to="/quote" className="plan-btn">Choose Worldwide</Link>
+                <Link href="/quote" className="plan-btn">Choose Worldwide</Link>
               </div>
               <div className="plan-column">
                 <div className="plan-header">
@@ -167,7 +168,7 @@ const AnnualMultiTrip: React.FC = () => {
                   <li>✅ 120 days per trip</li>
                   <li>✅ Premium destinations</li>
                 </ul>
-                <Link to="/quote" className="plan-btn">Choose Premium</Link>
+                <Link href="/quote" className="plan-btn">Choose Premium</Link>
               </div>
             </div>
           </section>
@@ -293,8 +294,8 @@ const AnnualMultiTrip: React.FC = () => {
                 <h2>Ready to Travel with Confidence?</h2>
                 <p>Get your Annual Multi-Trip insurance quote in minutes and enjoy unlimited trips with comprehensive coverage.</p>
                 <div className="cta-buttons">
-                  <Link to="/quote" className="btn-primary">Get Quote Now</Link>
-                  <Link to="/contact" className="btn-secondary">Speak to Expert</Link>
+                  <Link href="/quote" className="btn-primary">Get Quote Now</Link>
+                  <Link href="/contact" className="btn-secondary">Speak to Expert</Link>
                 </div>
               </div>
             </div>

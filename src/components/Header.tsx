@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import './Header.css';
 
 const Header: React.FC = () => {
@@ -17,10 +17,10 @@ const Header: React.FC = () => {
       </div>
 
       <nav className="nav">
-        <Link to="/" className="nav-link" onClick={handleHomeClick}>Home</Link>
-        <Link to="/quote" className="nav-link">Get Quote</Link>
-        <Link to="/about" className="nav-link">About</Link>
-        <Link to="/contact" className="nav-link">Contact</Link>
+  <Link href="/" className="nav-link">Home</Link>
+  <Link href="/quote" className="nav-link">Get Quote</Link>
+  <Link href="/about" className="nav-link">About</Link>
+  <Link href="/contact" className="nav-link">Contact</Link>
       </nav>
     </div>
   </header>

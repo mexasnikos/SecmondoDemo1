@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+// import Link from 'next/link';
 import './PolicyModal.css';
 
 interface PolicyModalProps {
@@ -32,21 +32,21 @@ const PolicyModal: React.FC<PolicyModalProps> = ({ isOpen, onClose, policyType, 
           <p>{content}</p>
         </div>
         <div className="modal-footer">
-          <Link to="/quote" className="btn btn-primary" onClick={onClose}>
+          <a href="/quote" className="btn btn-primary" onClick={onClose}>
             Get a Quote
-          </Link>
-          <Link 
-            to={
+          </a>
+          <a
+            href={
               policyType === 'regular' ? '/regular-stay' : 
               policyType === 'annual' ? '/annual-multi-trip' : 
               policyType === 'comprehensive' ? '/comprehensive' :
               '/learn-more'
-            } 
-            className="btn btn-secondary" 
+            }
+            className="btn btn-secondary"
             onClick={onClose}
           >
             More Info
-          </Link>
+          </a>
         </div>
       </div>
     </div>

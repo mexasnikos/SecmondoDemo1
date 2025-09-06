@@ -1,5 +1,6 @@
+"use client";
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import './Comprehensive.css';
 
 const Comprehensive: React.FC = () => {
@@ -38,7 +39,7 @@ const Comprehensive: React.FC = () => {
                 </div>
               </div>
               <div className="hero-actions">
-                <Link to="/quote" className="btn-primary">Get Quote Now</Link>
+                <Link href="/quote" className="btn-primary">Get Quote Now</Link>
                 <a href="#features" className="btn-secondary">Explore Features</a>
               </div>
             </div>
@@ -140,7 +141,7 @@ const Comprehensive: React.FC = () => {
                   <li>Trip cancellation</li>
                   <li>Personal liability</li>
                 </ul>
-                <Link to="/regular-stay" className="plan-btn secondary">View Details</Link>
+                <Link href="/regular-stay" className="plan-btn secondary">View Details</Link>
               </div>
               <div className="plan-column">
                 <div className="plan-header">
@@ -153,7 +154,7 @@ const Comprehensive: React.FC = () => {
                   <li>Cruise & winter sports</li>
                   <li>Worldwide coverage</li>
                 </ul>
-                <Link to="/annual-multi-trip" className="plan-btn secondary">View Details</Link>
+                <Link href="/annual-multi-trip" className="plan-btn secondary">View Details</Link>
               </div>
               <div className="plan-column featured">
                 <div className="plan-header">
@@ -167,7 +168,7 @@ const Comprehensive: React.FC = () => {
                   <li>✅ Business equipment</li>
                   <li>✅ Extended protection</li>
                 </ul>
-                <Link to="/quote" className="plan-btn">Get Quote</Link>
+                <Link href="/quote" className="plan-btn">Get Quote</Link>
               </div>
             </div>
           </section>
@@ -267,8 +268,8 @@ const Comprehensive: React.FC = () => {
                 <h2>Ready for Your Extended Adventure?</h2>
                 <p>Get comprehensive coverage for your long-term travel plans with our most extensive policy.</p>
                 <div className="cta-buttons">
-                  <Link to="/quote" className="btn-primary">Get Quote Now</Link>
-                  <Link to="/contact" className="btn-secondary">Expert Advice</Link>
+                  <Link href="/quote" className="btn-primary">Get Quote Now</Link>
+                  <Link href="/contact" className="btn-secondary">Expert Advice</Link>
                 </div>
                 <div className="trust-badges">
                   <div className="trust-item">

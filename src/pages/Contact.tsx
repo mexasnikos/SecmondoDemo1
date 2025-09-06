@@ -1,7 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Contact.css';
+// Import API service for database integration
+import { submitContact } from '../services/apiService';
 
 const Contact: React.FC = () => {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -17,11 +23,22 @@ const Contact: React.FC = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
-    alert('Thank you for your message! We\'ll get back to you soon.');
-    setFormData({ name: '', email: '', subject: '', message: '' });
+    try {
+      // Call API service to submit the contact form data
+      const response = await submitContact(formData);
+      
+      if (response.status === 'success') {
+        alert('Thank you for your message! We\'ll get back to you soon.');
+        setFormData({ name: '', email: '', subject: '', message: '' });
+      } else {
+        throw new Error(response.message || 'Failed to submit message');
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('There was an error submitting your message. Please try again.');
+    }
   };
 
   return (

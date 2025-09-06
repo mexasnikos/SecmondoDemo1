@@ -1,8 +1,11 @@
 .footer {
-  background: #1a1a1a;
+background: hsl(210, 68%, 27%);
   color: white;
-  margin-top: auto;
-}
+  border-radius: 20px;
+  max-width: 2200px;
+  padding: 4rem;           /* adds space inside the footer */
+  margin: 10px 5.8rem auto;
+  }
 
 .footer-content {
   display: grid;
@@ -12,7 +15,7 @@
 }
 
 .footer-section h3 {
-  color: #0077b6;
+  color: #f8f9fa;
   margin-bottom: 1rem;
   font-size: 1.5rem;
 }
@@ -23,7 +26,7 @@
 }
 
 .footer-section p {
-  color: #999;
+  color: #ffffff;
   line-height: 1.6;
 }
 
@@ -37,13 +40,13 @@
 }
 
 .footer-section ul li a {
-  color: #999;
+  color: #ffffff;
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
 .footer-section ul li a:hover {
-  color: #0077b6;
+  color: #ffffff;
 }
 
 .social-media {
@@ -53,7 +56,7 @@
 }
 
 .social-link {
-  color: #999;
+  color: #ffffff;
   text-decoration: none;
   transition: color 0.3s ease;
   padding: 0.25rem 0;
@@ -67,7 +70,7 @@
   border-top: 1px solid #333;
   padding: 1.5rem 0;
   text-align: center;
-  color: #666;
+  color: #ffffff;
 }
 
 .footer-links {
@@ -76,25 +79,25 @@
 }
 
 .footer-links a {
-  color: #999;
+  color: #ffffff;
   text-decoration: none;
   margin: 0 0.5rem;
   transition: color 0.3s ease;
 }
 
 .footer-links a:hover {
-  color: #0077b6;
+  color: #ffffff;
 }
 
 .footer-links span {
-  color: #666;
+  color: #ffffff;
   margin: 0 0.5rem;
 }
 
 .cookie-settings-btn {
   background: none;
   border: none;
-  color: #999;
+  color: #ffffff;
   text-decoration: none;
   margin: 0 0.5rem;
   transition: color 0.3s ease;
@@ -105,7 +108,7 @@
 }
 
 .cookie-settings-btn:hover {
-  color: #0077b6;
+  color: #ffffff;
 }
 
 @media (max-width: 768px) {

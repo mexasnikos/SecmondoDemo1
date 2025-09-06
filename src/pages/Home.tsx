@@ -1,9 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import PolicyModal from '../components/PolicyModal';
 import './Home.css';
+import heroBg from '../assets/hero_bcgr.jpg';
+
 
 const Home: React.FC = () => {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
   const [modalState, setModalState] = useState({
     isOpen: false,
     policyType: '',
@@ -48,25 +54,28 @@ const Home: React.FC = () => {
     <>
       <div className="home">
       {/* Hero Section */}
-      <section className="hero">
+      <section className="hero"
+        style={{
+    backgroundImage: `linear-gradient(135deg, rgba(248,251,255,0) 0%,rgba(230,243,255,0) 100%), url(${heroBg})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat'
+  }}
+    >        
         <div className="container">
-          <div className="hero-content">
-            <h1 className="hero-title">
-            Travel Insurance <br />
-            </h1>
-            <p className="hero-subtitle">
-              In a world spontaneity and uncertainty coexist,  
-              preparedness becomes a luxury.
-            </p>
-            <div className="hero-buttons">
-              <Link to="/quote" className="btn btn-primary">Get a Quote</Link>
-              <Link to="/learn-more" className="btn btn-secondary">Learn More</Link>
-            </div>
-          </div>
-          <div className="hero-image">
-            <div className="hero-placeholder">
-              🌍 Travel insurance isn't a safety net. It's a strategic layer of freedom.
-            </div>
+          <h1 className="hero-title">
+            We'll take you anywhere.
+          </h1>
+          <h2 className="hero-title2">
+           With Secmondo Insurance, you're settled. Never worry about a thing.
+          </h2>
+          <div className="hero-buttons">
+            <Link to="/quote" className="btn btn-primary">
+              Get Quote
+            </Link>
+            <Link to="/learn-more" className="btn btn-secondary">
+              Learn More
+            </Link>
           </div>
         </div>
       </section>
@@ -74,7 +83,7 @@ const Home: React.FC = () => {
       {/* Features Section */}
       <section className="features">
         <div className="container">
-          <h2 className="section-title">Why Choose TravelSafe?</h2>
+          <h2 className="section-title">Why Choose Secmondo?</h2>
           <div className="features-grid">
             <div className="feature-card">
               <div className="feature-icon">🏥</div>

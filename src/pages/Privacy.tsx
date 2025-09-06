@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const Privacy: React.FC = () => {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
   return (
     <div style={{ padding: '3rem 0', background: 'white', minHeight: '100vh' }}>
       <div style={{ maxWidth: '800px', margin: '0 auto', padding: '0 20px' }}>

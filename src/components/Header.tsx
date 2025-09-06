@@ -7,21 +7,24 @@ const Header: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  return (
-    <header className="header">
-      <div className="container">
-        <Link to="/" className="logo" onClick={handleHomeClick}>
-          <h1>TravelSafe</h1>
-        </Link>
-        <nav className="nav">
-          <Link to="/" className="nav-link" onClick={handleHomeClick}>Home</Link>
-          <Link to="/quote" className="nav-link">Get Quote</Link>
-          <Link to="/about" className="nav-link">About</Link>
-          <Link to="/contact" className="nav-link">Contact</Link>
-        </nav>
+ return (
+  <header className="header">
+    <div className="container">
+      {/* Logo + Tagline Container */}
+      <div className="logo-container">
+        <h1 className="logo">Secmondo</h1>
+        <span className="tagline">We make dreams secure.</span>
       </div>
-    </header>
-  );
+
+      <nav className="nav">
+        <Link to="/" className="nav-link" onClick={handleHomeClick}>Home</Link>
+        <Link to="/quote" className="nav-link">Get Quote</Link>
+        <Link to="/about" className="nav-link">About</Link>
+        <Link to="/contact" className="nav-link">Contact</Link>
+      </nav>
+    </div>
+  </header>
+);
 };
 
 export default Header;

@@ -16,7 +16,7 @@ const Footer: React.FC = () => {
       <div className="container">
         <div className="footer-content">
           <div className="footer-section">
-            <h3>TravelSafe</h3>
+            <h3>Secmondo</h3>
             <p>Your trusted partner for travel insurance worldwide.</p>
           </div>
           <div className="footer-section">

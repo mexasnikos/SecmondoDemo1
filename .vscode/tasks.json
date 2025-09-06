@@ -5,7 +5,7 @@
 			"label": "Start Development Server",
 			"type": "shell",
 			"command": "cmd",
-			"args": ["/c", "npm start"],
+			"args": ["/c", "npx react-app-rewired start"],
 			"group": "build",
 			"isBackground": true,
 			"problemMatcher": {
@@ -50,6 +50,21 @@
 			"args": ["/c", "npm audit fix"],
 			"group": "build",
 			"isBackground": false,
+			"options": {
+				"cwd": "${workspaceFolder}",
+				"shell": {
+					"executable": "cmd.exe",
+					"args": ["/d", "/c"]
+				}
+			}
+		},
+		{
+			"label": "Start PostgreSQL Server",
+			"type": "shell",
+			"command": "cmd",
+			"args": ["/c", "set PATH=%PATH%;C:\\Program Files\\PostgreSQL\\17\\bin && cd backend && node server.js"],
+			"group": "build",
+			"isBackground": true,
 			"options": {
 				"cwd": "${workspaceFolder}",
 				"shell": {

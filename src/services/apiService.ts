@@ -50,6 +50,8 @@ interface PaymentData {
     country: string;
   };
   amount: number;
+  termsAccepted?: boolean; // Add terms acceptance field
+  policyNumber?: string; // Add policy number field
 }
 
 class ApiService {

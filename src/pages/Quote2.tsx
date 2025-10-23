@@ -2695,10 +2695,13 @@ const Quote2: React.FC<QuoteProps> = ({ onNavigate }) => {
                 cvv: formData.cvv || '',
                 billingAddress: formData.billingAddress,
                 amount: calculateTotalPrice(),
+                termsAccepted: termsAccepted, // Include terms acceptance status
                 policyNumber: savePolicyResponse.policyID // Include Terracotta Policy ID
               };
 
               console.log('💳 Updating quote in database with policy details...');
+              console.log('🔍 DEBUG: termsAccepted value being sent (Terracotta path):', termsAccepted);
+              console.log('🔍 DEBUG: termsAccepted type (Terracotta path):', typeof termsAccepted);
               const paymentResponse = await apiProcessPayment(paymentData);
               
               if (paymentResponse.status === 'success') {
@@ -2729,10 +2732,13 @@ const Quote2: React.FC<QuoteProps> = ({ onNavigate }) => {
           cvv: formData.cvv,
           billingAddress: formData.billingAddress,
           amount: calculateTotalPrice(),
+          termsAccepted: termsAccepted, // Include terms acceptance status
           policyNumber: policyNumber || undefined // Include Terracotta Policy ID if available
         };
 
         console.log('💳 Processing payment with data:', { ...paymentData, cardNumber: '****', cvv: '***' });
+        console.log('🔍 DEBUG: termsAccepted value being sent:', termsAccepted);
+        console.log('🔍 DEBUG: termsAccepted type:', typeof termsAccepted);
         const paymentResponse = await apiProcessPayment(paymentData);
         
         if (paymentResponse.status === 'success') {

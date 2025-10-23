@@ -540,6 +540,7 @@ app.post('/api/payments', async (req, res) => {
       cvv, // This should never be stored
       billingAddress,
       amount,
+      termsAccepted, // New field to track terms acceptance
       policyNumber: terracottaPolicyNumber // Policy ID from Terracotta SavePolicyDetails
     } = req.body;
 
@@ -547,6 +548,8 @@ app.post('/api/payments', async (req, res) => {
     console.log('Payment request body:', req.body);
     console.log('Extracted quoteId:', quoteId);
     console.log('Terracotta Policy Number:', terracottaPolicyNumber);
+    console.log('🔍 DEBUG: termsAccepted received:', termsAccepted);
+    console.log('🔍 DEBUG: termsAccepted type:', typeof termsAccepted);
 
     // Validate required fields
     if (!quoteId) {
@@ -590,11 +593,106 @@ app.post('/api/payments', async (req, res) => {
        policyNumber, JSON.stringify(billingAddress)]
     );
 
-    // Update quote status and ensure policy number is set
+    // Update quote status, policy number, and terms acceptance
+    console.log('🔍 DEBUG: Updating quote with termsAccepted:', termsAccepted || false);
     await client.query(
-      'UPDATE quotes SET status = $1, policy_number = $2 WHERE id = $3',
-      ['paid', policyNumber, quoteId]
+      'UPDATE quotes SET status = $1, policy_number = $2, terms_accepted = $3 WHERE id = $4',
+      ['paid', policyNumber, termsAccepted || false, quoteId]
     );
+    console.log('✅ Quote updated with terms_accepted =', termsAccepted || false);
+    
+    // Update SOAP audit log with policy_id for ALL SOAP operations related to this quote
+    if (policyNumber) {
+      console.log('🔍 DEBUG: Updating SOAP audit log with policy_id:', policyNumber);
+      
+      // Get the quote details to find the terracotta_quote_id
+      const quoteDetails = await client.query(
+        'SELECT policy_number, created_at FROM quotes WHERE id = $1',
+        [quoteId]
+      );
+      
+      if (quoteDetails.rows.length > 0) {
+        const quoteCreatedAt = quoteDetails.rows[0].created_at;
+        
+        // Calculate time window manually
+        const oneHourBefore = new Date(quoteCreatedAt.getTime() - 60 * 60 * 1000);
+        const oneHourAfter = new Date(quoteCreatedAt.getTime() + 60 * 60 * 1000);
+        
+        // Update SOAP logs by multiple criteria to catch ALL related operations:
+        // 1. Direct quote_id link
+        // 2. Same terracotta_quote_id (from quotes table if available)
+        // 3. Operations within the same time window (for operations without direct links)
+        // 4. ALL operations with same terracotta_quote_id (ENHANCED - no time restriction)
+        
+        // First, get the terracotta_quote_id and terracotta_policy_id from related operations
+        const terracottaIdsResult = await client.query(`
+          SELECT 
+            terracotta_quote_id,
+            terracotta_policy_id
+          FROM soap_audit_log 
+          WHERE quote_id = $1 
+          AND terracotta_quote_id IS NOT NULL
+          ORDER BY created_at DESC
+          LIMIT 1
+        `, [quoteId]);
+        
+        const terracottaQuoteId = terracottaIdsResult.rows[0]?.terracotta_quote_id;
+        const terracottaPolicyId = terracottaIdsResult.rows[0]?.terracotta_policy_id;
+        
+        console.log('🔍 Found Terracotta IDs:', {
+          terracotta_quote_id: terracottaQuoteId,
+          terracotta_policy_id: terracottaPolicyId
+        });
+        
+        const updateResult = await client.query(`
+          UPDATE soap_audit_log 
+          SET 
+            policy_id = $1,
+            terracotta_quote_id = COALESCE(terracotta_quote_id, $5),
+            terracotta_policy_id = COALESCE(terracotta_policy_id, $6)
+          WHERE (
+            quote_id = $2 
+            OR terracotta_quote_id IN (
+              SELECT DISTINCT terracotta_quote_id 
+              FROM soap_audit_log 
+              WHERE quote_id = $2 
+              AND terracotta_quote_id IS NOT NULL
+            )
+            OR (
+              created_at >= $3 AND created_at <= $4
+              AND soap_operation IN ('ProvideQuotation', 'ProvideQuotationWithAlterations', 'SavePolicyDetails', 'ScreeningQuestions', 'EmailPolicyDocuments')
+              AND policy_id IS NULL
+            )
+            OR (
+              terracotta_quote_id IN (
+                SELECT DISTINCT terracotta_quote_id 
+                FROM soap_audit_log 
+                WHERE quote_id = $2 
+                AND terracotta_quote_id IS NOT NULL
+              )
+              AND soap_operation IN ('ProvideQuotation', 'ProvideQuotationWithAlterations', 'SavePolicyDetails', 'ScreeningQuestions', 'EmailPolicyDocuments')
+              AND policy_id IS NULL
+            )
+          )
+          AND policy_id IS NULL
+        `, [policyNumber, quoteId, oneHourBefore, oneHourAfter, terracottaQuoteId, terracottaPolicyId]);
+        
+        // ENHANCED: Also update operations that already have policy_id but missing Terracotta IDs
+        const updateExistingPolicyId = await client.query(`
+          UPDATE soap_audit_log 
+          SET 
+            terracotta_quote_id = COALESCE(terracotta_quote_id, $1),
+            terracotta_policy_id = COALESCE(terracotta_policy_id, $2)
+          WHERE policy_id = $3 
+          AND (terracotta_quote_id IS NULL OR terracotta_policy_id IS NULL)
+        `, [terracottaQuoteId, terracottaPolicyId, policyNumber]);
+        
+        console.log('✅ Updated existing policy_id operations with Terracotta IDs:', updateExistingPolicyId.rowCount);
+        
+        console.log('✅ SOAP audit log updated with policy_id =', policyNumber);
+        console.log('📊 Rows updated:', updateResult.rowCount);
+      }
+    }
 
     // Get the complete quote information to return
     const quoteDetails = await client.query(

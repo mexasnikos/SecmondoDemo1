@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS quotes (
     total_amount DECIMAL(10,2) NOT NULL,
     status VARCHAR(50) DEFAULT 'pending' CHECK (status IN ('pending', 'paid', 'cancelled', 'expired')),
     policy_number VARCHAR(100) UNIQUE,
+    terms_accepted BOOLEAN DEFAULT FALSE NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );

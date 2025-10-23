@@ -29,6 +29,7 @@ function initializePool(dbPool) {
  * @param {number} logData.httpStatusCode - HTTP status code
  * @param {string} logData.terracottaQuoteId - Terracotta QuoteID from response
  * @param {string} logData.terracottaPolicyId - Terracotta PolicyID from response
+ * @param {string} logData.policyId - Local policy number from quotes table
  * @param {string} logData.userId - Terracotta UserID
  * @param {string} logData.userCode - Terracotta UserCode
  * @param {string} logData.status - Status: 'pending', 'success', 'failed', 'timeout', 'error'
@@ -61,6 +62,7 @@ async function logSOAPRequest(logData) {
         http_status_code,
         terracotta_quote_id,
         terracotta_policy_id,
+        policy_id,
         user_id,
         user_code,
         status,
@@ -72,7 +74,7 @@ async function logSOAPRequest(logData) {
         parsed_response
       ) VALUES (
         $1, $2, $3, $4, $5, $6, $7, $8, $9, $10,
-        $11, $12, $13, $14, $15, $16, $17, $18, $19, $20
+        $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21
       ) RETURNING id
     `;
 
@@ -88,6 +90,7 @@ async function logSOAPRequest(logData) {
       logData.httpStatusCode || null,
       logData.terracottaQuoteId || null,
       logData.terracottaPolicyId || null,
+      logData.policyId || null,
       logData.userId || null,
       logData.userCode || null,
       logData.status || 'pending',
@@ -103,6 +106,42 @@ async function logSOAPRequest(logData) {
     const logId = result.rows[0].id;
     
     console.log(`✅ SOAP request logged successfully (ID: ${logId}) - Operation: ${logData.soapOperation}`);
+    
+    // ENHANCED: If this is a successful SavePolicyDetails operation, automatically populate Terracotta IDs for related operations
+    if (logData.soapOperation === 'SavePolicyDetails' && logData.status === 'success' && logData.terracottaQuoteId && logData.terracottaPolicyId) {
+      console.log(`🔧 Auto-populating Terracotta IDs for related operations...`);
+      console.log(`   - Terracotta Quote ID: ${logData.terracottaQuoteId}`);
+      console.log(`   - Terracotta Policy ID: ${logData.terracottaPolicyId}`);
+      
+      try {
+        // Find related operations that need Terracotta IDs populated
+        const updateResult = await pool.query(`
+          UPDATE soap_audit_log 
+          SET 
+            terracotta_quote_id = COALESCE(terracotta_quote_id, $1),
+            terracotta_policy_id = COALESCE(terracotta_policy_id, $2)
+          WHERE (
+            -- Operations with same terracotta_quote_id but missing terracotta_policy_id
+            terracotta_quote_id = $1 
+            AND terracotta_policy_id IS NULL
+            AND soap_operation IN ('ProvideQuotation', 'ProvideQuotationWithAlterations', 'EmailPolicyDocuments')
+          )
+          OR (
+            -- Operations within 1 hour that might be related (for operations without direct terracotta_quote_id link)
+            created_at >= (NOW() - INTERVAL '1 hour')
+            AND created_at <= NOW()
+            AND soap_operation IN ('ProvideQuotation', 'ProvideQuotationWithAlterations', 'EmailPolicyDocuments')
+            AND (terracotta_quote_id IS NULL OR terracotta_policy_id IS NULL)
+          )
+        `, [logData.terracottaQuoteId, logData.terracottaPolicyId]);
+        
+        console.log(`✅ Auto-populated Terracotta IDs for ${updateResult.rowCount} related operations`);
+      } catch (error) {
+        console.error('❌ Error auto-populating Terracotta IDs:', error.message);
+        // Don't fail the main operation if this fails
+      }
+    }
+    
     return logId;
   } catch (error) {
     console.error('❌ Error logging SOAP request:', error);
@@ -135,6 +174,7 @@ async function updateSOAPLog(logId, updateData) {
       httpStatusCode: 'http_status_code',
       terracottaQuoteId: 'terracotta_quote_id',
       terracottaPolicyId: 'terracotta_policy_id',
+      policyId: 'policy_id',
       status: 'status',
       errorMessage: 'error_message',
       responseTimeMs: 'response_time_ms',

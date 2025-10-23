@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Test</title>
+</head>
+<body>
+    <h1>Payment Test</h1>
+    <button onclick="testPayment()">Test Payment</button>
+    <div id="result"></div>
+
+    <script>
+        async function testPayment() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = 'Testing...';
+            
+            try {
+                // Test health check first
+                console.log('Testing health check...');
+                const healthResponse = await fetch('http://localhost:5002/api/health');
+                console.log('Health check response:', healthResponse.status);
+                
+                if (!healthResponse.ok) {
+                    throw new Error(`Health check failed: ${healthResponse.status}`);
+                }
+                
+                // Test quote creation
+                console.log('Testing quote creation...');
+                const quoteData = {
+                    destination: "Spain",
+                    startDate: "2025-07-31",
+                    endDate: "2025-08-14",
+                    tripType: "single",
+                    numberOfTravelers: 2,
+                    travelers: [{
+                        firstName: "John",
+                        lastName: "Doe",
+                        age: "30",
+                        email: "john@example.com",
+                        phone: "123456789",
+                        vaxId: "123456789",
+                        nationality: "US"
+                    }],
+                    selectedQuote: { id: 1, name: "Basic", price: 100 },
+                    additionalPolicies: [],
+                    totalAmount: 100
+                };
+                
+                const quoteResponse = await fetch('http://localhost:5002/api/quotes', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(quoteData)
+                });
+                
+                console.log('Quote response:', quoteResponse.status);
+                
+                if (!quoteResponse.ok) {
+                    throw new Error(`Quote creation failed: ${quoteResponse.status}`);
+                }
+                
+                const quoteResult = await quoteResponse.json();
+                console.log('Quote result:', quoteResult);
+                
+                // Test payment
+                console.log('Testing payment...');
+                const paymentData = {
+                    quoteId: quoteResult.data.quoteId,
+                    paymentMethod: "card",
+                    cardNumber: "4111111111111111",
+                    expiryDate: "12/25",
+                    cvv: "123",
+                    billingAddress: {
+                        street: "123 Test St",
+                        city: "Test City",
+                        postalCode: "12345",
+                        country: "US"
+                    },
+                    amount: 100
+                };
+                
+                const paymentResponse = await fetch('http://localhost:5002/api/payments', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(paymentData)
+                });
+                
+                console.log('Payment response:', paymentResponse.status);
+                
+                if (!paymentResponse.ok) {
+                    throw new Error(`Payment failed: ${paymentResponse.status}`);
+                }
+                
+                const paymentResult = await paymentResponse.json();
+                console.log('Payment result:', paymentResult);
+                
+                resultDiv.innerHTML = `
+                    <h2>✅ All tests passed!</h2>
+                    <p>Health Check: OK</p>
+                    <p>Quote Creation: OK (ID: ${quoteResult.data.quoteId})</p>
+                    <p>Payment: OK (Policy: ${paymentResult.data.policyNumber})</p>
+                `;
+                
+            } catch (error) {
+                console.error('Test failed:', error);
+                resultDiv.innerHTML = `
+                    <h2>❌ Test failed</h2>
+                    <p>Error: ${error.message}</p>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>
+
+

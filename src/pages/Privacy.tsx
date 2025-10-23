@@ -1,7 +1,10 @@
-"use client";
 import React, { useEffect } from 'react';
 
-const Privacy: React.FC = () => {
+interface PrivacyProps {
+  onNavigate?: (page: string) => void;
+}
+
+const Privacy: React.FC<PrivacyProps> = () => {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);

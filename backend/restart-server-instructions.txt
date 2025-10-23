@@ -1,0 +1,6 @@
+To restart your backend server:
+1. Stop the current server (Ctrl+C if running in terminal)
+2. Start it again with: node server.js
+3. Or if using npm: npm start
+
+Make sure the server is running from the backend directory where the updated server.js file is located.

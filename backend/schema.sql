@@ -15,9 +15,10 @@
 CREATE TABLE IF NOT EXISTS quotes (
     id SERIAL PRIMARY KEY,
     destination VARCHAR(255) NOT NULL,
+    country_of_residence VARCHAR(255) NOT NULL,
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
-    trip_type VARCHAR(50) NOT NULL CHECK (trip_type IN ('single', 'annual', 'comprehensive')),
+    trip_type VARCHAR(50) NOT NULL CHECK (trip_type IN ('single', 'annual', 'comprehensive', 'longstay')),
     number_of_travelers INTEGER NOT NULL CHECK (number_of_travelers > 0),
     selected_plan JSONB,
     total_amount DECIMAL(10,2) NOT NULL,
@@ -39,6 +40,7 @@ CREATE TABLE IF NOT EXISTS travelers (
     phone VARCHAR(50),
     vax_id VARCHAR(100),
     nationality VARCHAR(100),
+    traveller_number VARCHAR(100), -- TravellerNumber from Terracotta API responses (ProvideQuotation/ProvideQuotationWithAlterations)
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
@@ -112,6 +114,48 @@ CREATE TABLE IF NOT EXISTS audit_log (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+-- Table: countries
+-- Stores available countries for Country of Residence dropdown
+CREATE TABLE IF NOT EXISTS countries (
+    country_id INTEGER PRIMARY KEY,
+    country_name VARCHAR(255) NOT NULL UNIQUE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Insert EU/EEA countries data
+INSERT INTO countries (country_id, country_name) VALUES
+(4, 'Austria'),
+(6, 'Belgium'),
+(10, 'Bulgaria'),
+(14, 'Croatia (Hrvatska)'),
+(16, 'Czech Republic'),
+(17, 'Denmark'),
+(20, 'Estonia'),
+(21, 'Finland'),
+(22, 'France'),
+(23, 'Germany'),
+(24, 'Greece'),
+(27, 'Hungary'),
+(28, 'Iceland'),
+(33, 'Italy'),
+(38, 'Latvia'),
+(40, 'Liechtenstein'),
+(41, 'Lithuania'),
+(42, 'Luxembourg'),
+(93, 'Malta'),
+(47, 'Netherlands'),
+(49, 'Norway'),
+(53, 'Poland'),
+(54, 'Portugal'),
+(283, 'Republic of Cyprus'),
+(19, 'Republic of Ireland'),
+(55, 'Romania'),
+(59, 'Slovak Republic'),
+(60, 'Slovenia'),
+(62, 'Spain'),
+(63, 'Sweden')
+ON CONFLICT (country_id) DO NOTHING;
+
 -- Indexes for better performance
 CREATE INDEX IF NOT EXISTS idx_quotes_created_at ON quotes(created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_quotes_status ON quotes(status);
@@ -119,12 +163,14 @@ CREATE INDEX IF NOT EXISTS idx_quotes_policy_number ON quotes(policy_number);
 CREATE INDEX IF NOT EXISTS idx_quotes_destination ON quotes(destination);
 CREATE INDEX IF NOT EXISTS idx_travelers_quote_id ON travelers(quote_id);
 CREATE INDEX IF NOT EXISTS idx_travelers_email ON travelers(email);
+CREATE INDEX IF NOT EXISTS idx_travelers_traveller_number ON travelers(traveller_number);
 CREATE INDEX IF NOT EXISTS idx_additional_policies_quote_id ON additional_policies(quote_id);
 CREATE INDEX IF NOT EXISTS idx_payments_quote_id ON payments(quote_id);
 CREATE INDEX IF NOT EXISTS idx_payments_status ON payments(status);
 CREATE INDEX IF NOT EXISTS idx_contact_messages_status ON contact_messages(status);
 CREATE INDEX IF NOT EXISTS idx_contact_messages_created_at ON contact_messages(created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_policy_documents_quote_id ON policy_documents(quote_id);
+CREATE INDEX IF NOT EXISTS idx_countries_name ON countries(country_name);
 
 -- Triggers for updated_at timestamps
 CREATE OR REPLACE FUNCTION update_updated_at_column()
@@ -153,6 +199,7 @@ CREATE OR REPLACE VIEW quote_summary AS
 SELECT 
     q.id,
     q.destination,
+    q.country_of_residence,
     q.start_date,
     q.end_date,
     q.trip_type,
@@ -166,7 +213,7 @@ SELECT
 FROM quotes q
 LEFT JOIN travelers t ON q.id = t.quote_id
 LEFT JOIN payments p ON q.id = p.quote_id
-GROUP BY q.id, q.destination, q.start_date, q.end_date, q.trip_type, 
+GROUP BY q.id, q.destination, q.country_of_residence, q.start_date, q.end_date, q.trip_type, 
          q.number_of_travelers, q.total_amount, q.status, q.policy_number, q.created_at;
 
 -- View: revenue_by_month

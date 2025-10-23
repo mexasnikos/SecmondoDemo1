@@ -1,6 +1,4 @@
-"use client";
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
 import PolicyModal from '../components/PolicyModal';
 import './Home.css';
 
@@ -53,14 +51,15 @@ const Home: React.FC = () => {
     <>
       <div className="home">
       {/* Hero Section */}
-      <section className="hero"
-        style={{
-    backgroundImage: `linear-gradient(135deg, rgba(248,251,255,0) 0%,rgba(230,243,255,0) 100%), url('/hero_bcgr.jpg')`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat'
-  }}
-    >        
+      <section className="hero">
+        <div className="hero-image-container">
+          <img
+            src="/hero_bcgr.jpg"
+            alt="Travel destination background"
+            loading="eager"
+          />
+          <div className="hero-overlay"></div>
+        </div>
         <div className="container">
           <h1 className="hero-title">
             We'll take you anywhere.
@@ -69,12 +68,12 @@ const Home: React.FC = () => {
            With Secmondo Insurance, you're settled. Never worry about a thing.
           </h2>
           <div className="hero-buttons">
-            <Link href="/quote" className="btn btn-primary">
+            <a href="/quote" className="btn btn-primary">
               Get Quote
-            </Link>
-            <Link href="/learn-more" className="btn btn-secondary">
+            </a>
+            <a href="/learn-more" className="btn btn-secondary">
               Learn More
-            </Link>
+            </a>
           </div>
         </div>
       </section>
@@ -175,9 +174,9 @@ const Home: React.FC = () => {
         <div className="container">
           <h2>Ready to Travel with Confidence?</h2>
           <p>Get a personalized quote in under 2 minutes</p>
-          <Link href="/quote" className="btn btn-primary btn-large">
+          <a href="/quote" className="btn btn-primary btn-large">
             Get Your Quote Now
-          </Link>
+          </a>
         </div>
       </section>
       </div>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <ProvideQuotationWithAlterations xmlns="WS-IntegratedQuote">
+      <userID>4072</userID>
+      <userCode>111427</userCode>
+      <QuoteID>8547466</QuoteID>
+      <AlterationID>39855,39794</AlterationID>
+      <quoteDetails>
+        <ResidenceID>6</ResidenceID>
+        <TypePolicyID>1</TypePolicyID>
+        <TypePackageID>1</TypePackageID>
+        <Destination>Domestic and European</Destination>
+        <StartDate>2025/10/06</StartDate>
+        <EndDate>2025/10/24</EndDate>
+        <Travellers>
+          <Traveller>
+            <TravellerNumber>1</TravellerNumber>
+            <Title>Mr</Title>
+            <FirstName>ΣΑΡΑ</FirstName>
+            <LastName>ΜΟΡΤΕΝΣΕΝ</LastName>
+            <DateOfBirth>2000/05/20</DateOfBirth>
+            <Age>25</Age>
+            <AgebandID>22989</AgebandID>
+            <TitleID>1</TitleID>
+            <minAge>18</minAge>
+            <maxAge>55</maxAge>
+            <AlterationID></AlterationID>
+            <msPrice>0</msPrice>
+            <msPriceExcIPT>0</msPriceExcIPT>
+            <msConditions></msConditions>
+            <ScreeningInformation xsi:nil="true" />
+          </Traveller>
+        </Travellers>
+        <ContactDetails>
+          <Address>123 Main Street</Address>
+          <Postcode>12345</Postcode>
+          <Email>sara.mansola@gmail.com</Email>
+          <Telephone>+496977772100</Telephone>
+        </ContactDetails>
+        <includeAnnualQuotes>0</includeAnnualQuotes>
+        <includeUpsell>1</includeUpsell>
+        <currencyID>1</currencyID>
+        <schemaIDFilter>717</schemaIDFilter>
+      </quoteDetails>
+    </ProvideQuotationWithAlterations>
+  </soap:Body>
+</soap:Envelope>
+
+
+
+
+
+
+
+

@@ -1,8 +1,11 @@
-"use client";
 import React, { useEffect } from 'react';
 import './About.css';
 
-const About: React.FC = () => {
+interface AboutProps {
+  onNavigate?: (page: string) => void;
+}
+
+const About: React.FC<AboutProps> = () => {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);

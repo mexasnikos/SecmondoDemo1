@@ -1,0 +1,2010 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="WS-IntegratedQuote" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="WS-IntegratedQuote" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="WS-IntegratedQuote">
+      <s:element name="HelloWorld">
+        <s:complexType />
+      </s:element>
+      <s:element name="HelloWorldResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="HelloWorldResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="HelloWorld2">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="VarIn" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="HelloWorld2Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="HelloWorld2Result" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUserProductList">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="userID" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="userCode" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUserProductListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetUserProductListResult" type="tns:GetUserProductListResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="GetUserProductListResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ResultID" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Schemas" type="tns:ArrayOfSchema" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfSchema">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Schema" nillable="true" type="tns:Schema" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Schema">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="SchemaID" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetUserProductTypePolicy">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="userID" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="userCode" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="schemaId" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUserProductTypePolicyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetUserProductTypePolicyResult" type="tns:GetUserProductTypePolicyResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="GetUserProductTypePolicyResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ResultID" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="TypePolicies" type="tns:ArrayOfTypePolicy" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfTypePolicy">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="TypePolicy" nillable="true" type="tns:TypePolicy" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="TypePolicy">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="IsAnnual" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="TypePolicyID" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetUserProductTypePackage">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="userID" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="userCode" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="schemaId" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUserProductTypePackageResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetUserProductTypePackageResult" type="tns:GetUserProductTypePackageResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="GetUserProductTypePackageResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ResultID" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="TypePackages" type="tns:ArrayOfTypePackage" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfTypePackage">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="TypePackage" nillable="true" type="tns:TypePackage" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="TypePackage">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="TypePackageID" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetUserProductResidence">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="userID" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="userCode" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="schemaId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUserProductResidenceResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetUserProductResidenceResult" type="tns:GetUserProductResidenceResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="GetUserProductResidenceResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ResultID" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Product" type="tns:ProductResidence" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ProductResidence">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="SchemaID" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Residences" type="tns:ArrayOfResidence" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfResidence">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Residence" nillable="true" type="tns:Residence" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Residence">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="IPTRate" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="ResidenceID" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="CheckUserProductResidence">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="userID" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="userCode" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="schemaId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="residenceName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CheckUserProductResidenceResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CheckUserProductResidenceResult" type="tns:GetUserProductResidenceResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUserProductDestination">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="userID" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="userCode" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="schemaId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUserProductDestinationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetUserProductDestinationResult" type="tns:GetUserProductDestinationResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="GetUserProductDestinationResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ResultID" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Product" type="tns:ProductDestination" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ProductDestination">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="SchemaID" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="PolicyTypes" type="tns:ArrayOfPolicyTypeDestination" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfPolicyTypeDestination">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="PolicyTypeDestination" nillable="true" type="tns:PolicyTypeDestination" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PolicyTypeDestination">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="IsAnnual" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="PolicyTypeID" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Destinations" type="tns:ArrayOfDestination" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfDestination">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Destination" nillable="true" type="tns:Destination" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Destination">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="DestinationID" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetUserProductAdditionalCover">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="userID" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="userCode" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="schemaId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUserProductAdditionalCoverResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetUserProductAdditionalCoverResult" type="tns:GetUserProductAdditionalCoverResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="GetUserProductAdditionalCoverResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ResultID" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Product" type="tns:ProductAdditionalCover" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ProductAdditionalCover">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="SchemaID" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="PolicyTypes" type="tns:ArrayOfPolicyTypeAdditionalCover" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfPolicyTypeAdditionalCover">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="PolicyTypeAdditionalCover" nillable="true" type="tns:PolicyTypeAdditionalCover" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PolicyTypeAdditionalCover">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="IsAnnual" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="PolicyTypeID" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="AdditionalCovers" type="tns:ArrayOfAdditionalCover" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfAdditionalCover">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="AdditionalCover" nillable="true" type="tns:AdditionalCover" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="AdditionalCover">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="AdditionalCoverID" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ProvideQuotation">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="userID" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="userCode" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="quoteDetails" type="tns:quoteDetails" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="quoteDetails">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ResidenceID" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="TypePolicyID" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="TypePackageID" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="Destination" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="StartDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="EndDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Travellers" type="tns:ArrayOfTraveller" />
+          <s:element minOccurs="0" maxOccurs="1" name="ContactDetails" type="tns:Details" />
+          <s:element minOccurs="1" maxOccurs="1" name="includeAnnualQuotes" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="includeUpsell" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="alterionGenericID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="voucherCode" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="isCYTI" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="currencyID" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="groupPerProduct" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="priceOrder" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="schemaIDFilter" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="useCoverLevelUpsell" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="sellOnBehalfOf" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="customerUniqueID" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="quoteVisitAuditID" type="s:long" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfTraveller">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Traveller" nillable="true" type="tns:Traveller" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Traveller">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="TravellerNumber" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="Title" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FirstName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LastName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DateOfBirth" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Age" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="AgebandID" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="TitleID" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="minAge" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="maxAge" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="AlterationID" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="msPrice" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="msPriceExcIPT" type="s:double" />
+          <s:element minOccurs="0" maxOccurs="1" name="msConditions" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ScreeningInformation" type="tns:ScreeningInformation" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ScreeningInformation">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Data" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OverallScore" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OverallScore_AMT" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Provider" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Region" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="msSchemaID" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="msPolicyTypeID" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="msRegionID" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="regionMultiplyingFactor" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="agebandMultiplyingFactor" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="triplengthMultiplyingFactor" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="daysBeforeMultiplyingFactor" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="holidayCostMultiplyingFactor" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="CytiFactor" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="msResultID" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="screeningResult" type="tns:screeningResult" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="screeningResult">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="QuoteID" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="schemaName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="policytypeName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="residenceName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="regionName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="startDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="endDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="currency" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="IPT" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="IPTRate" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="GrossPrice" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="msSchemaID" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="msPolicyTypeID" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="msRegionID" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="healixRegionID" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="isAnnual" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="isNotCovered" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="canExclude" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="linkedConditions" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Details">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Address" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Postcode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Telephone" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="VehicleMakeModel" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="VehicleLicensePlate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="VehicleYearManufacture" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ProvideQuotationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ProvideQuotationResult" type="tns:provideQuotationResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="provideQuotationResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="message" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="errorID" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="quoteResults" type="tns:ArrayOfQuoteResults" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfQuoteResults">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="quoteResults" nillable="true" type="tns:quoteResults" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="quoteResults">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="QuoteID" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="schemaName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="policytypeName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="residenceName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="destinationName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="startDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="endDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SI" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PW" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="KF" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="HelpFile" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="currency" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="IPT" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="IPTRate" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="GrossPrice" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="screeningPremium" type="s:double" />
+          <s:element minOccurs="0" maxOccurs="1" name="IconURL" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="SchemaID" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="PolicyTypeID" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="DestinationID" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="PackageID" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="MaxAgeAgebandID" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="ScreeningID" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="groupPerProduct" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="priceOrder" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="IPID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="typePolicyName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="typePackageName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="currencyHTMLEncoded" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SummaryCovers" type="tns:ArrayOfSummaryCover" />
+          <s:element minOccurs="0" maxOccurs="1" name="AlterationID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="packageName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="isAnnual" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="isBestBuy" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="maxDaysPerTrip" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="isBestBuyText" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="isBestBuyLocation" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="numberToSort" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="coverLevel" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="Discount" type="s:double" />
+          <s:element minOccurs="0" maxOccurs="1" name="travellers" type="tns:ArrayOfTraveller" />
+          <s:element minOccurs="0" maxOccurs="1" name="upSellOptions" type="tns:ArrayOfQuoteResults" />
+          <s:element minOccurs="1" maxOccurs="1" name="netUW" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="wbComm" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="agentComm" type="s:double" />
+          <s:element minOccurs="0" maxOccurs="1" name="screeningPremiumPerPersonCSV" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="screeningPremiumExcIPTPerPersonCSV" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="isNotCoveredPerPersonCSV" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="policytypeShortName" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfSummaryCover">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="summaryCover" nillable="true" type="tns:summaryCover" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="summaryCover">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="SummarySection_DetailID" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="SummarySectionID" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="SchemaID" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="PolicyTypeID" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="PolicytypeID_Used" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="Limit" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Excess" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="position" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="deleted" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Highlight" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="isAlwaysVisible" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="helpText" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ProvideQuotationV2">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="userID" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="userCode" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="quoteDetails" type="tns:quoteDetails" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ProvideQuotationV2Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ProvideQuotationV2Result" type="tns:provideQuotationResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ProvideSpecificQuotation">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="userID" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="userCode" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="specificQuoteDetails" type="tns:specificQuoteDetails" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="specificQuoteDetails">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ResidenceID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ProductID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PolicyTypeID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PackageID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DestinationID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="StartDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="EndDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Travellers" type="tns:ArrayOfTraveller" />
+          <s:element minOccurs="0" maxOccurs="1" name="ContactDetails" type="tns:Details" />
+          <s:element minOccurs="0" maxOccurs="1" name="SalesmethodID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AlterationID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DynamicDetails" type="tns:ArrayOfDynamicDetail_SavedValue" />
+          <s:element minOccurs="0" maxOccurs="1" name="ScreeningQuestionAnswers" type="tns:ArrayOfScreeningQuestionAnswer" />
+          <s:element minOccurs="0" maxOccurs="1" name="EligibilityQuestionAnswers" type="tns:ArrayOfEligibilityQuestionAnswer" />
+          <s:element minOccurs="0" maxOccurs="1" name="MarketingQuestionAnswers" type="tns:ArrayOfMarketingQuestionAnswer" />
+          <s:element minOccurs="0" maxOccurs="1" name="MedicalScreeningRef" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="voucherCode" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="isCYTI" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="currencyID" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="sellOnBehalfOf" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="fullBreakdown" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="customerUniqueID" type="s:long" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfDynamicDetail_SavedValue">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="DynamicDetail_SavedValue" nillable="true" type="tns:DynamicDetail_SavedValue" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="DynamicDetail_SavedValue">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Position" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="FieldName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FieldValue" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="FieldSize" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="Mandatory" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="TypeField" type="s:long" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfScreeningQuestionAnswer">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="screeningQuestionAnswer" nillable="true" type="tns:screeningQuestionAnswer" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="screeningQuestionAnswer">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="questionNumber" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="answer" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfEligibilityQuestionAnswer">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="eligibilityQuestionAnswer" nillable="true" type="tns:eligibilityQuestionAnswer" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="eligibilityQuestionAnswer">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="questionNumber" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="answer" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="questionText" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfMarketingQuestionAnswer">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="MarketingQuestionAnswer" nillable="true" type="tns:MarketingQuestionAnswer" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="MarketingQuestionAnswer">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="questionNumber" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="answer" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="questionText" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ProvideSpecificQuotationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ProvideSpecificQuotationResult" type="tns:provideQuotationResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdatePolicyTravellerDetails">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="userID" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="userCode" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="quoteID" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="specificQuoteDetails" type="tns:specificQuoteDetails" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdatePolicyTravellerDetailsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdatePolicyTravellerDetailsResult" type="tns:provideQuotationResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdatePolicyWhoCollectsPayment">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="userID" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="userCode" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="policyID" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="whoCollectsPayment" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdatePolicyWhoCollectsPaymentResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdatePolicyWhoCollectsPaymentResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdatePolicySalesMethodId">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="userID" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="userCode" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="policyID" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="salesMethodId" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdatePolicySalesMethodIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdatePolicySalesMethodIdResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdatePolicyExternalReference">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="userID" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="userCode" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="policyID" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="externalReference" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdatePolicyExternalReferenceResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdatePolicyExternalReferenceResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdatePolicyRenewalReference">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="userID" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="userCode" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="policyID" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="renewalID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdatePolicyRenewalReferenceResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdatePolicyRenewalReferenceResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdatePolicyRenewalReference_FromOldPolicyID">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="userID" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="userCode" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="policyID" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="renewalPolicyID" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdatePolicyRenewalReference_FromOldPolicyIDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdatePolicyRenewalReference_FromOldPolicyIDResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdatePolicyCountryID">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="userID" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="userCode" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="policyID" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="countryID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdatePolicyCountryIDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdatePolicyCountryIDResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ProvideQuotationWithAlterations">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="userID" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="userCode" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="quoteID" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="specificQuoteDetails" type="tns:specificQuoteDetails" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ProvideQuotationWithAlterationsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ProvideQuotationWithAlterationsResult" type="tns:provideQuotationResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPolicyDetails">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="userID" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="userCode" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="quoteID" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="emailAddress" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="code" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPolicyDetailsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetPolicyDetailsResult" type="tns:getPolicyDetailsResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="getPolicyDetailsResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="message" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="policyDetails" type="tns:policyDetails" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="policyDetails">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="policyID" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="schemaName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="policytypeName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="residenceName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="destinationName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="startDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="endDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SI" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PW" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IPID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="currency" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="IPT" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="IPTRate" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="GrossPrice" type="s:double" />
+          <s:element minOccurs="0" maxOccurs="1" name="IconURL" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="SchemaID" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="PolicyTypeID" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="DestinationID" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="PackageID" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="MaxAgeAgebandID" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="SummaryCovers" type="tns:ArrayOfSummaryCover" />
+          <s:element minOccurs="0" maxOccurs="1" name="packageName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="transactionID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Address" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Postcode" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="msScreeningID" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="msPrice" type="s:double" />
+          <s:element minOccurs="0" maxOccurs="1" name="Travellers" type="tns:ArrayOfTraveller" />
+          <s:element minOccurs="0" maxOccurs="1" name="DynamicDetails" type="tns:ArrayOfDynamicDetail_SavedValue" />
+          <s:element minOccurs="0" maxOccurs="1" name="ScreeningQuestionAnswers" type="tns:policyScreening" />
+          <s:element minOccurs="0" maxOccurs="1" name="schemaIcon" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Activities" type="tns:ArrayOfPolicyActivity_BasicInfo" />
+          <s:element minOccurs="1" maxOccurs="1" name="companyID" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="voucherCode" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="priceAmended" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="policyScreening">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="policyID" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="Q1Response" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Q2Response" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Q3Response" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Q4Response" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Q5Response" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Q6Response" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Q7Response" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Q8Response" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Q9Response" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Q10Response" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Q11Response" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Q12Response" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Q13Response" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Q14Response" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Q15Response" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Q16Response" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Q17Response" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Q18Response" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Q19Response" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Q20Response" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="MedicalScreeningRef" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfPolicyActivity_BasicInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="policyActivity_BasicInfo" nillable="true" type="tns:policyActivity_BasicInfo" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="policyActivity_BasicInfo">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="AC_ActivityID" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="ActivityName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ProviderCommAmt" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="IPTRate" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="IPTAmt" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="GrossPrice" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="TakeIntoAccount" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="autoAddToQuote" type="s:long" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="SaveQuoteEmailAddress">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="userID" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="userCode" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="quoteID" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="emailAddress" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SaveQuoteEmailAddressResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SaveQuoteEmailAddressResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ScreeningQuestions">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="userID" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="userCode" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="quoteID" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ScreeningQuestionsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ScreeningQuestionsResult" type="tns:screeningQuestionsResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="screeningQuestionsResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="message" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="screeningQuestions" type="tns:ArrayOfScreeningQuestion" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfScreeningQuestion">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="screeningQuestion" nillable="true" type="tns:screeningQuestion" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="screeningQuestion">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="questionNumber" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="Question" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="yesMessage" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="noMessage" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="yesAction" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="noAction" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="yesActionText" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="noActionText" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="defaultAnswer" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="QuestionType" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="isSeparator" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="questionGroup" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="questionGroupVisible" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="questionGroupToShow1" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="questionGroupToShow2" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="questionNumberUserDefined" type="s:long" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ScreeningQuestionsForProduct">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="userID" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="userCode" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="schemaID" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="SchemaID_csv" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ScreeningQuestionsForProductResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ScreeningQuestionsForProductResult" type="tns:screeningQuestionsResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SavePolicyDetails">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="userID" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="userCode" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="quoteID" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="screeningQuestionAnswers" type="tns:ArrayOfScreeningQuestionAnswer" />
+            <s:element minOccurs="0" maxOccurs="1" name="medicalScreeningReference" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="useDefaultAnswers" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SavePolicyDetailsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SavePolicyDetailsResult" type="tns:savePolicyDetailsResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="savePolicyDetailsResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="message" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="policySaved" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="policyID" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="certificate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PW" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SI" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="KF" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IPID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="COVID" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetPolicyFulfillment">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="userID" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="userCode" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="quoteID" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="screeningQuestionAnswers" type="tns:ArrayOfScreeningQuestionAnswer" />
+            <s:element minOccurs="0" maxOccurs="1" name="medicalScreeningReference" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="useDefaultAnswers" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="returnURL" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPolicyFulfillmentResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetPolicyFulfillmentResult" type="tns:GetPolicyFulfillmentResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="GetPolicyFulfillmentResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="message" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="policyURLCreated" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="fulfillmentURL" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetPolicyDocuments">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="userID" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="userCode" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="policyID" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="certificateAsPDF" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPolicyDocumentsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetPolicyDocumentsResult" type="tns:savePolicyDetailsResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="EmailPolicyDocuments">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="userID" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="userCode" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="policyID" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="emailAddress" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="EmailPolicyDocumentsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="EmailPolicyDocumentsResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="EmailPolicyDocuments_MSM">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="userID" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="userCode" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="policyID" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="emailAddress" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="EmailPolicyDocuments_MSMResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="EmailPolicyDocuments_MSMResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="EmailQuoteDocuments">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="userID" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="userCode" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="policyID" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="emailAddress" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="qbVersion" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="EmailQuoteDocumentsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="EmailQuoteDocumentsResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CreateQuoteDocumentPDF">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="userID" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="userCode" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="quoteID" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="qbVersion" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CreateQuoteDocumentPDFResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CreateQuoteDocumentPDFResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LargeGroup_ProcessExcelFile">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="userID" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="userCode" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="fileName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LargeGroup_ProcessExcelFileResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LargeGroup_ProcessExcelFileResult" type="tns:ArrayOfTraveller" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="HelloWorldSoapIn">
+    <wsdl:part name="parameters" element="tns:HelloWorld" />
+  </wsdl:message>
+  <wsdl:message name="HelloWorldSoapOut">
+    <wsdl:part name="parameters" element="tns:HelloWorldResponse" />
+  </wsdl:message>
+  <wsdl:message name="HelloWorld2SoapIn">
+    <wsdl:part name="parameters" element="tns:HelloWorld2" />
+  </wsdl:message>
+  <wsdl:message name="HelloWorld2SoapOut">
+    <wsdl:part name="parameters" element="tns:HelloWorld2Response" />
+  </wsdl:message>
+  <wsdl:message name="GetUserProductListSoapIn">
+    <wsdl:part name="parameters" element="tns:GetUserProductList" />
+  </wsdl:message>
+  <wsdl:message name="GetUserProductListSoapOut">
+    <wsdl:part name="parameters" element="tns:GetUserProductListResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetUserProductTypePolicySoapIn">
+    <wsdl:part name="parameters" element="tns:GetUserProductTypePolicy" />
+  </wsdl:message>
+  <wsdl:message name="GetUserProductTypePolicySoapOut">
+    <wsdl:part name="parameters" element="tns:GetUserProductTypePolicyResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetUserProductTypePackageSoapIn">
+    <wsdl:part name="parameters" element="tns:GetUserProductTypePackage" />
+  </wsdl:message>
+  <wsdl:message name="GetUserProductTypePackageSoapOut">
+    <wsdl:part name="parameters" element="tns:GetUserProductTypePackageResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetUserProductResidenceSoapIn">
+    <wsdl:part name="parameters" element="tns:GetUserProductResidence" />
+  </wsdl:message>
+  <wsdl:message name="GetUserProductResidenceSoapOut">
+    <wsdl:part name="parameters" element="tns:GetUserProductResidenceResponse" />
+  </wsdl:message>
+  <wsdl:message name="CheckUserProductResidenceSoapIn">
+    <wsdl:part name="parameters" element="tns:CheckUserProductResidence" />
+  </wsdl:message>
+  <wsdl:message name="CheckUserProductResidenceSoapOut">
+    <wsdl:part name="parameters" element="tns:CheckUserProductResidenceResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetUserProductDestinationSoapIn">
+    <wsdl:part name="parameters" element="tns:GetUserProductDestination" />
+  </wsdl:message>
+  <wsdl:message name="GetUserProductDestinationSoapOut">
+    <wsdl:part name="parameters" element="tns:GetUserProductDestinationResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetUserProductAdditionalCoverSoapIn">
+    <wsdl:part name="parameters" element="tns:GetUserProductAdditionalCover" />
+  </wsdl:message>
+  <wsdl:message name="GetUserProductAdditionalCoverSoapOut">
+    <wsdl:part name="parameters" element="tns:GetUserProductAdditionalCoverResponse" />
+  </wsdl:message>
+  <wsdl:message name="ProvideQuotationSoapIn">
+    <wsdl:part name="parameters" element="tns:ProvideQuotation" />
+  </wsdl:message>
+  <wsdl:message name="ProvideQuotationSoapOut">
+    <wsdl:part name="parameters" element="tns:ProvideQuotationResponse" />
+  </wsdl:message>
+  <wsdl:message name="ProvideQuotationV2SoapIn">
+    <wsdl:part name="parameters" element="tns:ProvideQuotationV2" />
+  </wsdl:message>
+  <wsdl:message name="ProvideQuotationV2SoapOut">
+    <wsdl:part name="parameters" element="tns:ProvideQuotationV2Response" />
+  </wsdl:message>
+  <wsdl:message name="ProvideSpecificQuotationSoapIn">
+    <wsdl:part name="parameters" element="tns:ProvideSpecificQuotation" />
+  </wsdl:message>
+  <wsdl:message name="ProvideSpecificQuotationSoapOut">
+    <wsdl:part name="parameters" element="tns:ProvideSpecificQuotationResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdatePolicyTravellerDetailsSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdatePolicyTravellerDetails" />
+  </wsdl:message>
+  <wsdl:message name="UpdatePolicyTravellerDetailsSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdatePolicyTravellerDetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdatePolicyWhoCollectsPaymentSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdatePolicyWhoCollectsPayment" />
+  </wsdl:message>
+  <wsdl:message name="UpdatePolicyWhoCollectsPaymentSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdatePolicyWhoCollectsPaymentResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdatePolicySalesMethodIdSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdatePolicySalesMethodId" />
+  </wsdl:message>
+  <wsdl:message name="UpdatePolicySalesMethodIdSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdatePolicySalesMethodIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdatePolicyExternalReferenceSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdatePolicyExternalReference" />
+  </wsdl:message>
+  <wsdl:message name="UpdatePolicyExternalReferenceSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdatePolicyExternalReferenceResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdatePolicyRenewalReferenceSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdatePolicyRenewalReference" />
+  </wsdl:message>
+  <wsdl:message name="UpdatePolicyRenewalReferenceSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdatePolicyRenewalReferenceResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdatePolicyRenewalReference_FromOldPolicyIDSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdatePolicyRenewalReference_FromOldPolicyID" />
+  </wsdl:message>
+  <wsdl:message name="UpdatePolicyRenewalReference_FromOldPolicyIDSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdatePolicyRenewalReference_FromOldPolicyIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdatePolicyCountryIDSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdatePolicyCountryID" />
+  </wsdl:message>
+  <wsdl:message name="UpdatePolicyCountryIDSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdatePolicyCountryIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="ProvideQuotationWithAlterationsSoapIn">
+    <wsdl:part name="parameters" element="tns:ProvideQuotationWithAlterations" />
+  </wsdl:message>
+  <wsdl:message name="ProvideQuotationWithAlterationsSoapOut">
+    <wsdl:part name="parameters" element="tns:ProvideQuotationWithAlterationsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetPolicyDetailsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetPolicyDetails" />
+  </wsdl:message>
+  <wsdl:message name="GetPolicyDetailsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetPolicyDetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="SaveQuoteEmailAddressSoapIn">
+    <wsdl:part name="parameters" element="tns:SaveQuoteEmailAddress" />
+  </wsdl:message>
+  <wsdl:message name="SaveQuoteEmailAddressSoapOut">
+    <wsdl:part name="parameters" element="tns:SaveQuoteEmailAddressResponse" />
+  </wsdl:message>
+  <wsdl:message name="ScreeningQuestionsSoapIn">
+    <wsdl:part name="parameters" element="tns:ScreeningQuestions" />
+  </wsdl:message>
+  <wsdl:message name="ScreeningQuestionsSoapOut">
+    <wsdl:part name="parameters" element="tns:ScreeningQuestionsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ScreeningQuestionsForProductSoapIn">
+    <wsdl:part name="parameters" element="tns:ScreeningQuestionsForProduct" />
+  </wsdl:message>
+  <wsdl:message name="ScreeningQuestionsForProductSoapOut">
+    <wsdl:part name="parameters" element="tns:ScreeningQuestionsForProductResponse" />
+  </wsdl:message>
+  <wsdl:message name="SavePolicyDetailsSoapIn">
+    <wsdl:part name="parameters" element="tns:SavePolicyDetails" />
+  </wsdl:message>
+  <wsdl:message name="SavePolicyDetailsSoapOut">
+    <wsdl:part name="parameters" element="tns:SavePolicyDetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetPolicyFulfillmentSoapIn">
+    <wsdl:part name="parameters" element="tns:GetPolicyFulfillment" />
+  </wsdl:message>
+  <wsdl:message name="GetPolicyFulfillmentSoapOut">
+    <wsdl:part name="parameters" element="tns:GetPolicyFulfillmentResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetPolicyDocumentsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetPolicyDocuments" />
+  </wsdl:message>
+  <wsdl:message name="GetPolicyDocumentsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetPolicyDocumentsResponse" />
+  </wsdl:message>
+  <wsdl:message name="EmailPolicyDocumentsSoapIn">
+    <wsdl:part name="parameters" element="tns:EmailPolicyDocuments" />
+  </wsdl:message>
+  <wsdl:message name="EmailPolicyDocumentsSoapOut">
+    <wsdl:part name="parameters" element="tns:EmailPolicyDocumentsResponse" />
+  </wsdl:message>
+  <wsdl:message name="EmailPolicyDocuments_MSMSoapIn">
+    <wsdl:part name="parameters" element="tns:EmailPolicyDocuments_MSM" />
+  </wsdl:message>
+  <wsdl:message name="EmailPolicyDocuments_MSMSoapOut">
+    <wsdl:part name="parameters" element="tns:EmailPolicyDocuments_MSMResponse" />
+  </wsdl:message>
+  <wsdl:message name="EmailQuoteDocumentsSoapIn">
+    <wsdl:part name="parameters" element="tns:EmailQuoteDocuments" />
+  </wsdl:message>
+  <wsdl:message name="EmailQuoteDocumentsSoapOut">
+    <wsdl:part name="parameters" element="tns:EmailQuoteDocumentsResponse" />
+  </wsdl:message>
+  <wsdl:message name="CreateQuoteDocumentPDFSoapIn">
+    <wsdl:part name="parameters" element="tns:CreateQuoteDocumentPDF" />
+  </wsdl:message>
+  <wsdl:message name="CreateQuoteDocumentPDFSoapOut">
+    <wsdl:part name="parameters" element="tns:CreateQuoteDocumentPDFResponse" />
+  </wsdl:message>
+  <wsdl:message name="LargeGroup_ProcessExcelFileSoapIn">
+    <wsdl:part name="parameters" element="tns:LargeGroup_ProcessExcelFile" />
+  </wsdl:message>
+  <wsdl:message name="LargeGroup_ProcessExcelFileSoapOut">
+    <wsdl:part name="parameters" element="tns:LargeGroup_ProcessExcelFileResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IntegratedQuoteSoap">
+    <wsdl:operation name="HelloWorld">
+      <wsdl:input message="tns:HelloWorldSoapIn" />
+      <wsdl:output message="tns:HelloWorldSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="HelloWorld2">
+      <wsdl:input message="tns:HelloWorld2SoapIn" />
+      <wsdl:output message="tns:HelloWorld2SoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUserProductList">
+      <wsdl:input message="tns:GetUserProductListSoapIn" />
+      <wsdl:output message="tns:GetUserProductListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUserProductTypePolicy">
+      <wsdl:input message="tns:GetUserProductTypePolicySoapIn" />
+      <wsdl:output message="tns:GetUserProductTypePolicySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUserProductTypePackage">
+      <wsdl:input message="tns:GetUserProductTypePackageSoapIn" />
+      <wsdl:output message="tns:GetUserProductTypePackageSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUserProductResidence">
+      <wsdl:input message="tns:GetUserProductResidenceSoapIn" />
+      <wsdl:output message="tns:GetUserProductResidenceSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckUserProductResidence">
+      <wsdl:input message="tns:CheckUserProductResidenceSoapIn" />
+      <wsdl:output message="tns:CheckUserProductResidenceSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUserProductDestination">
+      <wsdl:input message="tns:GetUserProductDestinationSoapIn" />
+      <wsdl:output message="tns:GetUserProductDestinationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUserProductAdditionalCover">
+      <wsdl:input message="tns:GetUserProductAdditionalCoverSoapIn" />
+      <wsdl:output message="tns:GetUserProductAdditionalCoverSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ProvideQuotation">
+      <wsdl:input message="tns:ProvideQuotationSoapIn" />
+      <wsdl:output message="tns:ProvideQuotationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ProvideQuotationV2">
+      <wsdl:input message="tns:ProvideQuotationV2SoapIn" />
+      <wsdl:output message="tns:ProvideQuotationV2SoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ProvideSpecificQuotation">
+      <wsdl:input message="tns:ProvideSpecificQuotationSoapIn" />
+      <wsdl:output message="tns:ProvideSpecificQuotationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdatePolicyTravellerDetails">
+      <wsdl:input message="tns:UpdatePolicyTravellerDetailsSoapIn" />
+      <wsdl:output message="tns:UpdatePolicyTravellerDetailsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdatePolicyWhoCollectsPayment">
+      <wsdl:input message="tns:UpdatePolicyWhoCollectsPaymentSoapIn" />
+      <wsdl:output message="tns:UpdatePolicyWhoCollectsPaymentSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdatePolicySalesMethodId">
+      <wsdl:input message="tns:UpdatePolicySalesMethodIdSoapIn" />
+      <wsdl:output message="tns:UpdatePolicySalesMethodIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdatePolicyExternalReference">
+      <wsdl:input message="tns:UpdatePolicyExternalReferenceSoapIn" />
+      <wsdl:output message="tns:UpdatePolicyExternalReferenceSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdatePolicyRenewalReference">
+      <wsdl:input message="tns:UpdatePolicyRenewalReferenceSoapIn" />
+      <wsdl:output message="tns:UpdatePolicyRenewalReferenceSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdatePolicyRenewalReference_FromOldPolicyID">
+      <wsdl:input message="tns:UpdatePolicyRenewalReference_FromOldPolicyIDSoapIn" />
+      <wsdl:output message="tns:UpdatePolicyRenewalReference_FromOldPolicyIDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdatePolicyCountryID">
+      <wsdl:input message="tns:UpdatePolicyCountryIDSoapIn" />
+      <wsdl:output message="tns:UpdatePolicyCountryIDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ProvideQuotationWithAlterations">
+      <wsdl:input message="tns:ProvideQuotationWithAlterationsSoapIn" />
+      <wsdl:output message="tns:ProvideQuotationWithAlterationsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPolicyDetails">
+      <wsdl:input message="tns:GetPolicyDetailsSoapIn" />
+      <wsdl:output message="tns:GetPolicyDetailsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveQuoteEmailAddress">
+      <wsdl:input message="tns:SaveQuoteEmailAddressSoapIn" />
+      <wsdl:output message="tns:SaveQuoteEmailAddressSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ScreeningQuestions">
+      <wsdl:input message="tns:ScreeningQuestionsSoapIn" />
+      <wsdl:output message="tns:ScreeningQuestionsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ScreeningQuestionsForProduct">
+      <wsdl:input message="tns:ScreeningQuestionsForProductSoapIn" />
+      <wsdl:output message="tns:ScreeningQuestionsForProductSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SavePolicyDetails">
+      <wsdl:input message="tns:SavePolicyDetailsSoapIn" />
+      <wsdl:output message="tns:SavePolicyDetailsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPolicyFulfillment">
+      <wsdl:input message="tns:GetPolicyFulfillmentSoapIn" />
+      <wsdl:output message="tns:GetPolicyFulfillmentSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPolicyDocuments">
+      <wsdl:input message="tns:GetPolicyDocumentsSoapIn" />
+      <wsdl:output message="tns:GetPolicyDocumentsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="EmailPolicyDocuments">
+      <wsdl:input message="tns:EmailPolicyDocumentsSoapIn" />
+      <wsdl:output message="tns:EmailPolicyDocumentsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="EmailPolicyDocuments_MSM">
+      <wsdl:input message="tns:EmailPolicyDocuments_MSMSoapIn" />
+      <wsdl:output message="tns:EmailPolicyDocuments_MSMSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="EmailQuoteDocuments">
+      <wsdl:input message="tns:EmailQuoteDocumentsSoapIn" />
+      <wsdl:output message="tns:EmailQuoteDocumentsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateQuoteDocumentPDF">
+      <wsdl:input message="tns:CreateQuoteDocumentPDFSoapIn" />
+      <wsdl:output message="tns:CreateQuoteDocumentPDFSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="LargeGroup_ProcessExcelFile">
+      <wsdl:input message="tns:LargeGroup_ProcessExcelFileSoapIn" />
+      <wsdl:output message="tns:LargeGroup_ProcessExcelFileSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="IntegratedQuoteSoap" type="tns:IntegratedQuoteSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="HelloWorld">
+      <soap:operation soapAction="WS-IntegratedQuote/HelloWorld" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="HelloWorld2">
+      <soap:operation soapAction="WS-IntegratedQuote/HelloWorld2" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserProductList">
+      <soap:operation soapAction="WS-IntegratedQuote/GetUserProductList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserProductTypePolicy">
+      <soap:operation soapAction="WS-IntegratedQuote/GetUserProductTypePolicy" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserProductTypePackage">
+      <soap:operation soapAction="WS-IntegratedQuote/GetUserProductTypePackage" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserProductResidence">
+      <soap:operation soapAction="WS-IntegratedQuote/GetUserProductResidence" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckUserProductResidence">
+      <soap:operation soapAction="WS-IntegratedQuote/CheckUserProductResidence" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserProductDestination">
+      <soap:operation soapAction="WS-IntegratedQuote/GetUserProductDestination" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserProductAdditionalCover">
+      <soap:operation soapAction="WS-IntegratedQuote/GetUserProductAdditionalCover" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProvideQuotation">
+      <soap:operation soapAction="WS-IntegratedQuote/ProvideQuotation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProvideQuotationV2">
+      <soap:operation soapAction="WS-IntegratedQuote/ProvideQuotationV2" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProvideSpecificQuotation">
+      <soap:operation soapAction="WS-IntegratedQuote/ProvideSpecificQuotation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdatePolicyTravellerDetails">
+      <soap:operation soapAction="WS-IntegratedQuote/UpdatePolicyTravellerDetails" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdatePolicyWhoCollectsPayment">
+      <soap:operation soapAction="WS-IntegratedQuote/UpdatePolicyWhoCollectsPayment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdatePolicySalesMethodId">
+      <soap:operation soapAction="WS-IntegratedQuote/UpdatePolicySalesMethodId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdatePolicyExternalReference">
+      <soap:operation soapAction="WS-IntegratedQuote/UpdatePolicyExternalReference" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdatePolicyRenewalReference">
+      <soap:operation soapAction="WS-IntegratedQuote/UpdatePolicyRenewalReference" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdatePolicyRenewalReference_FromOldPolicyID">
+      <soap:operation soapAction="WS-IntegratedQuote/UpdatePolicyRenewalReference_FromOldPolicyID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdatePolicyCountryID">
+      <soap:operation soapAction="WS-IntegratedQuote/UpdatePolicyCountryID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProvideQuotationWithAlterations">
+      <soap:operation soapAction="WS-IntegratedQuote/ProvideQuotationWithAlterations" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPolicyDetails">
+      <soap:operation soapAction="WS-IntegratedQuote/GetPolicyDetails" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveQuoteEmailAddress">
+      <soap:operation soapAction="WS-IntegratedQuote/SaveQuoteEmailAddress" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ScreeningQuestions">
+      <soap:operation soapAction="WS-IntegratedQuote/ScreeningQuestions" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ScreeningQuestionsForProduct">
+      <soap:operation soapAction="WS-IntegratedQuote/ScreeningQuestionsForProduct" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SavePolicyDetails">
+      <soap:operation soapAction="WS-IntegratedQuote/SavePolicyDetails" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPolicyFulfillment">
+      <soap:operation soapAction="WS-IntegratedQuote/GetPolicyFulfillment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPolicyDocuments">
+      <soap:operation soapAction="WS-IntegratedQuote/GetPolicyDocuments" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EmailPolicyDocuments">
+      <soap:operation soapAction="WS-IntegratedQuote/EmailPolicyDocuments" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EmailPolicyDocuments_MSM">
+      <soap:operation soapAction="WS-IntegratedQuote/EmailPolicyDocuments_MSM" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EmailQuoteDocuments">
+      <soap:operation soapAction="WS-IntegratedQuote/EmailQuoteDocuments" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateQuoteDocumentPDF">
+      <soap:operation soapAction="WS-IntegratedQuote/CreateQuoteDocumentPDF" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LargeGroup_ProcessExcelFile">
+      <soap:operation soapAction="WS-IntegratedQuote/LargeGroup_ProcessExcelFile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="IntegratedQuoteSoap12" type="tns:IntegratedQuoteSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="HelloWorld">
+      <soap12:operation soapAction="WS-IntegratedQuote/HelloWorld" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="HelloWorld2">
+      <soap12:operation soapAction="WS-IntegratedQuote/HelloWorld2" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserProductList">
+      <soap12:operation soapAction="WS-IntegratedQuote/GetUserProductList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserProductTypePolicy">
+      <soap12:operation soapAction="WS-IntegratedQuote/GetUserProductTypePolicy" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserProductTypePackage">
+      <soap12:operation soapAction="WS-IntegratedQuote/GetUserProductTypePackage" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserProductResidence">
+      <soap12:operation soapAction="WS-IntegratedQuote/GetUserProductResidence" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckUserProductResidence">
+      <soap12:operation soapAction="WS-IntegratedQuote/CheckUserProductResidence" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserProductDestination">
+      <soap12:operation soapAction="WS-IntegratedQuote/GetUserProductDestination" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserProductAdditionalCover">
+      <soap12:operation soapAction="WS-IntegratedQuote/GetUserProductAdditionalCover" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProvideQuotation">
+      <soap12:operation soapAction="WS-IntegratedQuote/ProvideQuotation" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProvideQuotationV2">
+      <soap12:operation soapAction="WS-IntegratedQuote/ProvideQuotationV2" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProvideSpecificQuotation">
+      <soap12:operation soapAction="WS-IntegratedQuote/ProvideSpecificQuotation" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdatePolicyTravellerDetails">
+      <soap12:operation soapAction="WS-IntegratedQuote/UpdatePolicyTravellerDetails" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdatePolicyWhoCollectsPayment">
+      <soap12:operation soapAction="WS-IntegratedQuote/UpdatePolicyWhoCollectsPayment" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdatePolicySalesMethodId">
+      <soap12:operation soapAction="WS-IntegratedQuote/UpdatePolicySalesMethodId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdatePolicyExternalReference">
+      <soap12:operation soapAction="WS-IntegratedQuote/UpdatePolicyExternalReference" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdatePolicyRenewalReference">
+      <soap12:operation soapAction="WS-IntegratedQuote/UpdatePolicyRenewalReference" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdatePolicyRenewalReference_FromOldPolicyID">
+      <soap12:operation soapAction="WS-IntegratedQuote/UpdatePolicyRenewalReference_FromOldPolicyID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdatePolicyCountryID">
+      <soap12:operation soapAction="WS-IntegratedQuote/UpdatePolicyCountryID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProvideQuotationWithAlterations">
+      <soap12:operation soapAction="WS-IntegratedQuote/ProvideQuotationWithAlterations" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPolicyDetails">
+      <soap12:operation soapAction="WS-IntegratedQuote/GetPolicyDetails" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveQuoteEmailAddress">
+      <soap12:operation soapAction="WS-IntegratedQuote/SaveQuoteEmailAddress" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ScreeningQuestions">
+      <soap12:operation soapAction="WS-IntegratedQuote/ScreeningQuestions" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ScreeningQuestionsForProduct">
+      <soap12:operation soapAction="WS-IntegratedQuote/ScreeningQuestionsForProduct" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SavePolicyDetails">
+      <soap12:operation soapAction="WS-IntegratedQuote/SavePolicyDetails" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPolicyFulfillment">
+      <soap12:operation soapAction="WS-IntegratedQuote/GetPolicyFulfillment" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPolicyDocuments">
+      <soap12:operation soapAction="WS-IntegratedQuote/GetPolicyDocuments" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EmailPolicyDocuments">
+      <soap12:operation soapAction="WS-IntegratedQuote/EmailPolicyDocuments" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EmailPolicyDocuments_MSM">
+      <soap12:operation soapAction="WS-IntegratedQuote/EmailPolicyDocuments_MSM" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EmailQuoteDocuments">
+      <soap12:operation soapAction="WS-IntegratedQuote/EmailQuoteDocuments" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateQuoteDocumentPDF">
+      <soap12:operation soapAction="WS-IntegratedQuote/CreateQuoteDocumentPDF" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LargeGroup_ProcessExcelFile">
+      <soap12:operation soapAction="WS-IntegratedQuote/LargeGroup_ProcessExcelFile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="IntegratedQuote">
+    <wsdl:port name="IntegratedQuoteSoap" binding="tns:IntegratedQuoteSoap">
+      <soap:address location="https://www.asuaonline.com/ws/integratedquote.asmx" />
+    </wsdl:port>
+    <wsdl:port name="IntegratedQuoteSoap12" binding="tns:IntegratedQuoteSoap12">
+      <soap12:address location="https://www.asuaonline.com/ws/integratedquote.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

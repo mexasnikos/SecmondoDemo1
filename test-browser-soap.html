@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOAP Policy Types Test</title>
+</head>
+<body>
+    <h1>SOAP Policy Types Test</h1>
+    <div id="results"></div>
+
+    <script>
+        // Test the SOAP response parsing in browser environment
+        const soapResponse = `<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><soap:Body><GetUserProductTypePolicyResponse xmlns="WS-IntegratedQuote"><GetUserProductTypePolicyResult><Message>This user's product has 3 Types of Policies assigned.</Message><ResultID>1</ResultID><TypePolicies><TypePolicy><Name>Single Trip</Name><IsAnnual>0</IsAnnual><TypePolicyID>2</TypePolicyID></TypePolicy><TypePolicy><Name>Annual Multi-Trip</Name><IsAnnual>1</IsAnnual><TypePolicyID>23</TypePolicyID></TypePolicy><TypePolicy><Name>Longstay</Name><IsAnnual>0</IsAnnual><TypePolicyID>3</TypePolicyID></TypePolicy></TypePolicies></GetUserProductTypePolicyResult></GetUserProductTypePolicyResponse></soap:Body></soap:Envelope>`;
+
+        function parsePolicyTypeResponse(xmlText) {
+            try {
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
+                
+                const parseError = xmlDoc.querySelector('parsererror');
+                if (parseError) {
+                    throw new Error(`XML parsing error: ${parseError.textContent}`);
+                }
+
+                const message = xmlDoc.querySelector('Message')?.textContent || '';
+                const resultID = parseInt(xmlDoc.querySelector('ResultID')?.textContent || '0');
+                const policyTypes = [];
+
+                const policyTypeNodes = xmlDoc.querySelectorAll('TypePolicy');
+                policyTypeNodes.forEach((node) => {
+                    const policyType = {
+                        TypePolicyID: node.querySelector('TypePolicyID')?.textContent || '',
+                        TypePolicyName: node.querySelector('Name')?.textContent || '',
+                        Description: node.querySelector('IsAnnual')?.textContent === '1' ? 'Annual Policy' : 'Single Trip Policy'
+                    };
+                    policyTypes.push(policyType);
+                });
+
+                return { Message: message, ResultID: resultID, PolicyTypes: policyTypes };
+            } catch (error) {
+                console.error('Error parsing policy type response:', error);
+                throw new Error(`Failed to parse policy type response: ${error.message}`);
+            }
+        }
+
+        // Test the parsing
+        try {
+            console.log('🔍 Testing SOAP response parsing in browser...');
+            const result = parsePolicyTypeResponse(soapResponse);
+            
+            console.log('✅ SUCCESS! Policy types parsed correctly:');
+            console.log('Message:', result.Message);
+            console.log('ResultID:', result.ResultID);
+            console.log('Policy Types:', result.PolicyTypes);
+            
+            // Display results in HTML
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = `
+                <h2>✅ SOAP Response Parsed Successfully!</h2>
+                <p><strong>Message:</strong> ${result.Message}</p>
+                <p><strong>Result ID:</strong> ${result.ResultID}</p>
+                <h3>Policy Types:</h3>
+                <ul>
+                    ${result.PolicyTypes.map(pt => `
+                        <li>
+                            <strong>${pt.TypePolicyName}</strong> 
+                            (ID: ${pt.TypePolicyID}, ${pt.Description})
+                        </li>
+                    `).join('')}
+                </ul>
+                <h3>These are the REAL policy type names that should appear in your UI!</h3>
+                <p>✅ "Single Trip" should appear in the dropdown</p>
+                <p>✅ "Annual Multi-Trip" should appear in the dropdown</p>
+                <p>✅ "Longstay" should appear in the dropdown</p>
+            `;
+            
+        } catch (error) {
+            console.error('❌ Error:', error);
+            document.getElementById('results').innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+

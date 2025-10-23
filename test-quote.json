@@ -1,0 +1,24 @@
+{
+  "destination": "Europe",
+  "countryOfResidence": "Greece",
+  "startDate": "2025-10-01",
+  "endDate": "2025-10-08",
+  "tripType": "single",
+  "numberOfTravelers": 1,
+  "travelers": [
+    {
+      "firstName": "John",
+      "lastName": "Doe",
+      "dateOfBirth": "1990-01-01",
+      "email": "john@example.com",
+      "phone": "1234567890"
+    }
+  ],
+  "selectedQuote": {
+    "id": "test",
+    "name": "Test Quote",
+    "price": 100
+  },
+  "additionalPolicies": [],
+  "totalAmount": 100
+}

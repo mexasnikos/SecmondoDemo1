@@ -1,9 +1,11 @@
-"use client";
 import React, { useEffect } from 'react';
-import Link from 'next/link';
 import './AnnualMultiTrip.css';
 
-const AnnualMultiTrip: React.FC = () => {
+interface AnnualMultiTripProps {
+  onNavigate?: (page: string) => void;
+}
+
+const AnnualMultiTrip: React.FC<AnnualMultiTripProps> = ({ onNavigate }) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -39,8 +41,18 @@ const AnnualMultiTrip: React.FC = () => {
                 </div>
               </div>
               <div className="hero-actions">
-                <Link href="/quote" className="btn-primary">Get Quote Now</Link>
-                <a href="#features" className="btn-secondary">Learn More</a>
+                <button 
+  className="btn-primary"
+  onClick={() => onNavigate?.('quote')}
+>
+  Get Quote Now
+</button>
+                <button 
+                  className="btn-secondary"
+                  onClick={() => onNavigate?.('learn-more')}
+                >
+                  Learn More
+                </button>
               </div>
             </div>
             <div className="hero-visual">
@@ -139,7 +151,12 @@ const AnnualMultiTrip: React.FC = () => {
                   <li>✅ Cruise cover included</li>
                   <li>✅ Winter sports (17 days)</li>
                 </ul>
-                <Link href="/quote" className="plan-btn">Choose Europe</Link>
+                <button 
+  className="plan-btn"
+  onClick={() => onNavigate?.('quote')}
+>
+  Choose Europe
+</button>
               </div>
               <div className="plan-column featured">
                 <div className="plan-header">
@@ -154,7 +171,12 @@ const AnnualMultiTrip: React.FC = () => {
                   <li>✅ Cruise cover included</li>
                   <li>✅ Winter sports (17 days)</li>
                 </ul>
-                <Link href="/quote" className="plan-btn">Choose Worldwide</Link>
+                <button 
+  className="plan-btn"
+  onClick={() => onNavigate?.('quote')}
+>
+  Choose Worldwide
+</button>
               </div>
               <div className="plan-column">
                 <div className="plan-header">
@@ -168,7 +190,12 @@ const AnnualMultiTrip: React.FC = () => {
                   <li>✅ 120 days per trip</li>
                   <li>✅ Premium destinations</li>
                 </ul>
-                <Link href="/quote" className="plan-btn">Choose Premium</Link>
+                <button 
+  className="plan-btn"
+  onClick={() => onNavigate?.('quote')}
+>
+  Choose Premium
+</button>
               </div>
             </div>
           </section>
@@ -294,8 +321,18 @@ const AnnualMultiTrip: React.FC = () => {
                 <h2>Ready to Travel with Confidence?</h2>
                 <p>Get your Annual Multi-Trip insurance quote in minutes and enjoy unlimited trips with comprehensive coverage.</p>
                 <div className="cta-buttons">
-                  <Link href="/quote" className="btn-primary">Get Quote Now</Link>
-                  <Link href="/contact" className="btn-secondary">Speak to Expert</Link>
+                  <button 
+  className="btn-primary"
+  onClick={() => onNavigate?.('quote')}
+>
+  Get Quote Now
+</button>
+                  <button 
+  className="btn-secondary"
+  onClick={() => onNavigate?.('contact')}
+>
+  Speak to Expert
+</button>
                 </div>
               </div>
             </div>

@@ -1,6 +1,4 @@
-"use client";
 import React, { useEffect } from 'react';
-import Link from 'next/link';
 import './RegularStay.css';
 
 // Export type for TypeScript module resolution
@@ -36,8 +34,8 @@ const RegularStay: React.FC = () => {
             </div>
           </div>
           <div className="hero-actions">
-            <Link href="/quote" className="btn btn-primary">Get Quote</Link>
-            <Link href="/contact" className="btn btn-secondary">Contact Us</Link>
+            <a href="/quote" className="btn btn-primary">Get Quote</a>
+            <a href="/contact" className="btn btn-secondary">Contact Us</a>
           </div>
         </div>
       </section>
@@ -130,7 +128,7 @@ const RegularStay: React.FC = () => {
         <div className="container">
           <h2>Ready to Get Protected?</h2>
           <p>Get your instant quote and travel with confidence</p>
-          <Link href="/quote" className="btn btn-large">Get Your Quote Now</Link>
+          <a href="/quote" className="btn btn-large">Get Your Quote Now</a>
         </div>
       </section>
     </div>

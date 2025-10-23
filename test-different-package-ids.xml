@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+               xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+               xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <ProvideQuotation xmlns="WS-IntegratedQuote">
+      <userID>4072</userID>
+      <userCode>111427</userCode>
+      <quoteDetails>
+        <ResidenceID>1</ResidenceID>
+        <TypePolicyID>2</TypePolicyID>
+        <TypePackageID>2</TypePackageID>
+        <Destination>Europe</Destination>
+        <StartDate>2025/10/01</StartDate>
+        <EndDate>2025/10/08</EndDate>
+        <Travellers>
+          <Traveller>
+            <TravellerNumber>1</TravellerNumber>
+            <Title>Mr</Title>
+            <FirstName>John</FirstName>
+            <LastName>Doe</LastName>
+            <DateOfBirth>1990/01/01</DateOfBirth>
+            <Age>34</Age>
+            <AgebandID>3</AgebandID>
+            <TitleID>1</TitleID>
+            <minAge>34</minAge>
+            <maxAge>34</maxAge>
+            <AlterationID></AlterationID>
+            <msPrice>0</msPrice>
+            <msPriceExcIPT>0</msPriceExcIPT>
+            <msConditions></msConditions>
+            <ScreeningInformation xsi:nil="true" />
+          </Traveller>
+        </Travellers>
+        <ContactDetails>
+          <Address>123 Main Street</Address>
+          <Postcode>12345</Postcode>
+          <Email>test@example.com</Email>
+          <Telephone>+30123456789</Telephone>
+        </ContactDetails>
+      </quoteDetails>
+    </ProvideQuotation>
+  </soap:Body>
+</soap:Envelope>
+
+
+

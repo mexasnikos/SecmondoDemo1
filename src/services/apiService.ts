@@ -1,5 +1,5 @@
 // API service for communicating with the backend
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5002/api';
 
 interface ApiResponse<T> {
   status: 'success' | 'error';
@@ -73,7 +73,7 @@ class ApiService {
     const config = { ...defaultOptions, ...options };
 
     try {
-      console.log(`Making API request to: ${url}`, config);
+      // console.log(`Making API request to: ${url}`, config);
       const response = await fetch(url, config);
       
       // Clear timeout on successful response
@@ -92,7 +92,7 @@ class ApiService {
         throw new Error(data.message || data.error || `HTTP error! status: ${response.status}`);
       }
 
-      console.log('API request successful:', data);
+      // console.log('API request successful:', data);
       return data;
     } catch (error) {
       // Clear timeout on error
@@ -182,7 +182,7 @@ class ApiService {
       // First check if the backend is responding
       await this.healthCheck();
       
-      console.log('Payment validation passed, processing...');
+      // console.log('Payment validation passed, processing...');
       
       // Then try the payment
       return this.makeRequest('/payments', {
@@ -195,7 +195,7 @@ class ApiService {
       // Return a mock successful response if backend is down
       // This allows testing the frontend flow
       if (error instanceof Error && error.message.includes('connect to the server')) {
-        console.warn('Backend not available, returning mock payment response');
+        // console.warn('Backend not available, returning mock payment response');
         return {
           status: 'success',
           message: 'Payment processed successfully (mock response)',
@@ -214,6 +214,11 @@ class ApiService {
   async getStatistics(): Promise<ApiResponse<any>> {
     return this.makeRequest('/stats');
   }
+
+  // Get addons by policy type
+  async getAddonsByPolicyType(policyType: string): Promise<ApiResponse<any>> {
+    return this.makeRequest(`/addons/${encodeURIComponent(policyType)}`);
+  }
 }
 
 // Create singleton instance
@@ -228,6 +233,7 @@ export const getQuotes = (page?: number, limit?: number) => apiService.getQuotes
 export const submitContact = (contactData: ContactData) => apiService.submitContact(contactData);
 export const processPayment = (paymentData: PaymentData) => apiService.processPayment(paymentData);
 export const getStatistics = () => apiService.getStatistics();
+export const getAddonsByPolicyType = (policyType: string) => apiService.getAddonsByPolicyType(policyType);
 
 export default apiService;
 

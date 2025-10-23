@@ -1,8 +1,13 @@
 import React, { useEffect } from 'react';
 import './Comprehensive.css';
-import Link from 'next/link';
+// Using client-side navigation instead of Next.js Link
+// import Link from 'next/link';
 
-const Comprehensive: React.FC = () => {
+interface ComprehensiveProps {
+  onNavigate?: (page: string) => void;
+}
+
+const Comprehensive: React.FC<ComprehensiveProps> = ({ onNavigate }) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -38,8 +43,18 @@ const Comprehensive: React.FC = () => {
                 </div>
               </div>
               <div className="hero-actions">
-                <Link href="/quote" className="btn-primary">Get Quote Now</Link>
-                <a href="#features" className="btn-secondary">Explore Features</a>
+                <button 
+  className="btn-primary"
+  onClick={() => onNavigate?.('quote')}
+>
+  Get Quote Now
+</button>
+                <button 
+                  className="btn-secondary"
+                  onClick={() => onNavigate?.('learn-more')}
+                >
+                  Explore Features
+                </button>
               </div>
             </div>
             <div className="hero-visual">
@@ -140,7 +155,12 @@ const Comprehensive: React.FC = () => {
                   <li>Trip cancellation</li>
                   <li>Personal liability</li>
                 </ul>
-                <Link href="/regular-stay" className="plan-btn secondary">View Details</Link>
+                <button 
+  className="plan-btn secondary"
+  onClick={() => onNavigate?.('regular-stay')}
+>
+  View Details
+</button>
               </div>
               <div className="plan-column">
                 <div className="plan-header">
@@ -153,7 +173,12 @@ const Comprehensive: React.FC = () => {
                   <li>Cruise & winter sports</li>
                   <li>Worldwide coverage</li>
                 </ul>
-                <Link href="/annual-multi-trip" className="plan-btn secondary">View Details</Link>
+                <button 
+  className="plan-btn secondary"
+  onClick={() => onNavigate?.('annual-multi-trip')}
+>
+  View Details
+</button>
               </div>
               <div className="plan-column featured">
                 <div className="plan-header">
@@ -167,7 +192,12 @@ const Comprehensive: React.FC = () => {
                   <li>✅ Business equipment</li>
                   <li>✅ Extended protection</li>
                 </ul>
-                <Link href="/quote" className="plan-btn">Get Quote</Link>
+                <button 
+  className="plan-btn"
+  onClick={() => onNavigate?.('quote')}
+>
+  Get Quote
+</button>
               </div>
             </div>
           </section>
@@ -267,8 +297,18 @@ const Comprehensive: React.FC = () => {
                 <h2>Ready for Your Extended Adventure?</h2>
                 <p>Get comprehensive coverage for your long-term travel plans with our most extensive policy.</p>
                 <div className="cta-buttons">
-                  <Link href="/quote" className="btn-primary">Get Quote Now</Link>
-                  <Link href="/contact" className="btn-secondary">Expert Advice</Link>
+                  <button 
+  className="btn-primary"
+  onClick={() => onNavigate?.('quote')}
+>
+  Get Quote Now
+</button>
+                  <button 
+  className="btn-secondary"
+  onClick={() => onNavigate?.('contact')}
+>
+  Expert Advice
+</button>
                 </div>
                 <div className="trust-badges">
                   <div className="trust-item">

@@ -146,7 +146,7 @@ const schema = {
     primaryKey: 'id'
   },
   travelers: {
-    columns: ['id', 'quote_id', 'first_name', 'last_name', 'age', 'email', 'phone', 'nationality', 'created_at'],
+    columns: ['id', 'quote_id', 'first_name', 'last_name', 'age', 'email', 'phone', 'nationality', 'traveller_number', 'created_at'],
     primaryKey: 'id',
     foreignKeys: ['quote_id -> quotes.id']
   },

@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOAP Audit Monitor - TravelInsurance</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .stat-card h3 {
+            color: #666;
+            font-size: 14px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .stat-card .value {
+            font-size: 36px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .stat-card .label {
+            color: #999;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .stat-card.success .value { color: #10b981; }
+        .stat-card.error .value { color: #ef4444; }
+        .stat-card.pending .value { color: #f59e0b; }
+
+        .section {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        th {
+            background: #f8f9fa;
+            color: #666;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge.success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge.error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .badge.failed {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge.pending {
+            background: #e0e7ff;
+            color: #3730a3;
+        }
+
+        .refresh-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .refresh-btn:hover {
+            background: #5568d3;
+        }
+
+        .auto-refresh {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        .error-message {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .response-time {
+            font-weight: 600;
+        }
+
+        .response-time.fast { color: #10b981; }
+        .response-time.medium { color: #f59e0b; }
+        .response-time.slow { color: #ef4444; }
+
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 30px;
+            padding: 20px;
+        }
+
+        .operation-filter {
+            margin-bottom: 20px;
+        }
+
+        .operation-filter select {
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 SOAP Audit Monitor</h1>
+            <p>Real-time monitoring of Terracotta API interactions</p>
+        </div>
+
+        <div class="auto-refresh">
+            <button class="refresh-btn" onclick="loadAllData()">🔄 Refresh Now</button>
+            <label>
+                <input type="checkbox" id="autoRefresh" checked> Auto-refresh every 10 seconds
+            </label>
+        </div>
+
+        <div id="errorMessage"></div>
+
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+                <h3>Total Requests</h3>
+                <div class="value" id="totalRequests">-</div>
+                <div class="label">All time</div>
+            </div>
+            <div class="stat-card success">
+                <h3>Successful</h3>
+                <div class="value" id="successRequests">-</div>
+                <div class="label">Success rate</div>
+            </div>
+            <div class="stat-card error">
+                <h3>Failed</h3>
+                <div class="value" id="failedRequests">-</div>
+                <div class="label">Need attention</div>
+            </div>
+            <div class="stat-card">
+                <h3>Avg Response Time</h3>
+                <div class="value" id="avgResponseTime">-</div>
+                <div class="label">Milliseconds</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📈 Summary by Operation</h2>
+            <div id="summaryTable">
+                <div class="loading">Loading summary...</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>❌ Recent Errors</h2>
+            <div id="errorsTable">
+                <div class="loading">Loading errors...</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📝 Recent SOAP Requests</h2>
+            <div class="operation-filter">
+                <label>Filter by operation: </label>
+                <select id="operationFilter" onchange="loadRecentLogs()">
+                    <option value="">All Operations</option>
+                    <option value="ProvideQuotation">ProvideQuotation</option>
+                    <option value="SavePolicyDetails">SavePolicyDetails</option>
+                    <option value="ScreeningQuestions">ScreeningQuestions</option>
+                    <option value="GetUserProductList">GetUserProductList</option>
+                </select>
+            </div>
+            <div id="logsTable">
+                <div class="loading">Loading logs...</div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>TravelInsurance SOAP Audit System | Powered by PostgreSQL & Node.js</p>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:3001/api/soap-logs';
+        let autoRefreshInterval;
+
+        // Format timestamp
+        function formatTime(timestamp) {
+            return new Date(timestamp).toLocaleString();
+        }
+
+        // Format response time
+        function formatResponseTime(ms) {
+            if (!ms) return '-';
+            const className = ms < 1000 ? 'fast' : ms < 3000 ? 'medium' : 'slow';
+            return `<span class="response-time ${className}">${ms}ms</span>`;
+        }
+
+        // Get status badge
+        function getStatusBadge(status) {
+            const statusClass = status === 'success' ? 'success' : 
+                               status === 'error' ? 'error' :
+                               status === 'failed' ? 'failed' : 'pending';
+            return `<span class="badge ${statusClass}">${status}</span>`;
+        }
+
+        // Load summary statistics
+        async function loadSummary() {
+            try {
+                const response = await fetch(`${API_BASE}/summary`);
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    const summary = data.summary;
+                    
+                    // Calculate totals
+                    let total = 0, successful = 0, failed = 0, avgTime = 0;
+                    
+                    summary.forEach(op => {
+                        total += parseInt(op.total_requests);
+                        successful += parseInt(op.successful_requests);
+                        failed += parseInt(op.failed_requests) + parseInt(op.error_requests);
+                    });
+                    
+                    if (summary.length > 0) {
+                        avgTime = Math.round(summary.reduce((acc, op) => 
+                            acc + parseFloat(op.avg_response_time_ms || 0), 0) / summary.length);
+                    }
+                    
+                    // Update stats cards
+                    document.getElementById('totalRequests').textContent = total;
+                    document.getElementById('successRequests').textContent = 
+                        successful + ` (${total > 0 ? Math.round(successful/total*100) : 0}%)`;
+                    document.getElementById('failedRequests').textContent = failed;
+                    document.getElementById('avgResponseTime').textContent = 
+                        avgTime > 0 ? avgTime + 'ms' : '-';
+                    
+                    // Build summary table
+                    let html = '<table><thead><tr><th>Operation</th><th>Total</th><th>Success</th><th>Failed</th><th>Avg Time</th><th>Last Request</th></tr></thead><tbody>';
+                    
+                    summary.forEach(op => {
+                        html += `<tr>
+                            <td><strong>${op.soap_operation}</strong></td>
+                            <td>${op.total_requests}</td>
+                            <td>${getStatusBadge('success')} ${op.successful_requests}</td>
+                            <td>${op.failed_requests + op.error_requests > 0 ? 
+                                getStatusBadge('error') + ' ' + (parseInt(op.failed_requests) + parseInt(op.error_requests)) : 
+                                '-'}</td>
+                            <td>${formatResponseTime(op.avg_response_time_ms)}</td>
+                            <td>${formatTime(op.last_request_at)}</td>
+                        </tr>`;
+                    });
+                    
+                    html += '</tbody></table>';
+                    document.getElementById('summaryTable').innerHTML = html;
+                }
+            } catch (error) {
+                showError('Failed to load summary: ' + error.message);
+            }
+        }
+
+        // Load recent errors
+        async function loadErrors() {
+            try {
+                const response = await fetch(`${API_BASE}/errors?limit=10`);
+                const data = await response.json();
+                
+                if (data.status === 'success' && data.errors.length > 0) {
+                    let html = '<table><thead><tr><th>Operation</th><th>Status</th><th>Error Message</th><th>Time</th></tr></thead><tbody>';
+                    
+                    data.errors.forEach(error => {
+                        html += `<tr>
+                            <td><strong>${error.soap_operation}</strong></td>
+                            <td>${getStatusBadge(error.status)}</td>
+                            <td>${error.error_message || 'No message'}</td>
+                            <td>${formatTime(error.created_at)}</td>
+                        </tr>`;
+                    });
+                    
+                    html += '</tbody></table>';
+                    document.getElementById('errorsTable').innerHTML = html;
+                } else {
+                    document.getElementById('errorsTable').innerHTML = 
+                        '<p style="text-align: center; color: #10b981; padding: 20px;">✅ No errors found!</p>';
+                }
+            } catch (error) {
+                showError('Failed to load errors: ' + error.message);
+            }
+        }
+
+        // Load recent logs
+        async function loadRecentLogs() {
+            try {
+                const operation = document.getElementById('operationFilter').value;
+                const url = operation ? `${API_BASE}?operation=${operation}&limit=20` : `${API_BASE}?limit=20`;
+                
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data.status === 'success' && data.logs.length > 0) {
+                    let html = '<table><thead><tr><th>Operation</th><th>Status</th><th>Response Time</th><th>HTTP Status</th><th>Terracotta Quote ID</th><th>Time</th></tr></thead><tbody>';
+                    
+                    data.logs.forEach(log => {
+                        html += `<tr>
+                            <td><strong>${log.soap_operation}</strong></td>
+                            <td>${getStatusBadge(log.status)}</td>
+                            <td>${formatResponseTime(log.response_time_ms)}</td>
+                            <td>${log.http_status_code || '-'}</td>
+                            <td>${log.terracotta_quote_id || '-'}</td>
+                            <td>${formatTime(log.created_at)}</td>
+                        </tr>`;
+                    });
+                    
+                    html += '</tbody></table>';
+                    document.getElementById('logsTable').innerHTML = html;
+                } else {
+                    document.getElementById('logsTable').innerHTML = 
+                        '<p style="text-align: center; color: #999; padding: 20px;">No logs found</p>';
+                }
+            } catch (error) {
+                showError('Failed to load logs: ' + error.message);
+            }
+        }
+
+        // Show error message
+        function showError(message) {
+            document.getElementById('errorMessage').innerHTML = 
+                `<div class="error-message">⚠️ ${message}</div>`;
+            setTimeout(() => {
+                document.getElementById('errorMessage').innerHTML = '';
+            }, 5000);
+        }
+
+        // Load all data
+        async function loadAllData() {
+            await Promise.all([
+                loadSummary(),
+                loadErrors(),
+                loadRecentLogs()
+            ]);
+        }
+
+        // Setup auto-refresh
+        function setupAutoRefresh() {
+            const checkbox = document.getElementById('autoRefresh');
+            
+            if (checkbox.checked) {
+                autoRefreshInterval = setInterval(loadAllData, 10000);
+            } else {
+                if (autoRefreshInterval) {
+                    clearInterval(autoRefreshInterval);
+                }
+            }
+        }
+
+        document.getElementById('autoRefresh').addEventListener('change', setupAutoRefresh);
+
+        // Initial load
+        loadAllData();
+        setupAutoRefresh();
+    </script>
+</body>
+</html>
+

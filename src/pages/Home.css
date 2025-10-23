@@ -1,20 +1,49 @@
-/* Hero Section - Conservative Style */
+/* Hero Section - Optimized Performance */
 .hero {
- 
+  position: relative;
   padding: 4rem 0;
   height: 90vh;
   display: flex;
-  align-items: flex-end;    /* content to bottom */
-  justify-content: flex-start; /* content to left */
+  align-items: flex-end;
+  justify-content: flex-start;
+  overflow: hidden;
+}
+
+.hero-image-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.hero-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.5) 100%);
+  z-index: 1;
 }
 
 .hero .container {
+  position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* Align text and buttons left */
+  align-items: flex-start;
   text-align: left;
   width: 100%;
-  margin: 0 2rem 2rem; /* Add some spacing from edges */
+  margin: 0 2rem 2rem;
   padding: 0 1rem;
 }
   
@@ -147,7 +176,7 @@
 /* Insurance Types Section */
 .insurance-types {
   padding: 4rem 0;
-  background: linear-gradient(135deg, hwb(215 4% 71%) 0%, hsl(210, 68%, 27%) 0%);
+  background: linear-gradient(135deg, hwb(215 4% 71%) 0%,  rgb(179, 200, 252) 0%);
   border-radius: 20px;
   max-width: 2200px;         /* adjust width as needed */
   margin: 0 auto;            /* centers the section horizontally */
@@ -329,7 +358,7 @@
   text-align: center;
   padding: 4rem 0;
   background: linear-gradient(135deg, hwb(215 4% 71%) 0%, hsl(210, 68%, 27%) 0%);
-  border-radius: 20px;
+  border-radius: 60px;
   max-width: 2200px;         /* adjust width as needed */
   margin: 0 auto 4rem auto;             /* centers the section horizontally */
 }

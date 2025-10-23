@@ -4,8 +4,13 @@ const cors = require('cors');
 const app = express();
 const PORT = 5002;
 
-// Middleware
-app.use(cors());
+// Middleware with specific CORS configuration
+app.use(cors({
+  origin: ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
 app.use(express.json());
 
 // In-memory storage for testing

@@ -4,11 +4,81 @@ const { Pool } = require('pg');
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5002;
 
-// Middleware
-app.use(cors());
-app.use(express.json());
+// Enhanced CORS configuration
+app.use(cors({
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    const allowedOrigins = [
+      'http://localhost:3000',
+      'http://127.0.0.1:3000',
+      'http://192.168.1.225:3000',
+      'http://localhost:3001',
+      'http://127.0.0.1:3001',
+      'http://localhost:3002',
+      'http://127.0.0.1:3002'
+    ];
+    
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      console.log('🚫 CORS blocked origin:', origin);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: [
+    'Content-Type', 
+    'Authorization', 
+    'X-Requested-With',
+    'Accept',
+    'Origin',
+    'Access-Control-Request-Method',
+    'Access-Control-Request-Headers'
+  ],
+  exposedHeaders: ['Content-Length', 'X-Foo', 'X-Bar'],
+  optionsSuccessStatus: 200,
+  preflightContinue: false
+}));
+
+// Add request logging middleware
+app.use((req, res, next) => {
+  console.log(`📨 ${req.method} ${req.url}`);
+  console.log('📨 Origin:', req.headers.origin);
+  console.log('📨 User-Agent:', req.headers['user-agent']);
+  next();
+});
+
+// Handle preflight requests explicitly
+app.options('*', (req, res) => {
+  console.log('🔄 Preflight request:', req.method, req.url);
+  res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.sendStatus(200);
+});
+
+// Add error handling for JSON parsing
+app.use(express.json({
+  limit: '10mb',
+  verify: (req, res, buf) => {
+    try {
+      if (buf && buf.length > 0) {
+        JSON.parse(buf);
+      }
+    } catch (e) {
+      console.error('❌ JSON Parse Error:', e.message);
+      console.error('❌ Raw buffer:', buf.toString());
+      console.error('❌ Buffer length:', buf.length);
+      throw new Error('Invalid JSON');
+    }
+  }
+}));
 
 // PostgreSQL connection
 const pool = new Pool({
@@ -35,6 +105,15 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'Travel Insurance API is running' });
 });
 
+// Test endpoint for debugging
+app.get('/api/test', (req, res) => {
+  res.json({ 
+    status: 'success', 
+    message: 'Test endpoint working',
+    timestamp: new Date().toISOString()
+  });
+});
+
 // Test database connection
 app.get('/api/db-test', async (req, res) => {
   try {
@@ -53,82 +132,159 @@ app.get('/api/db-test', async (req, res) => {
   }
 });
 
-// Create quote
-app.post('/api/quotes', async (req, res) => {
-  const client = await pool.connect();
-  
+// Get destination categories
+app.get('/api/destination-categories', async (req, res) => {
   try {
-    await client.query('BEGIN');
+    const result = await pool.query(`
+      SELECT DISTINCT destination_category 
+      FROM destination_categories 
+      ORDER BY destination_category
+    `);
     
-    const {
-      destination,
-      startDate,
-      endDate,
-      tripType,
-      numberOfTravelers,
-      travelers,
-      selectedQuote,
-      additionalPolicies,
-      totalAmount
-    } = req.body;
-
-    // Insert quote
-    const quoteResult = await client.query(
-      `INSERT INTO quotes (
-        destination, start_date, end_date, trip_type, 
-        number_of_travelers, selected_plan, total_amount, 
-        created_at
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, NOW()) 
-      RETURNING id`,
-      [destination, startDate, endDate, tripType, numberOfTravelers, 
-       JSON.stringify(selectedQuote), totalAmount]
-    );
-
-    const quoteId = quoteResult.rows[0].id;
-
-    // Insert travelers
-    for (const traveler of travelers) {
-      await client.query(
-        `INSERT INTO travelers (
-          quote_id, first_name, last_name, age, email, 
-          phone, vax_id, nationality
-        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
-        [quoteId, traveler.firstName, traveler.lastName, 
-         traveler.age, traveler.email, traveler.phone, 
-         traveler.vaxId, traveler.nationality]
-      );
-    }
-
-    // Insert additional policies
-    for (const policy of additionalPolicies) {
-      await client.query(
-        `INSERT INTO additional_policies (
-          quote_id, policy_id, name, description, price
-        ) VALUES ($1, $2, $3, $4, $5)`,
-        [quoteId, policy.id, policy.name, policy.description, policy.price]
-      );
-    }
-
-    await client.query('COMMIT');
-
-    res.status(201).json({
-      status: 'success',
-      message: 'Quote created successfully',
-      data: { quoteId: quoteId }
+    const categories = result.rows.map(row => row.destination_category);
+    
+    res.json({ 
+      status: 'success', 
+      categories: categories,
+      count: categories.length
     });
-
   } catch (error) {
-    await client.query('ROLLBACK');
-    console.error('Error creating quote:', error);
-    res.status(500).json({
-      status: 'error',
-      message: 'Failed to create quote',
-      error: error.message
+    console.error('❌ Error fetching destination categories:', error);
+    res.status(500).json({ 
+      status: 'error', 
+      message: 'Failed to fetch destination categories',
+      error: error.message 
     });
-  } finally {
-    client.release();
   }
 });
+
+// Get countries by destination category
+app.get('/api/destination-categories/:category/countries', async (req, res) => {
+  try {
+    const { category } = req.params;
+    
+    const result = await pool.query(`
+      SELECT country 
+      FROM destination_categories 
+      WHERE destination_category = $1 
+      ORDER BY country
+    `, [category]);
+    
+    const countries = result.rows.map(row => row.country);
+    
+    res.json({ 
+      status: 'success', 
+      category: category,
+      countries: countries,
+      count: countries.length
+    });
+  } catch (error) {
+    console.error('❌ Error fetching countries for category:', error);
+    res.status(500).json({ 
+      status: 'error', 
+      message: 'Failed to fetch countries for destination category',
+      error: error.message 
+    });
+  }
+});
+
+// Get addons by policy type
+app.get('/api/addons/:policyType', async (req, res) => {
+  try {
+    const { policyType } = req.params;
+    
+    console.log(`📋 Fetching addons for policy type: ${policyType}`);
+    
+    // First try exact match
+    let result = await pool.query(`
+      SELECT 
+        id,
+        policy_type_name,
+        additional_cover_name,
+        additional_cover_detail,
+        alteration_id,
+        created_at
+      FROM addons_cover 
+      WHERE policy_type_name = $1 
+      ORDER BY additional_cover_name, additional_cover_detail
+    `, [policyType]);
+    
+    // If no results, try case-insensitive match
+    if (result.rows.length === 0) {
+      console.log(`⚠️ No exact match, trying case-insensitive search for: ${policyType}`);
+      result = await pool.query(`
+        SELECT 
+          id,
+          policy_type_name,
+          additional_cover_name,
+          additional_cover_detail,
+          alteration_id,
+          created_at
+        FROM addons_cover 
+        WHERE LOWER(policy_type_name) = LOWER($1)
+        ORDER BY additional_cover_name, additional_cover_detail
+      `, [policyType]);
+    }
+    
+    // If still no results, try pattern matching
+    if (result.rows.length === 0) {
+      console.log(`⚠️ No case-insensitive match, trying pattern search for: ${policyType}`);
+      result = await pool.query(`
+        SELECT 
+          id,
+          policy_type_name,
+          additional_cover_name,
+          additional_cover_detail,
+          alteration_id,
+          created_at
+        FROM addons_cover 
+        WHERE policy_type_name ILIKE $1
+        ORDER BY additional_cover_name, additional_cover_detail
+      `, [`%${policyType}%`]);
+    }
+    
+    console.log(`✅ Found ${result.rows.length} addons for ${policyType}`);
+    
+    res.json({ 
+      status: 'success', 
+      policyType: policyType,
+      addons: result.rows,
+      count: result.rows.length
+    });
+  } catch (error) {
+    console.error('❌ Error fetching addons:', error);
+    res.status(500).json({ 
+      status: 'error', 
+      message: 'Failed to fetch addons',
+      error: error.message 
+    });
+  }
+});
+
+// Get all countries of residence for dropdown
+app.get('/api/countries', async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT country_id, country_name 
+      FROM countries 
+      ORDER BY country_name
+    `);
+    
+    res.json({ 
+      status: 'success', 
+      countries: result.rows,
+      count: result.rows.length
+    });
+  } catch (error) {
+    console.error('❌ Error fetching countries:', error);
+    res.status(500).json({ 
+      status: 'error', 
+      message: 'Failed to fetch countries',
+      error: error.message 
+    });
+  }
+});
+
 
 // Get quote by ID
 app.get('/api/quotes/:id', async (req, res) => {
@@ -227,6 +383,120 @@ app.get('/api/quotes', async (req, res) => {
   }
 });
 
+// Create quote endpoint
+app.post('/api/quotes', async (req, res) => {
+  console.log('📝 Quote creation request received');
+  console.log('📝 Request body type:', typeof req.body);
+  console.log('📝 Request body keys:', Object.keys(req.body || {}));
+  console.log('📝 Request body:', JSON.stringify(req.body, null, 2));
+
+  const client = await pool.connect();
+  
+  try {
+    await client.query('BEGIN');
+    
+    const {
+      destination,
+      countryOfResidence,
+      startDate,
+      endDate,
+      tripType,
+      numberOfTravelers,
+      travelers,
+      selectedQuote,
+      additionalPolicies,
+      totalAmount
+    } = req.body;
+
+    // Validate required fields
+    if (!destination || !countryOfResidence || !startDate || !endDate || !tripType || !numberOfTravelers) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Missing required fields: destination, countryOfResidence, startDate, endDate, tripType, numberOfTravelers'
+      });
+    }
+
+    // Insert quote
+    const quoteResult = await client.query(
+      `INSERT INTO quotes (
+        destination, country_of_residence, start_date, end_date, trip_type, 
+        number_of_travelers, selected_plan, 
+        total_amount, status, created_at
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, NOW()) 
+      RETURNING id`,
+      [destination, countryOfResidence, startDate, endDate, tripType, numberOfTravelers, 
+       JSON.stringify({ plan: selectedQuote || 'basic' }), 
+       totalAmount, 'pending']
+    );
+
+    const quoteId = quoteResult.rows[0].id;
+
+    // Insert travelers if provided
+    if (travelers && Array.isArray(travelers)) {
+      for (const traveler of travelers) {
+        // Calculate age from date of birth
+        let age = null;
+        console.log(`Processing traveler: ${traveler.firstName} ${traveler.lastName}`);
+        console.log(`Date of birth: ${traveler.dateOfBirth}`);
+        
+        if (traveler.dateOfBirth) {
+          const birthDate = new Date(traveler.dateOfBirth);
+          const today = new Date();
+          age = today.getFullYear() - birthDate.getFullYear();
+          const monthDiff = today.getMonth() - birthDate.getMonth();
+          if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+          }
+          console.log(`Calculated age: ${age}`);
+        } else {
+          console.log('⚠️ No dateOfBirth provided, using default age');
+          age = 25;
+        }
+
+        // Ensure age is never null (database constraint)
+        const finalAge = age || 25;
+        // Ensure email is never null (database constraint)  
+        const finalEmail = traveler.email || 'noemail@example.com';
+        
+        console.log(`Inserting traveler with age: ${finalAge}, email: ${finalEmail}`);
+        if (traveler.travellerNumber) {
+          console.log(`Traveller Number from Terracotta: ${traveler.travellerNumber}`);
+        }
+
+        await client.query(
+          `INSERT INTO travelers (
+            quote_id, first_name, last_name, age, 
+            email, phone, traveller_number, created_at
+          ) VALUES ($1, $2, $3, $4, $5, $6, $7, NOW())`,
+          [quoteId, traveler.firstName, traveler.lastName, 
+           finalAge, finalEmail, traveler.phone || null, traveler.travellerNumber || null]
+        );
+      }
+    }
+
+    await client.query('COMMIT');
+
+    console.log('✅ Quote created successfully:', quoteId);
+    res.status(201).json({
+      status: 'success',
+      message: 'Quote created successfully',
+      data: { quoteId: quoteId }
+    });
+
+  } catch (error) {
+    await client.query('ROLLBACK');
+    console.error('❌ Error creating quote:', error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Failed to create quote',
+      error: error.message
+    });
+  } finally {
+    client.release();
+  }
+});
+
+
 // Submit contact form
 app.post('/api/contact', async (req, res) => {
   try {
@@ -269,8 +539,22 @@ app.post('/api/payments', async (req, res) => {
       expiryDate,
       cvv, // This should never be stored
       billingAddress,
-      amount
+      amount,
+      policyNumber: terracottaPolicyNumber // Policy ID from Terracotta SavePolicyDetails
     } = req.body;
+
+    // Debug logging
+    console.log('Payment request body:', req.body);
+    console.log('Extracted quoteId:', quoteId);
+    console.log('Terracotta Policy Number:', terracottaPolicyNumber);
+
+    // Validate required fields
+    if (!quoteId) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Quote ID is required for payment processing'
+      });
+    }
 
     // Check if quote already has a policy number
     const existingQuoteResult = await client.query(
@@ -282,11 +566,17 @@ app.post('/api/payments', async (req, res) => {
     if (existingQuoteResult.rows[0]?.policy_number) {
       // Use existing policy number if quote already has one
       policyNumber = existingQuoteResult.rows[0].policy_number;
+      console.log('Using existing policy number from database:', policyNumber);
+    } else if (terracottaPolicyNumber) {
+      // Use Terracotta Policy ID if provided
+      policyNumber = terracottaPolicyNumber;
+      console.log('Using Terracotta Policy ID:', policyNumber);
     } else {
-      // Generate new policy number with better uniqueness
+      // Fallback: Generate new policy number with better uniqueness
       const timestamp = Date.now().toString();
       const randomSuffix = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
       policyNumber = `TI-${timestamp.slice(-5)}${randomSuffix}`;
+      console.log('Generated fallback policy number:', policyNumber);
     }
 
     // Insert payment record (without sensitive data)
@@ -481,7 +771,26 @@ app.get('/api/audit-log', async (req, res) => {
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
+  console.error('❌ Server Error:', err.stack);
+  
+  // Handle CORS errors specifically
+  if (err.message === 'Not allowed by CORS') {
+    return res.status(403).json({
+      status: 'error',
+      message: 'CORS Error: Origin not allowed',
+      error: 'The request origin is not allowed by CORS policy'
+    });
+  }
+  
+  // Handle JSON parsing errors
+  if (err.message === 'Invalid JSON') {
+    return res.status(400).json({
+      status: 'error',
+      message: 'Invalid JSON',
+      error: 'The request body contains invalid JSON'
+    });
+  }
+  
   res.status(500).json({
     status: 'error',
     message: 'Something went wrong!',
@@ -491,17 +800,22 @@ app.use((err, req, res, next) => {
 
 // 404 handler
 app.use('*', (req, res) => {
+  console.log('🚫 404 - Route not found:', req.method, req.originalUrl);
+  console.log('🚫 Headers:', req.headers);
   res.status(404).json({
     status: 'error',
-    message: 'Route not found'
+    message: 'Route not found',
+    path: req.originalUrl,
+    method: req.method
   });
 });
 
 // Start server
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Travel Insurance API server running on port ${PORT}`);
   console.log(`📊 Health check: http://localhost:${PORT}/api/health`);
   console.log(`🗄️  Database test: http://localhost:${PORT}/api/db-test`);
+  console.log(`🌐 Server accessible from: http://0.0.0.0:${PORT}`);
 });
 
 module.exports = app;

@@ -1,4 +1,3 @@
-"use client";
 import React, { useState, useEffect, useRef } from 'react';
 import './Quote.css';
 // Import API service for database integration
@@ -34,6 +33,8 @@ const generatePDF = async (formData: any, calculateTotalPrice: () => number, for
                     'Comprehensive Single Trip Insurance';
     
     doc.text(`Trip Type: ${tripType}`, 20, yPos);
+    yPos += 10;
+    doc.text(`Country of Residence: ${formData.countryOfResidence}`, 20, yPos);
     yPos += 10;
     doc.text(`Destination: ${formData.destination}`, 20, yPos);
     yPos += 10;
@@ -196,6 +197,7 @@ const generateHTMLPolicy = (formData: any, calculateTotalPrice: () => number, fo
         <div class="info-row"><strong>Trip Type:</strong> ${formData.tripType === 'single' ? 'Single Trip Insurance' : 
                         formData.tripType === 'annual' ? 'Annual Multi-Trip Insurance' : 
                         'Comprehensive Single Trip Insurance'}</div>
+        <div class="info-row"><strong>Country of Residence:</strong> ${formData.countryOfResidence}</div>
         <div class="info-row"><strong>Destination:</strong> ${formData.destination}</div>
         <div class="info-row"><strong>Departure:</strong> ${formatDateToEuropean(formData.startDate)}</div>
         <div class="info-row"><strong>Return:</strong> ${formatDateToEuropean(formData.endDate)}</div>
@@ -277,10 +279,8 @@ const generateHTMLPolicy = (formData: any, calculateTotalPrice: () => number, fo
 // Format date to European format (DD/MM/YYYY)
 const formatDateToEuropean = (dateString: string): string => {
   if (!dateString) return '';
-  const date = new Date(dateString);
-  const day = date.getDate().toString().padStart(2, '0');
-  const month = (date.getMonth() + 1).toString().padStart(2, '0');
-  const year = date.getFullYear();
+  // Parse the ISO date string directly to avoid timezone issues
+  const [year, month, day] = dateString.split('-');
   return `${day}/${month}/${year}`;
 };
 
@@ -314,6 +314,7 @@ interface QuoteFormData {
   startDate: string;
   endDate: string;
   tripType: 'single' | 'annual' | 'comprehensive';
+  countryOfResidence: string;
   
   // Traveler Information
   numberOfTravelers: number;
@@ -349,13 +350,18 @@ interface AdditionalPolicy {
 
 type WizardPhase = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
-const Quote: React.FC = () => {
+interface QuoteProps {
+  onNavigate?: (page: string) => void;
+}
+
+const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
   const [currentPhase, setCurrentPhase] = useState<WizardPhase>(1);
   const [formData, setFormData] = useState<QuoteFormData>({
     destination: '',
     startDate: '',
     endDate: '',
     tripType: 'single',
+    countryOfResidence: '',
     numberOfTravelers: 1,
     travelers: [
       {
@@ -456,6 +462,15 @@ const Quote: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
+  // Show a brief message when end date is cleared due to start date change
+  useEffect(() => {
+    if (formData.startDate && !formData.endDate) {
+      // This effect will run when start date exists but end date is empty
+      // We could add a toast notification here if needed
+    }
+  }, [formData.startDate, formData.endDate]);
+
+
   const generateQuoteOptions = (): QuoteOption[] => {
     const days = formData.startDate && formData.endDate 
       ? Math.ceil((new Date(formData.endDate).getTime() - new Date(formData.startDate).getTime()) / (1000 * 3600 * 24))
@@ -538,9 +553,13 @@ const Quote: React.FC = () => {
     onChange: (value: string) => void;
     placeholder: string;
     required?: boolean;
-  }> = ({ id, value, onChange, placeholder, required }) => {
+    minDate?: string; // ISO date string for minimum selectable date
+  }> = ({ id, value, onChange, placeholder, required, minDate }) => {
     const [isOpen, setIsOpen] = useState(false);
-    const [currentDate, setCurrentDate] = useState(new Date());
+    const [currentDate, setCurrentDate] = useState(() => {
+      // Initialize with selected date if available, otherwise current date
+      return value ? new Date(value) : new Date();
+    });
     const pickerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -558,6 +577,39 @@ const Quote: React.FC = () => {
         document.removeEventListener('mousedown', handleClickOutside);
       };
     }, [isOpen]);
+
+    // Update current date when value changes to show the correct month
+    useEffect(() => {
+      if (value) {
+        setCurrentDate(new Date(value));
+      }
+    }, [value]);
+
+    // Helper function to check if a date is valid (not in past and not before minDate)
+    const isDateValid = (date: Date): boolean => {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // Reset time to start of day for accurate comparison
+      
+      // Reset the input date to start of day for accurate comparison
+      const inputDate = new Date(date);
+      inputDate.setHours(0, 0, 0, 0);
+      
+      // Check if date is in the past
+      if (inputDate < today) {
+        return false;
+      }
+      
+      // Check if date is before minimum date
+      if (minDate) {
+        const minDateObj = new Date(minDate);
+        minDateObj.setHours(0, 0, 0, 0);
+        if (inputDate < minDateObj) {
+          return false;
+        }
+      }
+      
+      return true;
+    };
 
     const generateCalendar = () => {
       const year = currentDate.getFullYear();
@@ -577,17 +629,25 @@ const Quote: React.FC = () => {
       // Add days of the month
       for (let day = 1; day <= daysInMonth; day++) {
         const date = new Date(year, month, day);
-        const dateString = date.toISOString().split('T')[0];
+        // Create ISO string manually to avoid timezone issues
+        const dateString = `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
         const isSelected = value === dateString;
         const isToday = new Date().toDateString() === date.toDateString();
+        const isValid = isDateValid(date);
 
         days.push(
           <div
             key={day}
-            className={`calendar-day ${isSelected ? 'selected' : ''} ${isToday ? 'today' : ''}`}
+            className={`calendar-day ${isSelected ? 'selected' : ''} ${isToday ? 'today' : ''} ${!isValid ? 'disabled' : ''}`}
             onClick={() => {
-              onChange(dateString);
-              setIsOpen(false);
+              if (isValid) {
+                onChange(dateString);
+                setIsOpen(false);
+              }
+            }}
+            style={{
+              cursor: isValid ? 'pointer' : 'not-allowed',
+              opacity: isValid ? 1 : 0.4
             }}
           >
             {day}
@@ -617,10 +677,23 @@ const Quote: React.FC = () => {
             onChange={(e) => {
               const formattedValue = formatDateInput(e.target.value);
               const isoDate = formattedValue.length === 10 ? convertToISO(formattedValue) : '';
+              
+              // Validate that the date is valid (not in past and not before minDate)
+              if (isoDate) {
+                const inputDate = new Date(isoDate);
+                if (!isDateValid(inputDate)) {
+                  // Don't update the value if it's an invalid date
+                  return;
+                }
+              }
+              
               onChange(isoDate);
             }}
             placeholder={placeholder}
-            title="Enter date (DD/MM/YYYY) or click calendar"
+            title={minDate ? 
+              "Enter date (DD/MM/YYYY) or click calendar - past dates and dates before start date are not allowed" : 
+              "Enter date (DD/MM/YYYY) or click calendar - past dates are not allowed"
+            }
             pattern="\d{2}/\d{2}/\d{4}"
             maxLength={10}
             required={required}
@@ -670,10 +743,26 @@ const Quote: React.FC = () => {
   };
 
   const handleInputChange = (field: string, value: string | number) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value
-    }));
+    setFormData(prev => {
+      const newData = {
+        ...prev,
+        [field]: value
+      };
+      
+      // If start date is changed, clear end date if it's now invalid
+      if (field === 'startDate' && value && prev.endDate) {
+        const startDate = new Date(value as string);
+        const endDate = new Date(prev.endDate);
+        startDate.setDate(startDate.getDate() + 1); // Add 1 day to start date
+        
+        // If end date is before or equal to start date, clear it
+        if (endDate <= startDate) {
+          newData.endDate = '';
+        }
+      }
+      
+      return newData;
+    });
   };
 
   const handleTravelerChange = (index: number, field: keyof TravelerInfo, value: string) => {
@@ -729,7 +818,9 @@ const Quote: React.FC = () => {
   const convertToISO = (ddmmyyyy: string): string => {
     if (!ddmmyyyy || ddmmyyyy.length !== 10) return '';
     const [day, month, year] = ddmmyyyy.split('/');
-    return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+    // Create date in local timezone to avoid timezone issues
+    const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+    return date.toISOString().split('T')[0];
   };
 
   // Helper function to format input as DD/MM/YYYY
@@ -817,19 +908,27 @@ const Quote: React.FC = () => {
     
     try {
       // First save the quote to database
+      // Add TravellerNumber to each traveler (index + 1)
+      const travelersWithNumber = formData.travelers.map((traveler, index) => ({
+        ...traveler,
+        travellerNumber: index + 1
+      }));
+
       const quoteData = {
         destination: formData.destination,
+        countryOfResidence: formData.countryOfResidence,
         startDate: formData.startDate,
         endDate: formData.endDate,
         tripType: formData.tripType,
         numberOfTravelers: formData.numberOfTravelers,
-        travelers: formData.travelers,
+        travelers: travelersWithNumber,
         selectedQuote: formData.selectedQuote,
         additionalPolicies: formData.additionalPolicies,
         totalAmount: calculateTotalPrice()
       };
 
-      console.log('Saving quote to database...', quoteData);
+      // console.log('Saving quote to database...', quoteData);
+      // console.log('Quote data JSON string:', JSON.stringify(quoteData));
       const quoteResponse = await createQuote(quoteData);
       
       if (quoteResponse.status === 'success' && quoteResponse.data) {
@@ -846,11 +945,13 @@ const Quote: React.FC = () => {
           amount: calculateTotalPrice()
         };
 
-        console.log('Processing payment...', { ...paymentData, cardNumber: '****', cvv: '***' });
+        // console.log('Processing payment...', { ...paymentData, cardNumber: '****', cvv: '***' });
+        // console.log('Payment method being sent:', formData.paymentMethod);
+        // console.log('Form data payment method:', formData.paymentMethod);
         const paymentResponse = await apiProcessPayment(paymentData);
         
         if (paymentResponse.status === 'success') {
-          console.log('Payment successful:', paymentResponse.data);
+          // console.log('Payment successful:', paymentResponse.data);
           // Store the policy number from the backend response
           if (paymentResponse.data?.policyNumber) {
             setPolicyNumber(paymentResponse.data.policyNumber);
@@ -878,6 +979,7 @@ const Quote: React.FC = () => {
           formData.startDate &&
           formData.endDate &&
           formData.tripType &&
+          formData.countryOfResidence &&
           formData.travelers.every(t => t.firstName && t.lastName && t.age && t.email)
         );
       case 2:
@@ -889,7 +991,7 @@ const Quote: React.FC = () => {
       case 5:
         return true; // Confirmation phase is always valid
       case 6:
-        return !!(
+        const paymentValid = !!(
           formData.cardNumber && 
           formData.expiryDate && 
           formData.cvv &&
@@ -898,6 +1000,9 @@ const Quote: React.FC = () => {
           formData.billingAddress.postalCode &&
           formData.billingAddress.country
         );
+        
+        
+        return paymentValid;
       case 7:
         return true; // Documents phase is always valid
       default:
@@ -924,6 +1029,18 @@ const Quote: React.FC = () => {
             <option value="annual">Annual Multi-Trip Travel Insurance</option>
             <option value="comprehensive">Comprehensive Single Trip Insurance</option>
           </select>
+        </div>
+        
+        <div className="form-group">
+          <label htmlFor="countryOfResidence">Country of Residence</label>
+          <input
+            type="text"
+            id="countryOfResidence"
+            value={formData.countryOfResidence}
+            onChange={(e) => handleInputChange('countryOfResidence', e.target.value)}
+            placeholder="e.g., Greece, Germany, United Kingdom"
+            required
+          />
         </div>
         
         <div className="form-group">
@@ -957,6 +1074,12 @@ const Quote: React.FC = () => {
               onChange={(value) => handleInputChange('endDate', value)}
               placeholder="DD/MM/YYYY"
               required
+              minDate={formData.startDate ? (() => {
+                // Set minimum date to start date + 1 day
+                const startDate = new Date(formData.startDate);
+                startDate.setDate(startDate.getDate() + 1);
+                return startDate.toISOString().split('T')[0];
+              })() : undefined}
             />
           </div>
         </div>
@@ -983,20 +1106,26 @@ const Quote: React.FC = () => {
             
             <div className="form-row">
               <div className="form-group">
-                <label>First Name</label>
+                <label htmlFor={`firstName-${index}`}>First Name</label>
                 <input
                   type="text"
+                  id={`firstName-${index}`}
                   value={traveler.firstName}
                   onChange={(e) => handleTravelerChange(index, 'firstName', e.target.value)}
+                  placeholder="Enter first name"
+                  title="Enter the traveler's first name"
                   required
                 />
               </div>
               <div className="form-group">
-                <label>Last Name</label>
+                <label htmlFor={`lastName-${index}`}>Last Name</label>
                 <input
                   type="text"
+                  id={`lastName-${index}`}
                   value={traveler.lastName}
                   onChange={(e) => handleTravelerChange(index, 'lastName', e.target.value)}
+                  placeholder="Enter last name"
+                  title="Enter the traveler's last name"
                   required
                 />
               </div>
@@ -1004,13 +1133,14 @@ const Quote: React.FC = () => {
             
             <div className="form-row">
               <div className="form-group">
-                <label>Travellers Age</label>
+                <label htmlFor={`age-${index}`}>Travellers Age</label>
                 <input
                   type="number"
                   id={`age-${index}`}
                   value={traveler.age}
                   onChange={(e) => handleTravelerChange(index, 'age', e.target.value)}
                   placeholder="Enter age"
+                  title="Enter the traveler's age (1-120)"
                   min="1"
                   max="120"
                   required
@@ -1020,32 +1150,40 @@ const Quote: React.FC = () => {
             
             <div className="form-row">
               <div className="form-group">
-                <label>Email</label>
+                <label htmlFor={`email-${index}`}>Email</label>
                 <input
                   type="email"
+                  id={`email-${index}`}
                   value={traveler.email}
                   onChange={(e) => handleTravelerChange(index, 'email', e.target.value)}
+                  placeholder="Enter email address"
+                  title="Enter the traveler's email address"
                   required
                 />
               </div>
               <div className="form-group">
-                <label>Phone</label>
+                <label htmlFor={`phone-${index}`}>Phone</label>
                 <input
                   type="tel"
+                  id={`phone-${index}`}
                   value={traveler.phone}
                   onChange={(e) => handleTravelerChange(index, 'phone', e.target.value)}
                   placeholder="+30 123 456 7890"
+                  title="Enter the traveler's phone number"
+                  required
                 />
               </div>
             </div>
             
             <div className="form-group">
-              <label>VAX ID</label>
+              <label htmlFor={`vaxId-${index}`}>VAX ID</label>
               <input
                 type="text"
+                id={`vaxId-${index}`}
                 value={traveler.vaxId}
                 onChange={(e) => handleTravelerChange(index, 'vaxId', e.target.value)}
-                placeholder="VAX ID"
+                placeholder="Enter VAX ID"
+                title="Enter the traveler's VAX ID (optional)"
               />
             </div>
           </div>
@@ -1083,7 +1221,12 @@ const Quote: React.FC = () => {
               ))}
             </ul>
             
-            <button className="select-button">
+            <button 
+              className="select-button"
+              aria-label={formData.selectedQuote?.id === option.id ? 'Plan selected' : `Select ${option.name} plan`}
+              title={formData.selectedQuote?.id === option.id ? 'This plan is currently selected' : `Choose the ${option.name} plan`}
+              type="button"
+            >
               {formData.selectedQuote?.id === option.id ? 'Selected' : 'SELECT PLAN'}
             </button>
           </div>
@@ -1132,7 +1275,13 @@ const Quote: React.FC = () => {
                 <div className="policy-description">
                   <p>{policy.description}</p>
                   {policy.id === 'excess-waiver' && (
-                    <button className="find-out-more" onClick={() => alert('More information about Excess Waiver coverage will be available soon.')}>
+                    <button 
+                      className="find-out-more" 
+                      onClick={() => alert('More information about Excess Waiver coverage will be available soon.')}
+                      aria-label="Learn more about Excess Waiver coverage"
+                      title="Get more information about Excess Waiver coverage"
+                      type="button"
+                    >
                       Find out more
                     </button>
                   )}
@@ -1195,6 +1344,10 @@ const Quote: React.FC = () => {
                     formData.tripType === 'annual' ? 'Annual Multi-Trip Insurance' :
                     'Comprehensive Single Trip Insurance'
                   }</span>
+                </div>
+                <div className="summary-row">
+                  <span className="label">Country of Residence:</span>
+                  <span className="value">{formData.countryOfResidence}</span>
                 </div>
                 <div className="summary-row">
                   <span className="label">Destination:</span>
@@ -1363,6 +1516,9 @@ const Quote: React.FC = () => {
           <strong>Trip:</strong> {formData.destination} ({formatDateToEuropean(formData.startDate)} to {formatDateToEuropean(formData.endDate)})
         </div>
         <div className="confirmation-item">
+          <strong>Country of Residence:</strong> {formData.countryOfResidence}
+        </div>
+        <div className="confirmation-item">
           <strong>Travelers:</strong> {formData.numberOfTravelers} person{formData.numberOfTravelers > 1 ? 's' : ''}
         </div>
         <div className="confirmation-item">
@@ -1376,11 +1532,23 @@ const Quote: React.FC = () => {
       <div className="terms-section">
         <label className="checkbox-option">
           <input type="checkbox" required />
-          <span>I agree to the <a href="/privacy" target="_blank">Terms and Conditions</a></span>
+          <span>I agree to the <button 
+            className="link-button" 
+            onClick={() => onNavigate?.('privacy')}
+            style={{ background: 'none', border: 'none', color: '#0077b6', textDecoration: 'underline', cursor: 'pointer' }}
+          >
+            Terms and Conditions
+          </button></span>
         </label>
         <label className="checkbox-option">
           <input type="checkbox" required />
-          <span>I agree to the <a href="/privacy" target="_blank">Privacy Policy</a></span>
+          <span>I agree to the <button 
+            className="link-button" 
+            onClick={() => onNavigate?.('privacy')}
+            style={{ background: 'none', border: 'none', color: '#0077b6', textDecoration: 'underline', cursor: 'pointer' }}
+          >
+            Privacy Policy
+          </button></span>
         </label>
         <label className="checkbox-option">
           <input type="checkbox" />
@@ -1395,6 +1563,7 @@ const Quote: React.FC = () => {
       <h2>Payment Details</h2>
       <p>Enter your payment information to complete your purchase.</p>
       
+      
       <div className="payment-section">
         <div className="payment-methods">
           <h3>Payment Method</h3>
@@ -1406,33 +1575,39 @@ const Quote: React.FC = () => {
         <div className="card-details">
           <h3>Card Details</h3>
           <div className="form-group">
-            <label>Card Number</label>
+            <label htmlFor="cardNumber">Card Number</label>
             <input
               type="text"
+              id="cardNumber"
               value={formData.cardNumber}
               onChange={(e) => handleInputChange('cardNumber', e.target.value)}
               placeholder="1234 5678 9012 3456"
+              title="Enter your 16-digit card number"
               required
             />
           </div>
           <div className="form-row">
             <div className="form-group">
-              <label>Expiry Date</label>
+              <label htmlFor="expiryDate">Expiry Date</label>
               <input
                 type="text"
+                id="expiryDate"
                 value={formData.expiryDate}
                 onChange={(e) => handleInputChange('expiryDate', e.target.value)}
                 placeholder="MM/YY"
+                title="Enter card expiry date in MM/YY format"
                 required
               />
             </div>
             <div className="form-group">
-              <label>CVV</label>
+              <label htmlFor="cvv">CVV</label>
               <input
                 type="text"
+                id="cvv"
                 value={formData.cvv}
                 onChange={(e) => handleInputChange('cvv', e.target.value)}
                 placeholder="123"
+                title="Enter the 3-digit CVV code from the back of your card"
                 required
               />
             </div>
@@ -1442,40 +1617,52 @@ const Quote: React.FC = () => {
         <div className="billing-address">
           <h3>Billing Address</h3>
           <div className="form-group">
-            <label>Street Address</label>
+            <label htmlFor="street">Street Address</label>
             <input
               type="text"
+              id="street"
               value={formData.billingAddress.street}
               onChange={(e) => handleBillingAddressChange('street', e.target.value)}
+              placeholder="Enter street address"
+              title="Enter your billing street address"
               required
             />
           </div>
           <div className="form-row">
             <div className="form-group">
-              <label>City</label>
+              <label htmlFor="city">City</label>
               <input
                 type="text"
+                id="city"
                 value={formData.billingAddress.city}
                 onChange={(e) => handleBillingAddressChange('city', e.target.value)}
+                placeholder="Enter city"
+                title="Enter your billing city"
                 required
               />
             </div>
             <div className="form-group">
-              <label>Postal Code</label>
+              <label htmlFor="postalCode">Postal Code</label>
               <input
                 type="text"
+                id="postalCode"
                 value={formData.billingAddress.postalCode}
                 onChange={(e) => handleBillingAddressChange('postalCode', e.target.value)}
+                placeholder="Enter postal code"
+                title="Enter your billing postal code"
                 required
               />
             </div>
           </div>
           <div className="form-group">
-            <label>Country</label>
+            <label htmlFor="country">Country</label>
             <input
               type="text"
+              id="country"
               value={formData.billingAddress.country}
               onChange={(e) => handleBillingAddressChange('country', e.target.value)}
+              placeholder="Enter country"
+              title="Enter your billing country"
               required
             />
           </div>
@@ -1507,7 +1694,13 @@ const Quote: React.FC = () => {
       <div className="documents-section">
         <h3>Your Documents</h3>
         <div className="document-links">
-          <button onClick={downloadPolicyPDF} className="document-link download-btn">
+          <button 
+            onClick={downloadPolicyPDF} 
+            className="document-link download-btn"
+            aria-label="Download your policy summary as a PDF document"
+            title="Download a PDF copy of your travel insurance policy summary"
+            type="button"
+          >
             📄 Download Your Policy Summary (PDF)
           </button>
           <a href="/Globelink_Wording_EU_V2_07.03.2025.pdf" className="document-link" download>
@@ -1590,6 +1783,9 @@ const Quote: React.FC = () => {
             <button 
               className="btn btn-secondary" 
               onClick={prevPhase}
+              aria-label="Go to previous step"
+              title="Go back to the previous step"
+              type="button"
             >
               Previous
             </button>
@@ -1600,25 +1796,41 @@ const Quote: React.FC = () => {
               className="btn btn-primary" 
               onClick={nextPhase}
               disabled={!isPhaseValid(currentPhase)}
+              aria-label={currentPhase === 5 ? 'Proceed to payment step' : 'Go to next step'}
+              title={currentPhase === 5 ? 'Continue to payment details' : 'Continue to next step'}
+              type="button"
             >
               {currentPhase === 5 ? 'Proceed to Payment' : 'Next'}
             </button>
           )}
           
           {currentPhase === 6 && (
-            <button 
-              className="btn btn-primary" 
-              onClick={processPayment}
-              disabled={!isPhaseValid(currentPhase) || isProcessing}
-            >
-              {isProcessing ? 'Processing Payment...' : `Pay €${calculateTotalPrice().toFixed(2)}`}
-            </button>
+            <>
+              <button 
+                className="btn btn-primary" 
+                onClick={processPayment}
+                disabled={!isPhaseValid(currentPhase) || isProcessing}
+                aria-label={isProcessing ? 'Processing payment, please wait' : `Pay €${calculateTotalPrice().toFixed(2)} for your travel insurance`}
+                title={isProcessing ? 'Payment is being processed, please wait' : `Complete payment of €${calculateTotalPrice().toFixed(2)}`}
+                type="button"
+                style={{
+                  opacity: (!isPhaseValid(currentPhase) || isProcessing) ? 0.5 : 1,
+                  cursor: (!isPhaseValid(currentPhase) || isProcessing) ? 'not-allowed' : 'pointer'
+                }}
+              >
+                {isProcessing ? 'Processing Payment...' : `Pay €${calculateTotalPrice().toFixed(2)}`}
+              </button>
+              
+            </>
           )}
           
           {currentPhase === 7 && (
             <button 
               className="btn btn-primary" 
               onClick={() => window.location.href = '/'}
+              aria-label="Return to homepage"
+              title="Go back to the main homepage"
+              type="button"
             >
               Return to Homepage
             </button>

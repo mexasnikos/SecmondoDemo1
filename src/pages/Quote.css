@@ -1292,6 +1292,18 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   background-color: transparent;
 }
 
+.calendar-day.disabled {
+  color: #ccc;
+  background-color: #f8f9fa;
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.calendar-day.disabled:hover {
+  background-color: #f8f9fa;
+  color: #ccc;
+}
+
 /* Responsive adjustments for calendar */
 @media (max-width: 768px) {
   .calendar-popup {

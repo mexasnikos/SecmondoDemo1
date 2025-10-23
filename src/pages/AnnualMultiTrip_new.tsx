@@ -1,10 +1,15 @@
 "use client";
 import React, { useEffect } from 'react';
-import Link from 'next/link';
+// Using client-side navigation instead of Next.js Link
+// import Link from 'next/link';
 import './AnnualMultiTrip.css';
 
 
-const AnnualMultiTrip: React.FC = () => {
+interface AnnualMultiTripProps {
+  onNavigate?: (page: string) => void;
+}
+
+const AnnualMultiTrip: React.FC<AnnualMultiTripProps> = ({ onNavigate }) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -40,8 +45,18 @@ const AnnualMultiTrip: React.FC = () => {
                 </div>
               </div>
               <div className="hero-actions">
-                <Link href="/quote" className="btn-primary">Get Quote Now</Link>
-                <a href="#features" className="btn-secondary">Learn More</a>
+                <button 
+                  className="btn-primary"
+                  onClick={() => onNavigate?.('quote')}
+                >
+                  Get Quote Now
+                </button>
+                <button 
+                  className="btn-secondary"
+                  onClick={() => onNavigate?.('learn-more')}
+                >
+                  Learn More
+                </button>
               </div>
             </div>
             <div className="hero-visual">
@@ -154,7 +169,12 @@ const AnnualMultiTrip: React.FC = () => {
                   <li>✅ Cruise cover included</li>
                   <li>✅ Winter sports (17 days)</li>
                 </ul>
-                <Link href="/quote" className="plan-btn">Choose Worldwide</Link>
+                <button 
+                  className="plan-btn"
+                  onClick={() => onNavigate?.('quote')}
+                >
+                  Choose Worldwide
+                </button>
               </div>
               <div className="plan-column">
                 <div className="plan-header">

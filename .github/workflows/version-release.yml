@@ -1,4 +1,8 @@
-name: Auto Version & Release with Safe Changelog
+name: Auto Version & Release
+
+# Give workflow permission to push, create releases, and write content
+permissions:
+  contents: write
 
 on:
   push:
@@ -8,6 +12,7 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+
     steps:
       # Step 1: Checkout repository
       - name: Checkout repository

@@ -1,5 +1,5 @@
 # Add-ons Integration Summary
-# nikos testing version.............
+# nikos testing version...............
 
 ## Overview
 Successfully integrated the `addons_cover` database table with the Quote2 wizard, replacing mock data with real database-driven add-ons based on the selected policy type.

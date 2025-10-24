@@ -20,20 +20,8 @@ module.exports = function override(config, env) {
     return plugin.constructor.name !== 'ESLintWebpackPlugin';
   });
 
-  // Completely disable PostCSS processing to avoid plugin issues
-  const oneOfRule = config.module.rules.find(rule => rule.oneOf);
-  if (oneOfRule) {
-    oneOfRule.oneOf.forEach(rule => {
-      if (rule.test && rule.test.toString().includes('css') && rule.use) {
-        rule.use = rule.use.filter(loader => {
-          if (typeof loader === 'object' && loader.loader) {
-            return !loader.loader.includes('postcss-loader');
-          }
-          return true;
-        });
-      }
-    });
-  }
+  // PostCSS is now enabled for Tailwind CSS support
+  // The PostCSS disabling code has been removed to allow Tailwind to work
 
   // Disable source maps for faster builds
   if (env === 'production') {

@@ -15,7 +15,7 @@ const SecomondoTravel: React.FC<SecomondoTravelProps> = () => {
     alreadyAbroad: false
   });
 
-  const [isQuote2Mode, setIsQuote2Mode] = useState(false);
+  const [isQuoteMode, setIsQuoteMode] = useState(false);
   const [isFieldsLocked, setIsFieldsLocked] = useState(false);
   const [showComparisonTable, setShowComparisonTable] = useState(false);
 
@@ -76,12 +76,13 @@ const SecomondoTravel: React.FC<SecomondoTravelProps> = () => {
     }));
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleGetQuote = () => {
     window.location.href = '/quote';
   };
 
-  const handleQuote2 = () => {
-    setIsQuote2Mode(true);
+  const handleQuote = () => {
+    setIsQuoteMode(true);
     setIsFieldsLocked(true);
     setShowComparisonTable(true);
     
@@ -107,7 +108,7 @@ const SecomondoTravel: React.FC<SecomondoTravelProps> = () => {
 
   return (
     <div className="secomondo-travel-page">
-      {!isQuote2Mode && (
+      {!isQuoteMode && (
         <div className="section section-1">
           <div className="section-content">
             <h2>Secmondo Travel Insurance</h2>
@@ -224,9 +225,9 @@ const SecomondoTravel: React.FC<SecomondoTravelProps> = () => {
                   </div>
                 </div>
                 
-                {!isQuote2Mode ? (
-                  <button className="quote-button" onClick={handleQuote2}>
-                    Quote2
+                {!isQuoteMode ? (
+                  <button className="quote-button" onClick={handleQuote}>
+                    Quote
                   </button>
                 ) : isFieldsLocked ? (
                   <button className="quote-button edit-button" onClick={handleEdit}>

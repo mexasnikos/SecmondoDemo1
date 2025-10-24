@@ -21,6 +21,7 @@ if (typeof window === 'undefined') {
 }
 
 // Terracotta API Configuration
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const TERRACOTTA_BASE_URL = 'https://www.asuaonline.com/ws/integratedquote.asmx';
 const PROXY_BASE_URL = 'http://localhost:3001/api/terracotta';
 const TERRACOTTA_USER_ID = '4072';
@@ -1271,6 +1272,7 @@ function calculateDateOfBirth(age: number): string {
   return `${birthYear}/01/01`;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function calculateAgeFromDateOfBirth(dateOfBirth: string): number {
   const birthDate = new Date(dateOfBirth);
   const today = new Date();
@@ -1360,6 +1362,7 @@ export function getTypePolicyID(tripType: string, availablePolicyTypes?: Terraco
   return policyMap[tripType] || '2'; // Default to Single Trip TypePolicyID
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getTypePackageID(tripType: string): string {
   // Use correct Package IDs (not SchemaIDs)
   // Package IDs are typically 1, 2, 3, etc. for different coverage levels
@@ -1397,6 +1400,7 @@ export function getTitleID(title: string): number {
   return titleMap[title] || 1; // Default to Mr
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getCurrencyID(currency: string): number {
   // Map currency to Terracotta Currency ID
   const currencyMap: { [key: string]: number } = {

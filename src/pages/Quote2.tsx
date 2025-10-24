@@ -1,26 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
-import './Quote2.css';
+import './Quote.css';
 // Import API service for database integration
 import { createQuote, processPayment as apiProcessPayment, getAddonsByPolicyType } from '../services/apiService';
 // Import Terracotta service for insurance quotes
 import TerracottaService, { 
   TerracottaQuoteResponse, 
-  TerracottaQuoteResult, 
-  TerracottaScreeningQuestionsResponse,
-  TerracottaSavePolicyResponse,
-  TerracottaProductListResponse,
   TerracottaPolicyType,
-  TerracottaPolicyTypeResponse,
-  TerracottaPolicyTypeDestination,
-  TerracottaPolicyTypeDestinationResponse,
   SummaryCover,
   TerracottaQuoteWithAlterationsRequest,
   TerracottaTraveler,
   TerracottaContactDetails,
   getResidenceID,
   getTypePolicyID,
-  getAgebandID,
-  getTitleID
+  getAgebandID
 } from '../services/terracottaService';
 
 // Import jsPDF dynamically to avoid build issues
@@ -488,15 +480,19 @@ const Quote2: React.FC<QuoteProps> = ({ onNavigate }) => {
   const [screeningAnswers, setScreeningAnswers] = useState<{[key: number]: 'yes' | 'no'}>({});
   const [isLoadingQuotes, setIsLoadingQuotes] = useState(false);
   const [quoteError, setQuoteError] = useState<string>('');
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [availableProducts, setAvailableProducts] = useState<any[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isLoadingProducts, setIsLoadingProducts] = useState(true);
   
   // Policy types state
   const [availablePolicyTypes, setAvailablePolicyTypes] = useState<TerracottaPolicyType[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isLoadingPolicyTypes, setIsLoadingPolicyTypes] = useState(false);
   
   // Policy type destinations state (Trip Types)
-  const [availablePolicyTypeDestinations, setAvailablePolicyTypeDestinations] = useState<TerracottaPolicyTypeDestination[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [availablePolicyTypeDestinations, setAvailablePolicyTypeDestinations] = useState<any[]>([]);
   const [isLoadingPolicyTypeDestinations, setIsLoadingPolicyTypeDestinations] = useState(false);
   
   // Destination categories state
@@ -737,6 +733,7 @@ const Quote2: React.FC<QuoteProps> = ({ onNavigate }) => {
   }, [destinationCategories]);
 
   // Generate quotes when component mounts or when form data is complete
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     const generateQuotesIfNeeded = async () => {
       // Only generate quotes if we have basic form data and we're in phase 2
@@ -1048,6 +1045,7 @@ const Quote2: React.FC<QuoteProps> = ({ onNavigate }) => {
   }, [currentPhase, formData.selectedQuote]); // Trigger when entering Step 3 OR when quote changes
 
   // Reset addons and pricing when the selected quote changes
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (formData.selectedQuote) {
       console.log('Quote changed, resetting addons and pricing...');
@@ -1341,6 +1339,7 @@ const Quote2: React.FC<QuoteProps> = ({ onNavigate }) => {
   };
 
   // Helper function to calculate coverage levels using real SOAP data
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const calculateRealCoverageLevels = (result: any, destination: string, tripType: string) => {
     // Use real data from SOAP response when available, fallback to calculated values
     const baseMedical = result.coverLevel > 0 ? `€${(result.coverLevel * 1000000).toLocaleString()}` : 
@@ -1379,6 +1378,7 @@ const Quote2: React.FC<QuoteProps> = ({ onNavigate }) => {
   };
 
   // Helper function to generate features using real SOAP data
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const generateFeaturesFromSOAPData = (result: any, destination: string, tripType: string): string[] => {
     const baseFeatures = [
       '24/7 Emergency Assistance',
@@ -1510,6 +1510,7 @@ const Quote2: React.FC<QuoteProps> = ({ onNavigate }) => {
   };
 
   // Enhanced mock quote generation that simulates Terracotta-style data
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const generateEnhancedMockQuoteOptions = (): QuoteOption[] => {
     const days = formData.startDate && formData.endDate 
       ? Math.ceil((new Date(formData.endDate).getTime() - new Date(formData.startDate).getTime()) / (1000 * 3600 * 24))
@@ -1560,6 +1561,7 @@ const Quote2: React.FC<QuoteProps> = ({ onNavigate }) => {
   };
 
   // Legacy mock quotes (kept for backward compatibility)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const generateLegacyMockQuoteOptions = (): QuoteOption[] => {
     const days = formData.startDate && formData.endDate 
       ? Math.ceil((new Date(formData.endDate).getTime() - new Date(formData.startDate).getTime()) / (1000 * 3600 * 24))
@@ -1861,6 +1863,19 @@ const Quote2: React.FC<QuoteProps> = ({ onNavigate }) => {
         ...prev,
         [field]: value
       };
+      
+      // CVV validation - only allow 3 digits
+      if (field === 'cvv') {
+        const cvvValue = value.toString();
+        // Only allow digits and limit to 3 characters
+        const digitsOnly = cvvValue.replace(/\D/g, '');
+        if (digitsOnly.length <= 3) {
+          newData[field] = digitsOnly;
+        } else {
+          // If more than 3 digits, keep the first 3
+          newData[field] = digitsOnly.substring(0, 3);
+        }
+      }
       
       // If start date is changed, clear end date if it's now invalid
       if (field === 'startDate' && value && prev.endDate) {
@@ -2410,7 +2425,7 @@ const Quote2: React.FC<QuoteProps> = ({ onNavigate }) => {
           const dateOfBirth = traveler.dateOfBirth || calculateDOBFromAge(age);
           
           const travelerData = {
-            TravellerNumber: index + 1,
+            TravellerNumber: index + 1, // This ensures Traveler 1 gets TravellerNumber: 1
             Title: traveler.title || 'Mr',
             FirstName: traveler.firstName || '',
             LastName: traveler.lastName || '',
@@ -3535,6 +3550,7 @@ const Quote2: React.FC<QuoteProps> = ({ onNavigate }) => {
     );
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const renderPhase5 = () => (
     <div className="wizard-phase">
       <h2>Confirmation</h2>
@@ -3576,6 +3592,7 @@ const Quote2: React.FC<QuoteProps> = ({ onNavigate }) => {
     return decoded;
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const renderPhase6 = () => (
     <div className="wizard-phase">
       <h2>Screening Questions</h2>
@@ -3902,6 +3919,8 @@ const Quote2: React.FC<QuoteProps> = ({ onNavigate }) => {
                 onChange={(e) => handleInputChange('cvv', e.target.value)}
                 placeholder="123"
                 title="Enter the 3-digit CVV code from the back of your card"
+                maxLength={3}
+                pattern="[0-9]{3}"
                 required
               />
             </div>

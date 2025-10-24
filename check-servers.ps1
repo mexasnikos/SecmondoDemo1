@@ -32,7 +32,7 @@ foreach ($server in $ports) {
         # Try to ping health endpoint (except frontend)
         if ($server.Port -ne 3000) {
             try {
-                $response = Invoke-WebRequest -Uri $server.Url -TimeoutSec 2 -ErrorAction SilentlyContinue
+                $response = Invoke-WebRequest -Uri $server.Url -TimeoutSec 5 -ErrorAction SilentlyContinue
                 if ($response.StatusCode -eq 200) {
                     Write-Host "  Health:  " -NoNewline
                     Write-Host "✅ OK" -ForegroundColor Green

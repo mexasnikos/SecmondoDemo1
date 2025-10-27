@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import './Comprehensive.css';
 
 interface ComprehensiveProps {
   onNavigate?: (page: string) => void;
@@ -134,68 +133,6 @@ const Comprehensive: React.FC<ComprehensiveProps> = ({ onNavigate }) => {
                   <li>Extended baggage protection</li>
                   <li>24/7 global assistance</li>
                 </ul>
-              </div>
-            </div>
-          </section>
-
-          {/* Benefits Comparison */}
-          <section className="benefits-comparison">
-            <h2>Coverage Comparison</h2>
-            <div className="comparison-table">
-              <div className="plan-column">
-                <div className="plan-header">
-                  <h3>Regular Stay</h3>
-                  <div className="duration">Up to 90 days</div>
-                </div>
-                <ul className="plan-features">
-                  <li>Basic medical cover</li>
-                  <li>Standard baggage protection</li>
-                  <li>Trip cancellation</li>
-                  <li>Personal liability</li>
-                </ul>
-                <button 
-  className="plan-btn secondary"
-  onClick={() => onNavigate?.('regular-stay')}
->
-  View Details
-</button>
-              </div>
-              <div className="plan-column">
-                <div className="plan-header">
-                  <h3>Annual Multi-Trip</h3>
-                  <div className="duration">120 days per trip</div>
-                </div>
-                <ul className="plan-features">
-                  <li>Unlimited trips</li>
-                  <li>Enhanced medical cover</li>
-                  <li>Cruise & winter sports</li>
-                  <li>Worldwide coverage</li>
-                </ul>
-                <button 
-  className="plan-btn secondary"
-  onClick={() => onNavigate?.('annual-multi-trip')}
->
-  View Details
-</button>
-              </div>
-              <div className="plan-column featured">
-                <div className="plan-header">
-                  <h3>Comprehensive</h3>
-                  <div className="duration">Up to 15 months</div>
-                  <span className="best-badge">Most Complete</span>
-                </div>
-                <ul className="plan-features">
-                  <li>✅ Maximum medical cover</li>
-                  <li>✅ Adventure sports included</li>
-                  <li>✅ Business equipment</li>
-                  <li>✅ Extended protection</li>
-                </ul>
-                <button 
-  className="plan-btn"
-  onClick={() => onNavigate?.('quote')}
->
-  Get Quote
-</button>
               </div>
             </div>
           </section>

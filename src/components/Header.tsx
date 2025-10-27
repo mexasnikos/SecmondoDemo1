@@ -24,14 +24,18 @@ const Header: React.FC = () => {
       <nav aria-label="Global" className="relative flex items-center px-6 py-4 lg:px-8">
         {/* Logo */}
         <div className="flex lg:flex-1">
-          <button onClick={() => handleNavigation('/')} className="flex items-center gap-3">
-            <span className="sr-only">Secmondo</span>
-            <div className="flex items-center gap-3">
-              <h1 className="text-2xl font-bold text-indigo-600">Secmondo</h1>
-              <span className="text-sm text-gray-600 hidden sm:block">We make dreams secure.</span>
-            </div>
-          </button>
-        </div>
+  <button onClick={() => handleNavigation('/')} className="flex items-center gap-3">
+    <span className="sr-only">Secmondo</span>
+    <div className="flex items-center gap-3">
+      <h1 className="text-3xl font-bold text-black">Secmondo</h1>
+      <span className="text-1xs text-gray-500 hidden sm:block relative translate-y-1 leading-tight">
+        We make dreams secure.
+      </span>
+    </div>
+  </button>
+</div>
+
+
 
         {/* Mobile menu button */}
         <div className="flex lg:hidden">

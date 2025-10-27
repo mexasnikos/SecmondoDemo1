@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import './Quote2.css';
 // Import API service for database integration
 import { createQuote, processPayment as apiProcessPayment, getAddonsByPolicyType } from '../services/apiService';
 // Import Terracotta service for insurance quotes
@@ -4097,7 +4096,7 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
   };
 
   return (
-    <div className="quote-page">
+    <div className="py-8 bg-gray-50 min-h-screen">
       <style>
         {`
           @keyframes spin {
@@ -4106,10 +4105,10 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
           }
         `}
       </style>
-      <div className="container">
-        <div className="wizard-header">
-          <h1>Travel Insurance Quote Wizard</h1>
-            <div className="wizard-progress">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8">Travel Insurance Quote Wizard</h1>
+            <div className="flex justify-center items-center gap-4 mb-8 relative px-8">
               {[1, 2, 3, 4, 5, 6].map(phase => (
                 <div key={phase} className={`progress-step ${currentPhase >= phase ? 'active' : ''} ${currentPhase === phase ? 'current' : ''}`}>
                   <div className="step-number">{phase}</div>
@@ -4126,14 +4125,14 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
             </div>
         </div>
 
-        <div className="wizard-content">
+        <div className="bg-white rounded-xl shadow-lg p-8 md:p-12 mb-8 min-h-[500px]">
           {renderPhaseContent()}
         </div>
 
-        <div className="wizard-navigation">
+        <div className="flex justify-between items-center px-4 gap-4">
           {currentPhase > 1 && currentPhase < 6 && (
             <button 
-              className="btn btn-secondary" 
+              className="bg-transparent text-blue-600 border-2 border-blue-600 hover:bg-blue-600 hover:text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed" 
               onClick={prevPhase}
               aria-label="Go to previous step"
               title="Go back to the previous step"
@@ -4143,9 +4142,24 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
             </button>
           )}
           
-          {currentPhase < 5 && (
+          {currentPhase === 1 && (
+            <>
+              <div></div>
+              <button 
+                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-blue-600" 
+                onClick={nextPhase}
+                disabled={!isPhaseValid(currentPhase)}
+                aria-label="Go to next step"
+                title="Continue to next step"
+                type="button"
+              >
+                Next
+              </button>
+            </>
+          )}
+          {currentPhase > 1 && currentPhase < 5 && (
             <button 
-              className="btn btn-primary" 
+              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-blue-600" 
               onClick={nextPhase}
               disabled={!isPhaseValid(currentPhase)}
               aria-label={currentPhase === 4 ? 'Proceed to payment step' : 'Go to next step'}
@@ -4158,17 +4172,14 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
           
           {currentPhase === 5 && (
             <>
+              <div></div>
               <button 
-                className="btn btn-primary" 
+                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-blue-600" 
                 onClick={processPayment}
                 disabled={!isPhaseValid(currentPhase) || isProcessing}
                 aria-label={isProcessing ? 'Processing payment, please wait' : `Pay €${calculateTotalPrice().toFixed(2)} for your travel insurance`}
                 title={isProcessing ? 'Payment is being processed, please wait' : `Complete payment of €${calculateTotalPrice().toFixed(2)}`}
                 type="button"
-                style={{
-                  opacity: (!isPhaseValid(currentPhase) || isProcessing) ? 0.5 : 1,
-                  cursor: (!isPhaseValid(currentPhase) || isProcessing) ? 'not-allowed' : 'pointer'
-                }}
               >
                 {isProcessing ? 'Processing Payment...' : `Pay €${calculateTotalPrice().toFixed(2)}`}
               </button>
@@ -4177,15 +4188,18 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
           )}
           
           {currentPhase === 6 && (
-            <button 
-              className="btn btn-primary" 
-              onClick={() => window.location.href = '/'}
-              aria-label="Return to homepage"
-              title="Go back to the main homepage"
-              type="button"
-            >
-              Return to Homepage
-            </button>
+            <>
+              <div></div>
+              <button 
+                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300" 
+                onClick={() => window.location.href = '/'}
+                aria-label="Return to homepage"
+                title="Go back to the main homepage"
+                type="button"
+              >
+                Return to Homepage
+              </button>
+            </>
           )}
         </div>
       </div>

@@ -45,44 +45,55 @@ const Home: React.FC = () => {
       content: ''
     });
   };
-
   return (
     <>
       <div className="bg-white">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-50 via-white to-orange-50 py-20 lg:py-32">
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: '100%' }}>
-          <h1 
-            className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 leading-tight"
-            style={{ textAlign: 'left', width: '100%', paddingLeft: '16px' }}
-          >
-            We'll take you anywhere.
-          </h1>
-          <h2 
-            className="text-xl md:text-2xl lg:text-3xl font-semibold text-gray-700 mb-8 leading-relaxed"
-            style={{ textAlign: 'left', width: '100%', paddingLeft: '16px' }}
-          >
-            With Secmondo Insurance, you're settled. Never worry about a thing.
-          </h2>
-          <div 
-            className="flex flex-wrap gap-4"
-            style={{ justifyContent: 'flex-start', paddingLeft: '16px' }}
-          >
-              <a 
-                href="/quote" 
-                className="bg-orange-600 hover:bg-orange-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-              >
-                Get Quote
-              </a>
-              <a 
-                href="/learn-more" 
-                className="bg-white hover:bg-blue-600 text-blue-600 hover:text-white border-2 border-blue-600 px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-              >
-              Learn More
-            </a>
-          </div>
-        </div>
-      </section>
+      {/* Hero2 Section */}
+      <section className="py-16 h-[80vh] flex items-center justify-start relative overflow-hidden">
+        {/* Optimized responsive background image */}
+        <picture className="absolute inset-0 w-full h-full">
+          <source 
+            media="(max-width: 640px)" 
+            srcSet="/pexels-minan1398-1134188.jpg"
+          />
+          <source 
+            media="(min-width: 641px) and (max-width: 1024px)" 
+            srcSet="/pexels-minan1398-1134188.jpg"
+          />
+          <img 
+            src="/pexels-minan1398-1134188.jpg" 
+            alt="Travel background"
+            className="absolute inset-0 w-full h-full object-cover"
+            loading="eager"
+            fetchPriority="high"
+          />
+        </picture>
+        
+        <div className="relative z-10">
+    <h2 className="text-left text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight pl-4 md:pl-8 lg:pl-1">
+      We'll take you anywhere.
+    </h2>
+
+    <p className="text-left text-xl md:text-2xl font-semibold text-gray-700 mb-8 leading-relaxed pl-8 md:pl-16 lg:pl-22">
+      With Secmondo Insurance, you're settled. Never worry about a thing.
+    </p>
+
+    <div className="flex flex-wrap gap-4 justify-start pl-4 md:pl-8 lg:pl-16">
+      <a 
+        href="/quote" 
+        className="bg-orange-600 hover:bg-orange-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+      >
+        Get a Quote
+      </a>
+      <a 
+        href="/learn-more" 
+        className="bg-white hover:bg-blue-600 text-blue-600 hover:text-white border-2 border-blue-600 px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+      >
+        Learn More
+      </a>
+    </div>
+  </div>
+</section>
 
         {/* Section 1: Three Insurance Plans and Coverage */}
         <section className="relative isolate bg-white px-6 py-24 sm:py-32 lg:px-8">
@@ -97,14 +108,13 @@ const Home: React.FC = () => {
           {/* Header - Aligned to left and centered */}
           <div className="flex justify-center">
             <div className="max-w-4xl text-left">
-              <h2 className="text-base/7 font-semibold text-indigo-600">Travel Insurance</h2>
               <p className="mt-2 text-balance text-5xl font-semibold tracking-tight text-gray-900 sm:text-6xl">
                 Choose Your Coverage Policy
               </p>
             </div>
           </div>
           <div className="flex justify-center">
-            <p className="mt-6 max-w-2xl text-pretty text-left text-lg font-medium text-gray-600 sm:text-xl/8">
+            <p className="mt-6 max-w-2xl text-pretty text-left text-lg font-medium text-gray-600 sm:text-xl/8 text-justify">
               Choose the best policy according to your needs. Comprehensive coverage with medical protection, trip cancellation, and 24/7 emergency assistance worldwide.
             </p>
           </div>
@@ -119,7 +129,7 @@ const Home: React.FC = () => {
                 <span className="text-2xl">🛡️</span>
                 REGULAR Single Trip
               </h3>
-              <p className="mt-6 text-base/7 text-gray-600">
+              <p className="mt-6 text-base/7 text-gray-600 text-justify">
                 Perfect for occasional travelers taking a single holiday. Best if you only take one holiday or are travelling to one destination.
               </p>
               <ul className="mt-8 space-y-3 text-sm/6 text-gray-600 sm:mt-10">
@@ -154,13 +164,13 @@ const Home: React.FC = () => {
                   24/7 emergency assistance
                 </li>
               </ul>
-              <button 
-                onClick={() => openModal('regular')}
+              <a 
+                href="/regular-stay"
                 aria-describedby="tier-regular" 
                 className="mt-8 block w-full rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-blue-600 ring-1 ring-inset ring-blue-200 hover:ring-blue-300 hover:bg-blue-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-all duration-300 sm:mt-10"
               >
                 More Info
-              </button>
+              </a>
             </div>
 
             {/* ANNUAL MULTI-TRIP */}
@@ -169,7 +179,7 @@ const Home: React.FC = () => {
                 <span className="text-2xl">🌍</span>
                 ANNUAL MULTI-TRIP
               </h3>
-              <p className="mt-6 text-base/7 text-gray-600">
+              <p className="mt-6 text-base/7 text-gray-600 text-justify">
                 The ultimate solution for frequent travelers! Take unlimited trips throughout the year. Includes FREE 17-day Winter Sports coverage.
               </p>
               <ul className="mt-8 space-y-3 text-sm/6 text-gray-600 sm:mt-10">
@@ -210,22 +220,22 @@ const Home: React.FC = () => {
                   24/7 premium support
                 </li>
               </ul>
-              <button 
-                onClick={() => openModal('annual')}
+              <a 
+                href="/annual-multi-trip"
                 aria-describedby="tier-annual" 
                 className="mt-8 block w-full rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-orange-600 ring-1 ring-inset ring-orange-200 hover:ring-orange-300 hover:bg-orange-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 transition-all duration-300 sm:mt-10"
               >
                 More Info
-              </button>
+              </a>
             </div>
 
             {/* COMPREHENSIVE Single Trip */}
             <div className="rounded-3xl bg-white/60 p-8 ring-1 ring-gray-900/10 hover:ring-2 hover:ring-purple-600 transition-all duration-300 sm:p-10">
               <h3 id="tier-comprehensive" className="text-base/7 font-semibold text-purple-600 flex items-center gap-2">
                 <span className="text-2xl">⭐</span>
-                COMPREHENSIVE
+                Longstay Trip
               </h3>
-              <p className="mt-6 text-base/7 text-gray-600">
+              <p className="mt-6 text-base/7 text-gray-600 text-justify">
                 Our most extensive coverage for extended trips up to 15 months. Perfect for gap years, working holidays, and long-term travel.
               </p>
               <ul className="mt-8 space-y-3 text-sm/6 text-gray-600 sm:mt-10">
@@ -260,13 +270,13 @@ const Home: React.FC = () => {
                   Extended personal liability
                 </li>
               </ul>
-              <button 
-                onClick={() => openModal('comprehensive')}
+              <a 
+                href="/comprehensive"
                 aria-describedby="tier-comprehensive" 
                 className="mt-8 block w-full rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-purple-600 ring-1 ring-inset ring-purple-200 hover:ring-purple-300 hover:bg-purple-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600 transition-all duration-300 sm:mt-10"
               >
                 More Info
-              </button>
+              </a>
             </div>
             </div>
           </div>
@@ -280,7 +290,7 @@ const Home: React.FC = () => {
                 <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
                   Manage Your Travel Insurance On-The-Go
                 </h2>
-                <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+                <p className="text-xl text-gray-600 mb-8 leading-relaxed text-justify">
                   Download the Secmondo mobile app and have your policy details, emergency contacts, and claims process at your fingertips wherever you are in the world.
                 </p>
                 
@@ -379,15 +389,19 @@ const Home: React.FC = () => {
               {/* Lloyd's Partnership */}
               <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300">
                 <div className="flex items-center mb-6">
-                  <div className="w-20 h-20 bg-blue-900 rounded-full flex items-center justify-center text-white text-3xl font-bold mr-4">
-                    L
+                  <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mr-4 shadow-md">
+                    <img 
+                      src="/lloyds-logo-png_seeklogo-445374.png" 
+                      alt="Lloyds of London Logo"
+                      className="w-full h-full object-contain p-2"
+                    />
                   </div>
                   <div>
                     <h3 className="text-2xl font-bold text-gray-900">Lloyd's of London</h3>
                     <p className="text-gray-600">Since 1688</p>
                   </div>
                 </div>
-                <p className="text-gray-700 mb-6 leading-relaxed">
+                <p className="text-gray-700 mb-6 leading-relaxed text-justify">
                   Lloyd's of London is the world's leading insurance marketplace, providing specialist insurance services to businesses and individuals in over 200 countries. Our partnership ensures your policy is backed by centuries of financial stability and expertise.
                 </p>
                 <div className="space-y-3">
@@ -409,15 +423,19 @@ const Home: React.FC = () => {
               {/* Helvetia Partnership */}
               <div className="bg-gradient-to-br from-red-50 to-red-100 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300">
                 <div className="flex items-center mb-6">
-                  <div className="w-20 h-20 bg-red-600 rounded-full flex items-center justify-center text-white text-3xl font-bold mr-4">
-                    H
+                  <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mr-4 shadow-md">
+                    <img 
+                      src="/helvetia.png" 
+                      alt="Helvetia Insurance Logo"
+                      className="w-full h-full object-contain p-2"
+                    />
                   </div>
                   <div>
                     <h3 className="text-2xl font-bold text-gray-900">Helvetia Insurance</h3>
                     <p className="text-gray-600">Since 1858</p>
                   </div>
                 </div>
-                <p className="text-gray-700 mb-6 leading-relaxed">
+                <p className="text-gray-700 mb-6 leading-relaxed text-justify">
                   Helvetia is one of Switzerland's leading insurance companies with over 165 years of experience. Their commitment to quality service and financial security makes them the perfect partner for comprehensive travel insurance.
                 </p>
                 <div className="space-y-3">
@@ -491,7 +509,7 @@ const Home: React.FC = () => {
                   <h5 className="text-xl font-semibold text-gray-900 mb-3">
                     "Secmondo Saved My Trip!"
                   </h5>
-                  <p className="text-gray-600 leading-relaxed mb-4">
+                  <p className="text-gray-600 leading-relaxed mb-4 text-justify">
                     I fell ill in Thailand and needed emergency medical care. Secmondo covered everything - from hospital bills to my extended stay. The 24/7 support team was amazing and spoke my language. I can't imagine traveling without them now!
                   </p>
                   <div className="text-sm text-gray-500">
@@ -517,7 +535,7 @@ const Home: React.FC = () => {
                   <h5 className="text-xl font-semibold text-gray-900 mb-3">
                     "Perfect for Frequent Travelers"
                   </h5>
-                  <p className="text-gray-600 leading-relaxed mb-4">
+                  <p className="text-gray-600 leading-relaxed mb-4 text-justify">
                     As someone who travels 20+ times a year for work, the Annual Multi-Trip policy is a game-changer. When my flight was cancelled, Secmondo covered my hotel and meals without hassle. Fast, reliable, and worth every penny.
                   </p>
                   <div className="text-sm text-gray-500">
@@ -543,7 +561,7 @@ const Home: React.FC = () => {
                   <h5 className="text-xl font-semibold text-gray-900 mb-3">
                     "Peace of Mind for Families"
                   </h5>
-                  <p className="text-gray-600 leading-relaxed mb-4">
+                  <p className="text-gray-600 leading-relaxed mb-4 text-justify">
                     Traveling with kids means expecting the unexpected. When our luggage was lost, Secmondo reimbursed us quickly so we could buy essentials. Their mobile app made everything so easy. Highly recommend for families!
                   </p>
                   <div className="text-sm text-gray-500">

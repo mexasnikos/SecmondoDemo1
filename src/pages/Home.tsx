@@ -127,7 +127,7 @@ const Home: React.FC = () => {
             <div className="rounded-3xl bg-white/60 p-8 ring-1 ring-gray-900/10 hover:ring-2 hover:ring-blue-600 transition-all duration-300 sm:p-10">
               <h3 id="tier-regular" className="text-base/7 font-semibold text-blue-600 flex items-center gap-2">
                 <span className="text-2xl">🛡️</span>
-                REGULAR Single Trip
+                Single Trip
               </h3>
               <p className="mt-6 text-base/7 text-gray-600 text-justify">
                 Perfect for occasional travelers taking a single holiday. Best if you only take one holiday or are travelling to one destination.
@@ -165,7 +165,7 @@ const Home: React.FC = () => {
                 </li>
               </ul>
               <a 
-                href="/regular-stay"
+                href="/singletrip"
                 aria-describedby="tier-regular" 
                 className="mt-8 block w-full rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-blue-600 ring-1 ring-inset ring-blue-200 hover:ring-blue-300 hover:bg-blue-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-all duration-300 sm:mt-10"
               >
@@ -177,7 +177,7 @@ const Home: React.FC = () => {
             <div className="rounded-3xl bg-white/60 p-8 ring-1 ring-gray-900/10 hover:ring-2 hover:ring-orange-600 transition-all duration-300 sm:p-10">
               <h3 id="tier-annual" className="text-base/7 font-semibold text-orange-600 flex items-center gap-2">
                 <span className="text-2xl">🌍</span>
-                ANNUAL MULTI-TRIP
+                Annual Multi-trip
               </h3>
               <p className="mt-6 text-base/7 text-gray-600 text-justify">
                 The ultimate solution for frequent travelers! Take unlimited trips throughout the year. Includes FREE 17-day Winter Sports coverage.
@@ -221,7 +221,7 @@ const Home: React.FC = () => {
                 </li>
               </ul>
               <a 
-                href="/annual-multi-trip"
+                href="/annual-multitrip"
                 aria-describedby="tier-annual" 
                 className="mt-8 block w-full rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-orange-600 ring-1 ring-inset ring-orange-200 hover:ring-orange-300 hover:bg-orange-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 transition-all duration-300 sm:mt-10"
               >
@@ -271,7 +271,7 @@ const Home: React.FC = () => {
                 </li>
               </ul>
               <a 
-                href="/comprehensive"
+                href="/longstaytrip"
                 aria-describedby="tier-comprehensive" 
                 className="mt-8 block w-full rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-purple-600 ring-1 ring-inset ring-purple-200 hover:ring-purple-300 hover:bg-purple-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600 transition-all duration-300 sm:mt-10"
               >

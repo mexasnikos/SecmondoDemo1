@@ -76,8 +76,8 @@ const Header: React.FC = () => {
                       </svg>
                     </div>
                     <div className="flex-auto">
-                      <button onClick={() => handleNavigation('/regular-stay')} className="block font-semibold text-gray-900 text-left">
-                        Regular Stay
+                      <button onClick={() => handleNavigation('/singletrip')} className="block font-semibold text-gray-900 text-left">
+                        Single Trip
                         <span className="absolute inset-0"></span>
                       </button>
                       <p className="mt-1 text-gray-600">Single trip travel insurance</p>
@@ -90,7 +90,7 @@ const Header: React.FC = () => {
                       </svg>
                     </div>
                     <div className="flex-auto">
-                      <button onClick={() => handleNavigation('/annual-multi-trip')} className="block font-semibold text-gray-900 text-left">
+                      <button onClick={() => handleNavigation('/annual-multitrip')} className="block font-semibold text-gray-900 text-left">
                         Annual Multi-Trip
                         <span className="absolute inset-0"></span>
                       </button>
@@ -104,8 +104,8 @@ const Header: React.FC = () => {
                       </svg>
                     </div>
                     <div className="flex-auto">
-                      <button onClick={() => handleNavigation('/comprehensive')} className="block font-semibold text-gray-900 text-left">
-                        Comprehensive
+                      <button onClick={() => handleNavigation('/longstaytrip')} className="block font-semibold text-gray-900 text-left">
+                        Long Stay Trip
                         <span className="absolute inset-0"></span>
                       </button>
                       <p className="mt-1 text-gray-600">Maximum coverage for peace of mind</p>

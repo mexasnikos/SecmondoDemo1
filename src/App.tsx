@@ -13,6 +13,8 @@ import RegularStay from './pages/RegularStay';
 import AnnualMultiTrip from './pages/AnnualMultiTrip';
 import Comprehensive from './pages/Comprehensive';
 import SecomondoTravel from './pages/SecomondoTravel';
+import SingleTrip from './pages/SingleTrip';
+import LongStayTrip from './pages/LongStayTrip';
 import './App.css';
 
 function App() {
@@ -31,8 +33,11 @@ function App() {
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/regular-stay" element={<RegularStay />} />
             <Route path="/annual-multi-trip" element={<AnnualMultiTrip />} />
+            <Route path="/annual-multitrip" element={<AnnualMultiTrip />} />
             <Route path="/comprehensive" element={<Comprehensive />} />
             <Route path="/secomondo-travel" element={<SecomondoTravel />} />
+            <Route path="/singletrip" element={<SingleTrip />} />
+            <Route path="/longstaytrip" element={<LongStayTrip />} />
           </Routes>
         </main>
         <Footer />

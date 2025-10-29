@@ -30,7 +30,7 @@ const About: React.FC<AboutProps> = () => {
               Our Mission
             </h2>
             <p className="text-lg leading-relaxed text-gray-600 text-justify">
-              At TravelSafe, we believe that travel should be about creating memories, 
+              At Secomondo, we believe that travel should be about creating memories, 
               not worrying about what might go wrong. Since 2020, we've been providing 
               comprehensive travel insurance solutions to millions of travelers worldwide.
             </p>

@@ -1116,7 +1116,7 @@ export class TerracottaService {
           ${screeningAnswersXML}
           ${request.medicalScreeningReference ? `<medicalScreeningReference>${request.medicalScreeningReference}</medicalScreeningReference>` : '<medicalScreeningReference>string</medicalScreeningReference>'}
           ${request.useDefaultAnswers !== undefined ? `<useDefaultAnswers>${request.useDefaultAnswers}</useDefaultAnswers>` : '<useDefaultAnswers>1</useDefaultAnswers>'}
-          ${travelersXML}
+          ${travelersXML ? `<Travellers>${travelersXML}</Travellers>` : ''}
           ${contactDetailsXML}
         </SavePolicyDetails>`;
 
@@ -1214,11 +1214,13 @@ export class TerracottaService {
     };
 
            // Convert trip details using actual user data
+           // Use destinationCategory if available, otherwise fall back to destination or 'Europe'
+           const destinationValue = formData.destinationCategory || formData.destination || 'Europe';
            const quoteDetails: TerracottaQuoteDetails = {
              ResidenceID: getResidenceID(formData.countryOfResidence),
              TypePolicyID: getTypePolicyID(formData.tripType, availablePolicyTypes),
              TypePackageID: '1', // Fixed value as requested (string)
-             Destination: formData.destination || 'Europe',
+             Destination: destinationValue,
              StartDate: formatDateForTerracotta(formData.startDate),
              EndDate: formatDateForTerracotta(formData.endDate),
              Travellers: travelers,

@@ -29,7 +29,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "proxy-server": "node server/proxy-server.js",
-    "dev": "concurrently \"npm run proxy-server\" \"npm start\""
+    "dev": "concurrently \"npm run proxy-server\" \"npm start\"",
+    "clear-cache": "Remove-Item -Recurse -Force node_modules\\.cache -ErrorAction SilentlyContinue"
   },
   "eslintConfig": {
     "extends": [

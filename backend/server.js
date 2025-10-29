@@ -188,6 +188,30 @@ app.get('/api/destination-categories/:category/countries', async (req, res) => {
   }
 });
 
+// Get all countries with their destination categories for autocomplete
+app.get('/api/destination-categories/all-countries', async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT country, destination_category 
+      FROM destination_categories 
+      ORDER BY country
+    `);
+    
+    res.json({ 
+      status: 'success', 
+      countries: result.rows,
+      count: result.rows.length
+    });
+  } catch (error) {
+    console.error('❌ Error fetching all countries with categories:', error);
+    res.status(500).json({ 
+      status: 'error', 
+      message: 'Failed to fetch countries with destination categories',
+      error: error.message 
+    });
+  }
+});
+
 // Get addons by policy type
 app.get('/api/addons/:policyType', async (req, res) => {
   try {

@@ -2,16 +2,40 @@ import React, { useState, useEffect } from 'react';
 import PolicyModal from '../components/PolicyModal';
 
 const Home: React.FC = () => {
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
-
   const [modalState, setModalState] = useState({
     isOpen: false,
     policyType: '',
     title: '',
     content: ''
   });
+
+  const [heroImageLoaded, setHeroImageLoaded] = useState(false);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    // Preload the hero image for faster display
+    const link = document.createElement('link');
+    link.rel = 'preload';
+    link.as = 'image';
+    link.href = '/pexels-minan1398-1134188.jpg';
+    link.setAttribute('fetchpriority', 'high');
+    document.head.appendChild(link);
+    
+    // Preload image early using Image object and track when loaded
+    const img = new Image();
+    img.onload = () => {
+      setHeroImageLoaded(true);
+    };
+    img.src = '/pexels-minan1398-1134188.jpg';
+    
+    return () => {
+      // Cleanup
+      if (document.head.contains(link)) {
+        document.head.removeChild(link);
+      }
+    };
+  }, []);
 
   const policyInfo = {
     'regular': {
@@ -49,28 +73,21 @@ const Home: React.FC = () => {
     <>
       <div className="bg-white">
       {/* Hero2 Section */}
-      <section className="py-16 h-[80vh] flex items-center justify-start relative overflow-hidden">
-        {/* Optimized responsive background image */}
-        <picture className="absolute inset-0 w-full h-full">
-          <source 
-            media="(max-width: 640px)" 
-            srcSet="/pexels-minan1398-1134188.jpg"
-          />
-          <source 
-            media="(min-width: 641px) and (max-width: 1024px)" 
-            srcSet="/pexels-minan1398-1134188.jpg"
-          />
-          <img 
-            src="/pexels-minan1398-1134188.jpg" 
-            alt="Travel background"
-            className="absolute inset-0 w-full h-full object-cover"
-            loading="eager"
-            fetchPriority="high"
-          />
-        </picture>
+      <section className="py-16 h-[80vh] flex items-center justify-start relative overflow-hidden bg-gradient-to-br from-blue-100 to-indigo-200">
+        {/* Optimized background image using CSS for better browser optimization */}
+        <div 
+          className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat transition-opacity duration-500 ease-in-out"
+          style={{
+            backgroundImage: 'url(/pexels-minan1398-1134188.jpg)',
+            opacity: heroImageLoaded ? 1 : 0,
+            willChange: 'opacity',
+          }}
+          role="img"
+          aria-label="Travel background"
+        />
         
         <div className="relative z-10">
-    <h2 className="text-left text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight pl-4 md:pl-8 lg:pl-1">
+    <h2 className="text-left text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight pl-4 md:pl-16 lg:pl-22">
       We'll take you anywhere.
     </h2>
 
@@ -87,7 +104,7 @@ const Home: React.FC = () => {
       </a>
       <a 
         href="/learn-more" 
-        className="bg-white hover:bg-blue-600 text-blue-600 hover:text-white border-2 border-blue-600 px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+        className="bg-white hover:bg-blue-600 text-blue-600 hover:text-white border-0 border-blue-100 px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
       >
         Learn More
       </a>
@@ -283,43 +300,43 @@ const Home: React.FC = () => {
         </section>
 
         {/* Section 2: Mobile App Advertising */}
-        <section className="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
+        <section className="py-20 bg-gray-900">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div>
-                <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
                   Manage Your Travel Insurance On-The-Go
                 </h2>
-                <p className="text-xl text-gray-600 mb-8 leading-relaxed text-justify">
+                <p className="text-xl text-gray-300 mb-8 leading-relaxed text-justify">
                   Download the Secmondo mobile app and have your policy details, emergency contacts, and claims process at your fingertips wherever you are in the world.
                 </p>
                 
                 <div className="space-y-4 mb-8">
                   <div className="flex items-start space-x-4">
-                    <div className="flex-shrink-0 w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white text-xl font-bold">
+                    <div className="flex-shrink-0 w-12 h-12 bg-black-900 rounded-full flex items-center justify-center text-white text-xl font-bold">
                       1
                     </div>
                     <div>
-                      <h4 className="text-lg font-semibold text-gray-900 mb-1">Instant Policy Access</h4>
-                      <p className="text-gray-600">View and download your policy documents anytime</p>
+                      <h4 className="text-lg font-semibold text-white mb-1">Instant Policy Access</h4>
+                      <p className="text-gray-400">View and download your policy documents anytime</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-4">
-                    <div className="flex-shrink-0 w-12 h-12 bg-orange-600 rounded-full flex items-center justify-center text-white text-xl font-bold">
+                    <div className="flex-shrink-0 w-12 h-12 bg-black-900 rounded-full flex items-center justify-center text-white text-xl font-bold">
                       2
                     </div>
                     <div>
-                      <h4 className="text-lg font-semibold text-gray-900 mb-1">Quick Claims Submission</h4>
-                      <p className="text-gray-600">Submit claims with photos directly from your phone</p>
+                      <h4 className="text-lg font-semibold text-white mb-1">Quick Claims Submission</h4>
+                      <p className="text-gray-400">Submit claims with photos directly from your phone</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-4">
-                    <div className="flex-shrink-0 w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center text-white text-xl font-bold">
+                    <div className="flex-shrink-0 w-12 h-12 bg-black-900 rounded-full flex items-center justify-center text-white text-xl font-bold">
                       3
                     </div>
                     <div>
-                      <h4 className="text-lg font-semibold text-gray-900 mb-1">Emergency Assistance</h4>
-                      <p className="text-gray-600">One-tap access to 24/7 emergency support</p>
+                      <h4 className="text-lg font-semibold text-white mb-1">Emergency Assistance</h4>
+                      <p className="text-gray-400">One-tap access to 24/7 emergency support</p>
                     </div>
                   </div>
                 </div>
@@ -375,7 +392,7 @@ const Home: React.FC = () => {
 
         {/* Section 3: Partnership with Lloyd's and Helvetia */}
         <section className="py-20 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-auto mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
                 Trusted by Industry Leaders
@@ -391,9 +408,20 @@ const Home: React.FC = () => {
                 <div className="flex items-center mb-6">
                   <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mr-4 shadow-md">
                     <img 
-                      src="/lloyds-logo-png_seeklogo-445374.png" 
-                      alt="Lloyds of London Logo"
+                      src="/lloyds_2.jpg" 
+                      alt="LLoyds of London Logo"
                       className="w-full h-full object-contain p-2"
+                      loading="lazy"
+                      decoding="async"
+                      width="60"
+                      height="60"
+                      onLoad={(e) => {
+                        e.currentTarget.style.opacity = '1';
+                      }}
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none';
+                      }}
+                      style={{ opacity: 0, transition: 'opacity 0.3s ease-in-out' }}
                     />
                   </div>
                   <div>
@@ -428,6 +456,17 @@ const Home: React.FC = () => {
                       src="/helvetia.png" 
                       alt="Helvetia Insurance Logo"
                       className="w-full h-full object-contain p-2"
+                      loading="lazy"
+                      decoding="async"
+                      width="80"
+                      height="80"
+                      onLoad={(e) => {
+                        e.currentTarget.style.opacity = '1';
+                      }}
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none';
+                      }}
+                      style={{ opacity: 0, transition: 'opacity 0.3s ease-in-out' }}
                     />
                   </div>
                   <div>
@@ -456,31 +495,30 @@ const Home: React.FC = () => {
             </div>
 
             {/* Trust Indicators */}
-            <div className="mt-16 bg-gray-50 rounded-2xl p-8">
+            <div className="mt-16 bg-gray-900 rounded-2xl p-8">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
                 <div>
-                  <div className="text-4xl font-bold text-blue-600 mb-2">500K+</div>
-                  <div className="text-gray-600">Policies Sold</div>
+                  <div className="text-4xl font-bold text-white mb-2">500K+</div>
+                  <div className="text-gray-300">Policies Sold</div>
                 </div>
                 <div>
-                  <div className="text-4xl font-bold text-orange-600 mb-2">200+</div>
-                  <div className="text-gray-600">Countries Covered</div>
+                  <div className="text-4xl font-bold text-white mb-2">200+</div>
+                  <div className="text-gray-300">Countries Covered</div>
                 </div>
                 <div>
-                  <div className="text-4xl font-bold text-purple-600 mb-2">98%</div>
-                  <div className="text-gray-600">Satisfaction Rate</div>
+                  <div className="text-4xl font-bold text-white mb-2">98%</div>
+                  <div className="text-gray-300">Satisfaction Rate</div>
                 </div>
                 <div>
-                  <div className="text-4xl font-bold text-green-600 mb-2">24/7</div>
-                  <div className="text-gray-600">Support Available</div>
+                  <div className="text-4xl font-bold text-white mb-2">24/7</div>
+                  <div className="text-gray-300">Support Available</div>
                 </div>
             </div>
           </div>
         </div>
       </section>
-
         {/* Section 4: User Testimonials / Blog */}
-        <section className="py-20 bg-gradient-to-br from-orange-50 to-yellow-50">
+        <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
@@ -494,10 +532,10 @@ const Home: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {/* Testimonial 1 */}
               <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden transform hover:-translate-y-2">
-                <div className="h-2 bg-gradient-to-r from-blue-600 to-blue-400"></div>
+                <div className="h-2 bg-gradient-to-r from-gray-900 to-gray-900"></div>
                 <div className="p-8">
                   <div className="flex items-center mb-4">
-                    <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-white text-2xl font-bold mr-4">
+                    <div className="w-16 h-16 bg-gray-900 rounded-full flex items-center justify-center text-white text-2xl font-bold mr-4">
                       SJ
                     </div>
                     <div>
@@ -520,10 +558,10 @@ const Home: React.FC = () => {
 
               {/* Testimonial 2 */}
               <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden transform hover:-translate-y-2">
-                <div className="h-2 bg-gradient-to-r from-orange-600 to-orange-400"></div>
+                <div className="h-2 bg-gradient-to-r from-gray-900 to-gray-900"></div>
                 <div className="p-8">
                   <div className="flex items-center mb-4">
-                    <div className="w-16 h-16 bg-orange-600 rounded-full flex items-center justify-center text-white text-2xl font-bold mr-4">
+                    <div className="w-16 h-16 bg-gray-900 rounded-full flex items-center justify-center text-white text-2xl font-bold mr-4">
                       MC
                     </div>
                     <div>
@@ -546,10 +584,10 @@ const Home: React.FC = () => {
 
               {/* Testimonial 3 */}
               <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden transform hover:-translate-y-2">
-                <div className="h-2 bg-gradient-to-r from-purple-600 to-purple-400"></div>
+                <div className="h-2 bg-gradient-to-r from-gray-900 to-gray-900"></div>
                 <div className="p-8">
                   <div className="flex items-center mb-4">
-                    <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center text-white text-2xl font-bold mr-4">
+                    <div className="w-16 h-16 bg-gray-900 rounded-full flex items-center justify-center text-white text-2xl font-bold mr-4">
                       ER
                     </div>
                     <div>
@@ -571,43 +609,32 @@ const Home: React.FC = () => {
               </div>
             </div>
 
-            {/* Blog CTA */}
-            <div className="mt-16 text-center">
-              <div className="bg-white rounded-2xl shadow-xl p-8 max-w-3xl mx-auto">
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                  Want to Share Your Secmondo Story?
-                </h3>
-                <p className="text-gray-600 mb-6">
-                  We'd love to hear about your travel experiences and how Secmondo helped you along the way.
-                </p>
-                <a 
-                  href="/contact" 
-                  className="inline-block bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl"
-                >
-                  Share Your Story
-                </a>
-            </div>
-          </div>
         </div>
       </section>
 
         {/* Final CTA */}
-        <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-600">
+        <section className="bg-gradient-to-r from-orange-500 to-red-500 text-white py-20 rounded-[3rem] mx-4 sm:mx-6 lg:mx-8 mb-6">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-              Ready to Travel with Confidence?
-            </h2>
-            <p className="text-xl text-blue-100 mb-8">
-              Get a personalized quote in under 2 minutes
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">Ready to Travel with Confidence?</h2>
+            <p className="text-xl text-orange-100 mb-8 max-w-2xl mx-auto">
+              Get a personalized quote in under 2 minutes and start your adventure with complete peace of mind.
             </p>
-            <a 
-              href="/quote" 
-              className="inline-block bg-white text-blue-600 hover:bg-gray-100 px-10 py-5 rounded-lg font-bold text-xl transition-all duration-300 shadow-2xl hover:shadow-3xl transform hover:scale-105"
-            >
-              Get Your Quote Now
-            </a>
-        </div>
-      </section>
+            <div className="flex flex-col sm:flex-row gap-6 justify-center mb-55">
+              <a 
+                href="/quote"
+                className="px-8 py-4 bg-white text-orange-600 font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg inline-block text-center"
+              >
+                Get Quote Now
+              </a>
+              <a 
+                href="/contact"
+                className="px-8 py-4 bg-transparent border-2 border-white text-white hover:bg-white hover:text-orange-600 font-semibold rounded-lg transition-all duration-300 inline-block text-center"
+              >
+                Contact Us
+              </a>
+            </div>
+          </div>
+        </section>
       </div>
 
       <PolicyModal

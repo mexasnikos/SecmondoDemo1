@@ -383,6 +383,7 @@ interface QuoteOption {
 interface QuoteFormData {
   // Trip Details
   destination: string;
+  destinationCategory?: string; // Category determined from country match
   startDate: string;
   endDate: string;
   tripType: 'single' | 'annual' | 'comprehensive' | 'longstay';
@@ -431,6 +432,7 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
   const [currentPhase, setCurrentPhase] = useState<WizardPhase>(1);
   const [formData, setFormData] = useState<QuoteFormData>({
     destination: '',
+    destinationCategory: '',
     startDate: '',
     endDate: '',
     tripType: 'single',
@@ -491,6 +493,14 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
   // Destination categories state
   const [destinationCategories, setDestinationCategories] = useState<string[]>([]);
   const [isLoadingCategories, setIsLoadingCategories] = useState(false);
+  
+  // All countries with their categories for autocomplete
+  const [allCountriesWithCategories, setAllCountriesWithCategories] = useState<Array<{country: string, destination_category: string}>>([]);
+  const [destinationSuggestions, setDestinationSuggestions] = useState<string[]>([]);
+  const [showDestinationSuggestions, setShowDestinationSuggestions] = useState(false);
+  
+  // Expiry date validation error
+  const [expiryDateError, setExpiryDateError] = useState<string>('');
   
   // Help popup state
   const [showHelpPopup, setShowHelpPopup] = useState(false);
@@ -663,31 +673,29 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
     loadCountriesOfResidence();
   }, []);
 
-  // Load destination categories on component mount
+  // Load all countries with their categories for autocomplete
   useEffect(() => {
-    const loadDestinationCategories = async () => {
+    const loadAllCountries = async () => {
       try {
         setIsLoadingCategories(true);
-        console.log('Loading destination categories...');
-        const response = await fetch('http://localhost:5002/api/destination-categories');
+        console.log('Loading all countries with destination categories...');
+        const response = await fetch('http://localhost:5002/api/destination-categories/all-countries');
         const data = await response.json();
         
         if (data.status === 'success') {
-          setDestinationCategories(data.categories);
-          console.log('✅ Destination categories loaded:', data.categories);
+          setAllCountriesWithCategories(data.countries);
+          console.log('✅ Countries with categories loaded:', data.countries.length);
         } else {
-          console.error('❌ Failed to load destination categories:', data.message);
+          console.error('❌ Failed to load countries:', data.message);
         }
       } catch (error) {
-        console.error('❌ Error loading destination categories:', error);
-        // Set fallback categories if API fails
-        setDestinationCategories(['Europe', 'Worldwide']);
+        console.error('❌ Error loading countries:', error);
       } finally {
         setIsLoadingCategories(false);
       }
     };
 
-    loadDestinationCategories();
+    loadAllCountries();
   }, []);
 
   // Load countries for each category when categories are loaded
@@ -889,11 +897,6 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
             
             // Transform database addons to AdditionalPolicy format
             const transformedAddons: AdditionalPolicy[] = addonsData.map((addon: any) => {
-              // Create a descriptive name combining cover name and details
-              const displayName = addon.additional_cover_detail 
-                ? `${addon.additional_cover_name} - ${addon.additional_cover_detail}`
-                : addon.additional_cover_name;
-              
               // Determine icon based on addon type
               const getIcon = (name: string) => {
                 const lowerName = name.toLowerCase();
@@ -928,8 +931,8 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
               
               return {
                 id: `addon-${addon.alteration_id}`,
-                name: displayName,
-                description: addon.additional_cover_detail || addon.additional_cover_name,
+                name: addon.additional_cover_name,
+                description: addon.additional_cover_detail || '',
                 price: 0, // Price will be updated from SOAP response
                 icon: getIcon(addon.additional_cover_name),
                 category: getCategory(addon.additional_cover_name),
@@ -971,10 +974,6 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
                   console.log(`✅ Loaded ${addonsData.length} addons using extracted type: ${normalizedType}`);
                   
                   const transformedAddons: AdditionalPolicy[] = addonsData.map((addon: any) => {
-                    const displayName = addon.additional_cover_detail 
-                      ? `${addon.additional_cover_name} - ${addon.additional_cover_detail}`
-                      : addon.additional_cover_name;
-                    
                     const getIcon = (name: string) => {
                       const lowerName = name.toLowerCase();
                       if (lowerName.includes('winter') || lowerName.includes('sports')) return '🏂';
@@ -1007,8 +1006,8 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
                     
                     return {
                       id: `addon-${addon.alteration_id}`,
-                      name: displayName,
-                      description: addon.additional_cover_detail || addon.additional_cover_name,
+                      name: addon.additional_cover_name,
+                      description: addon.additional_cover_detail || '',
                       price: 0, // Price will be updated from SOAP response
                       icon: getIcon(addon.additional_cover_name),
                       category: getCategory(addon.additional_cover_name),
@@ -1769,6 +1768,168 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
     );
   };
 
+  // Helper function to find best matching country
+  const findBestCountryMatch = (input: string): { country: string; category: string } | null => {
+    if (!input || input.trim().length === 0 || allCountriesWithCategories.length === 0) {
+      return null;
+    }
+    
+    const normalizedInput = input.trim().toLowerCase();
+    
+    // Exact match (case-insensitive)
+    const exactMatch = allCountriesWithCategories.find(
+      item => item.country.toLowerCase() === normalizedInput
+    );
+    if (exactMatch) {
+      return {
+        country: exactMatch.country,
+        category: exactMatch.destination_category
+      };
+    }
+    
+    // Starts with match
+    const startsWithMatch = allCountriesWithCategories.find(
+      item => item.country.toLowerCase().startsWith(normalizedInput)
+    );
+    if (startsWithMatch) {
+      return {
+        country: startsWithMatch.country,
+        category: startsWithMatch.destination_category
+      };
+    }
+    
+    // Contains match (find the one that starts closest to the beginning)
+    const containsMatches = allCountriesWithCategories
+      .filter(item => item.country.toLowerCase().includes(normalizedInput))
+      .sort((a, b) => {
+        const aIndex = a.country.toLowerCase().indexOf(normalizedInput);
+        const bIndex = b.country.toLowerCase().indexOf(normalizedInput);
+        return aIndex - bIndex;
+      });
+    
+    if (containsMatches.length > 0) {
+      return {
+        country: containsMatches[0].country,
+        category: containsMatches[0].destination_category
+      };
+    }
+    
+    return null;
+  };
+
+  // Handle destination input with autocomplete
+  const handleDestinationChange = (value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      destination: value,
+      destinationCategory: '' // Reset category when input changes
+    }));
+    
+    // Update suggestions
+    if (value.trim().length > 0) {
+      const suggestions = allCountriesWithCategories
+        .filter(item => 
+          item.country.toLowerCase().includes(value.toLowerCase())
+        )
+        .slice(0, 5)
+        .map(item => item.country);
+      
+      setDestinationSuggestions(suggestions);
+      setShowDestinationSuggestions(suggestions.length > 0);
+    } else {
+      setDestinationSuggestions([]);
+      setShowDestinationSuggestions(false);
+    }
+  };
+
+  // Handle destination selection from autocomplete
+  const handleDestinationSelect = (country: string) => {
+    const match = allCountriesWithCategories.find(
+      item => item.country === country
+    );
+    
+    if (match) {
+      setFormData(prev => ({
+        ...prev,
+        destination: match.country,
+        destinationCategory: match.destination_category
+      }));
+      setDestinationSuggestions([]);
+      setShowDestinationSuggestions(false);
+    }
+  };
+
+  // Auto-match when user blurs the input field
+  const handleDestinationBlur = () => {
+    setTimeout(() => {
+      setShowDestinationSuggestions(false);
+      
+      if (formData.destination.trim().length > 0) {
+        const match = findBestCountryMatch(formData.destination);
+        if (match) {
+          setFormData(prev => ({
+            ...prev,
+            destination: match.country,
+            destinationCategory: match.category
+          }));
+        }
+      }
+    }, 200); // Small delay to allow click on suggestion
+  };
+
+  // Handle expiry date validation
+  const handleExpiryDateChange = (value: string) => {
+    // Remove all non-digits
+    let digitsOnly = value.replace(/\D/g, '');
+    
+    // Limit to 6 digits (MMYYYY)
+    if (digitsOnly.length > 6) {
+      digitsOnly = digitsOnly.substring(0, 6);
+    }
+    
+    // Format as MM / YYYY
+    let formattedValue = digitsOnly;
+    if (digitsOnly.length >= 2) {
+      const month = digitsOnly.substring(0, 2);
+      const year = digitsOnly.substring(2, 6);
+      formattedValue = month + (year ? ' / ' + year : '');
+    }
+    
+    // Validate if we have complete date
+    if (digitsOnly.length >= 4) {
+      const month = parseInt(digitsOnly.substring(0, 2));
+      const year = parseInt(digitsOnly.substring(2, 6));
+      const currentYear = new Date().getFullYear();
+      const currentMonth = new Date().getMonth() + 1; // getMonth() returns 0-11
+      
+      // Validate month (1-12)
+      if (month < 1 || month > 12) {
+        setExpiryDateError('Month must be between 01 and 12');
+      }
+      // Validate year (must be current year or future)
+      else if (year < currentYear) {
+        setExpiryDateError(`Year must be ${currentYear} or later`);
+      }
+      // If same year, check month is not in the past
+      else if (year === currentYear && month < currentMonth) {
+        setExpiryDateError(`This expiry date has already passed`);
+      }
+      // If incomplete year but valid so far, show no error yet
+      else if (digitsOnly.length < 6) {
+        setExpiryDateError('');
+      }
+      // Valid date
+      else {
+        setExpiryDateError('');
+      }
+    } else {
+      // Clear error if date is incomplete
+      setExpiryDateError('');
+    }
+    
+    handleInputChange('expiryDate', formattedValue);
+  };
+
   const handleInputChange = (field: string, value: string | number) => {
     setFormData(prev => {
       const newData = {
@@ -2290,7 +2451,7 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
       }));
 
       const quoteData = {
-        destination: formData.destination,
+        destination: formData.destinationCategory || formData.destination, // Use destinationCategory (e.g., "Europe", "Worldwide") instead of country name
         countryOfResidence: formData.countryOfResidence,
         startDate: formData.startDate,
         endDate: formData.endDate,
@@ -2665,9 +2826,9 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
         const paymentData = {
           quoteId: quoteId,
           paymentMethod: formData.paymentMethod,
-          cardNumber: formData.cardNumber, // Note: In production, this should be tokenized
-          expiryDate: formData.expiryDate,
-          cvv: formData.cvv,
+          cardNumber: formData.cardNumber || '',
+          expiryDate: formData.expiryDate || '',
+          cvv: formData.cvv || '',
           billingAddress: formData.billingAddress,
           amount: calculateTotalPrice(),
           termsAccepted: termsAccepted, // Include terms acceptance status
@@ -2732,7 +2893,9 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
           formData.billingAddress.street && 
           formData.billingAddress.city && 
           formData.billingAddress.postalCode && 
-          formData.billingAddress.country
+          formData.billingAddress.country &&
+          !expiryDateError && // Ensure expiry date is valid
+          formData.expiryDate.length === 9 // Ensure complete date format (MM / YYYY)
         );
         return travelersBasicValid && policyHolderContactValid && paymentValid;
       case 6:
@@ -2743,16 +2906,14 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
   };
 
   const renderPhase1 = () => (
-    <div className="wizard-phase">
-      <h2>Trip Details</h2>
+    <div className="space-y-6">
+      <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">Trip Details</h2>
       
-      <div className="form-section">
-        <h3>Trip Details</h3>
-        
-        <div className="form-group">
-          <label htmlFor="tripType">
+      <div className="space-y-6">
+        <div className="space-y-2">
+          <label htmlFor="tripType" className="block text-sm font-medium text-gray-700">
             Trip Type 
-            <span style={{ fontSize: '0.8em', color: '#666', marginLeft: '5px' }}>
+            <span className="text-xs text-gray-500 ml-1">
               {isLoadingPolicyTypeDestinations ? '(Loading...)' : `(${availablePolicyTypes.length} types available)`}
             </span>
           </label>
@@ -2762,6 +2923,7 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
             onChange={(e) => handleInputChange('tripType', e.target.value)}
             required
             disabled={isLoadingPolicyTypeDestinations}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed text-gray-900"
           >
             <option value="">
               {isLoadingPolicyTypeDestinations ? 'Loading trip types...' : 'Select trip type'}
@@ -2796,15 +2958,16 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
           </select>
         </div>
         
-        <div className="form-row">
-          <div className="form-group">
-            <label htmlFor="countryOfResidence">Country of Residence</label>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <label htmlFor="countryOfResidence" className="block text-sm font-medium text-gray-700">Country of Residence</label>
             <select
               id="countryOfResidence"
               value={formData.countryOfResidence}
               onChange={(e) => handleInputChange('countryOfResidence', e.target.value)}
               required
               disabled={isLoadingCountriesOfResidence}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed text-gray-900"
             >
               <option value="">
                 {isLoadingCountriesOfResidence ? 'Loading countries...' : 'Select your country of residence'}
@@ -2817,39 +2980,52 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
             </select>
           </div>
           
-          <div className="form-group">
-            <label htmlFor="destination">
-              Destination Category 
-              <span 
-                className="help-icon" 
-                onClick={() => setShowHelpPopup(true)}
-                title="Click to see all countries by category"
-              >
-                (?)
-              </span>
+          <div className="space-y-2 relative">
+            <label htmlFor="destination" className="block text-sm font-medium text-gray-700">
+              Destination
             </label>
-            <select
-              id="destination"
-              value={formData.destination}
-              onChange={(e) => handleInputChange('destination', e.target.value)}
-              required
-              disabled={isLoadingCategories}
-            >
-              <option value="">
-                {isLoadingCategories ? 'Loading categories...' : 'Select destination category'}
-              </option>
-              {destinationCategories.map((category) => (
-                <option key={category} value={category}>
-                  {category}
-                </option>
-              ))}
-            </select>
+            <div className="relative">
+              <input
+                type="text"
+                id="destination"
+                value={formData.destination}
+                onChange={(e) => handleDestinationChange(e.target.value)}
+                onBlur={handleDestinationBlur}
+                onFocus={() => {
+                  if (formData.destination.trim().length > 0 && destinationSuggestions.length > 0) {
+                    setShowDestinationSuggestions(true);
+                  }
+                }}
+                placeholder={isLoadingCategories ? 'Loading countries...' : 'Enter country name (e.g., Greece, France, Thailand)'}
+                required
+                disabled={isLoadingCategories}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed text-gray-900"
+              />
+              {showDestinationSuggestions && destinationSuggestions.length > 0 && (
+                <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
+                  {destinationSuggestions.map((suggestion, index) => (
+                    <div
+                      key={index}
+                      onClick={() => handleDestinationSelect(suggestion)}
+                      className="px-4 py-2 hover:bg-blue-50 cursor-pointer border-b border-gray-100 last:border-b-0"
+                    >
+                      {suggestion}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            {formData.destinationCategory && (
+              <p className="text-xs text-gray-500 mt-1">
+                Category: <span className="font-semibold">{formData.destinationCategory}</span>
+              </p>
+            )}
           </div>
         </div>
 
-        <div className="form-row">
-          <div className="form-group">
-            <label htmlFor="startDate">Departure Date <span className="date-format-hint">(DD/MM/YYYY)</span></label>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <label htmlFor="startDate" className="block text-sm font-medium text-gray-700">Departure Date <span className="text-xs text-gray-500">(DD/MM/YYYY)</span></label>
             <CustomDatePicker
               id="startDate"
               value={formData.startDate}
@@ -2858,8 +3034,8 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
               required
             />
           </div>
-          <div className="form-group">
-            <label htmlFor="endDate">Return Date <span className="date-format-hint">(DD/MM/YYYY)</span></label>
+          <div className="space-y-2">
+            <label htmlFor="endDate" className="block text-sm font-medium text-gray-700">Return Date <span className="text-xs text-gray-500">(DD/MM/YYYY)</span></label>
             <CustomDatePicker
               id="endDate"
               value={formData.endDate}
@@ -2876,12 +3052,13 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
           </div>
         </div>
         
-        <div className="form-group">
-          <label htmlFor="numberOfTravelers">Number of Travelers</label>
+        <div className="space-y-2">
+          <label htmlFor="numberOfTravelers" className="block text-sm font-medium text-gray-700">Number of Travelers</label>
           <select
             id="numberOfTravelers"
             value={formData.numberOfTravelers}
             onChange={(e) => handleNumberOfTravelersChange(parseInt(e.target.value))}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
           >
             {[1,2,3,4,5,6,7,8].map(num => (
               <option key={num} value={num}>{num} Traveler{num > 1 ? 's' : ''}</option>
@@ -2893,115 +3070,54 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
   );
 
   const renderPhase2 = () => (
-    <div className="wizard-phase">
-      <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-        <h2 style={{ 
-          fontSize: '2.2em', 
-          color: '#333',
-          margin: '0 0 10px 0',
-          fontWeight: 'bold',
-          fontFamily: 'sans-serif'
-        }}>
+    <div className="space-y-6">
+      <div className="text-center mb-10">
+        <h2 className="text-4xl font-bold text-gray-900 mb-2">
           Choose Your Insurance Plan
         </h2>
-        <p style={{ 
-          fontSize: '1.1em', 
-          color: '#666',
-          margin: '0',
-          fontWeight: '400'
-        }}>
+        <p className="text-lg text-gray-600">
           Select the coverage that best fits your travel needs.
         </p>
       </div>
       
       
       {isLoadingQuotes && (
-        <div className="loading-message">
-          <p>Loading insurance quotes from Terracotta...</p>
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 text-center">
+          <p className="text-blue-700">Loading insurance quotes from Terracotta...</p>
         </div>
       )}
       
       {quoteError && (
-        <div className="error-message">
-          <p>⚠️ {quoteError}</p>
-          <p>Using fallback quotes for demonstration.</p>
+        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 text-center">
+          <p className="text-yellow-800 font-semibold">⚠️ {quoteError}</p>
+          <p className="text-yellow-700 text-sm mt-1">Using fallback quotes for demonstration.</p>
         </div>
       )}
       
-      <div className="quote-options" style={{ 
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'center',
-        gap: '20px',
-        marginTop: '20px',
-        overflowX: 'auto',
-        padding: '20px 0',
-        maxWidth: '100%'
-      }}>
+      <div className="flex flex-row justify-center gap-5 mt-5 overflow-x-auto py-5 max-w-full">
         {quoteOptions.length > 0 ? quoteOptions.map((option) => (
           <div 
             key={option.id} 
-            className={`quote-option ${formData.selectedQuote?.id === option.id ? 'selected' : ''}`}
+            className={`bg-white rounded-lg p-6 cursor-pointer transition-all duration-300 relative min-w-[320px] max-w-[320px] flex-shrink-0 ${
+              formData.selectedQuote?.id === option.id
+                ? 'border-2 border-blue-600 shadow-lg shadow-blue-600/15'
+                : 'border border-gray-300 shadow-md hover:shadow-lg hover:border-blue-600'
+            }`}
             onClick={() => selectQuote(option)}
-            style={{
-              background: 'white',
-              border: formData.selectedQuote?.id === option.id ? '2px solid #1976d2' : '1px solid #e0e0e0',
-              borderRadius: '8px',
-              padding: '24px',
-              cursor: 'pointer',
-              transition: 'all 0.3s ease',
-              boxShadow: formData.selectedQuote?.id === option.id 
-                ? '0 4px 12px rgba(25, 118, 210, 0.15)'
-                : '0 2px 8px rgba(0,0,0,0.1)',
-              position: 'relative',
-              minWidth: '320px',
-              maxWidth: '320px',
-              flexShrink: 0
-            }}
-            onMouseEnter={(e) => {
-              if (formData.selectedQuote?.id !== option.id) {
-                e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.15)';
-                e.currentTarget.style.borderColor = '#1976d2';
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (formData.selectedQuote?.id !== option.id) {
-                e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
-                e.currentTarget.style.borderColor = '#e0e0e0';
-              }
-            }}
           >
             {/* Plan Header */}
-            <div style={{ marginBottom: '20px' }}>
-              <h3 style={{ 
-                margin: '0 0 8px 0', 
-                fontSize: '1.3em', 
-                color: '#1976d2',
-                fontWeight: 'bold'
-              }}>
+            <div className="mb-5 text-center">
+              <h3 className="text-xl font-bold text-blue-600 mb-2">
                 {option.policytypeName || option.policyTypeName || option.name}
               </h3>
-              <p style={{ 
-                margin: '0 0 12px 0', 
-                fontSize: '0.9em', 
-                color: '#666'
-              }}>
+              <p className="text-sm text-gray-600 mb-3">
                 {option.packageName || option.typePackageName}
               </p>
-              <div style={{ marginBottom: '16px' }}>
-                <div style={{ 
-                  fontSize: '2em', 
-                  fontWeight: 'bold', 
-                  color: '#333',
-                  lineHeight: '1'
-                }}>
+              <div className="mb-4">
+                <div className="text-3xl font-bold text-gray-900 leading-tight">
                   {option.currency || '€'}{option.price}
                 </div>
-                <div style={{ 
-                  fontSize: '0.9em', 
-                  color: '#666',
-                  marginTop: '4px'
-                }}>
+                <div className="text-sm text-gray-600 mt-1">
                   per trip
                 </div>
               </div>
@@ -3009,46 +3125,21 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
             
             {/* Best Buy Text */}
             {option.isBestBuy === 1 && option.isBestBuyText && (
-              <div style={{ 
-                marginBottom: '20px',
-                background: '#e8f5e8',
-                border: '1px solid #4caf50',
-                borderRadius: '6px',
-                padding: '8px',
-                fontSize: '0.85em',
-                color: '#2e7d32',
-                textAlign: 'center',
-                fontWeight: 'bold'
-              }}>
+              <div className="mb-5 bg-green-50 border border-green-500 rounded-md p-2 text-xs text-green-800 text-center font-bold">
                 ✨ {option.isBestBuyText} ✨
               </div>
             )}
             
             {/* Summary Covers */}
             {option.SummaryCovers && option.SummaryCovers.length > 0 && (
-              <div style={{ marginBottom: '20px' }}>
-                <h4 style={{ 
-                  fontSize: '1em', 
-                  fontWeight: 'bold', 
-                  marginBottom: '12px',
-                  color: '#333'
-                }}>Coverage Details</h4>
+              <div className="mb-5">
+                <h4 className="text-base font-bold mb-3 text-gray-900 text-center">Coverage Details</h4>
                 {option.SummaryCovers.map((cover, index) => (
-                  <div key={index} style={{ 
-                    marginBottom: '10px',
-                    padding: '8px',
-                    background: '#f8f9fa',
-                    borderRadius: '4px',
-                    fontSize: '0.85em'
-                  }}>
-                    <div style={{ 
-                      fontWeight: 'bold', 
-                      color: '#1976d2',
-                      marginBottom: '4px'
-                    }}>
+                  <div key={index} className="mb-2.5 p-2 bg-gray-50 rounded text-sm text-center">
+                    <div className="font-bold text-blue-600 mb-1">
                       {cover.name}
                     </div>
-                    <div style={{ fontSize: '0.9em' }}>
+                    <div className="text-xs">
                       <span><strong>Limit:</strong> {cover.Limit}</span>
                     </div>
                   </div>
@@ -3057,26 +3148,12 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
             )}
             
             {/* Action Button */}
-            <button 
-              style={{
-                width: '100%',
-                padding: '12px',
-                backgroundColor: formData.selectedQuote?.id === option.id ? '#ff6b35' : '#1976d2',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                fontSize: '0.95em',
-                fontWeight: 'bold',
-                cursor: 'pointer',
-                transition: 'background-color 0.3s ease',
-                textTransform: 'uppercase'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = formData.selectedQuote?.id === option.id ? '#e55a2b' : '#1565c0';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = formData.selectedQuote?.id === option.id ? '#ff6b35' : '#1976d2';
-              }}
+            <button
+              className={`w-full px-4 py-3 rounded font-bold uppercase transition-colors duration-300 text-white ${
+                formData.selectedQuote?.id === option.id
+                  ? 'bg-orange-600 hover:bg-orange-700'
+                  : 'bg-gray-900 hover:bg-gray-800'
+              }`}
             >
               {formData.selectedQuote?.id === option.id ? 'SELECTED' : 'SELECT PLAN'}
             </button>
@@ -3097,8 +3174,8 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
 
   const renderPhase3 = () => (
     <div className="wizard-phase">
-      <h2>Enhance Your Coverage</h2>
-      <p>Add optional coverage for extra protection during your trip.</p>
+      <h2 className="text-center">Enhance Your Coverage</h2>
+      <p className="text-center">Add optional coverage for extra protection during your trip.</p>
       
       <div className="selected-plan-summary">
         <div className="current-plan">
@@ -3143,7 +3220,12 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
                   <div className="policy-header">
                     <div className="policy-icon">{policy.icon}</div>
                     <div className="policy-info">
-                      <h4>{policy.name}</h4>
+                      <h4 className="flex items-center gap-2 flex-wrap">
+                        <span>{policy.name}</span>
+                        {policy.description && (
+                          <span className="text-sm font-normal text-gray-600">- {policy.description}</span>
+                        )}
+                      </h4>
                       {policy.price > 0 && (
                         <div className="policy-price">€{policy.price.toFixed(2)}</div>
                       )}
@@ -3155,9 +3237,6 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
                     >
                       {processingAddonId === policy.id ? 'PROCESSING...' : (isSelected ? 'REMOVE' : 'ADD')}
                     </button>
-                  </div>
-                  <div className="policy-description">
-                    <p>{policy.description}</p>
                   </div>
                 </div>
               );
@@ -3200,8 +3279,8 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
 
     return (
       <div className="wizard-phase">
-        <h2>Review Your Details</h2>
-        <p>Please carefully review all information below. You can go back to make changes if needed.</p>
+        <h2 className="text-center">Review Your Details</h2>
+        <p className="text-center">Please carefully review all information below. You can go back to make changes if needed.</p>
         
         <div className="professional-summary">
           {/* Trip Overview Card */}
@@ -3439,7 +3518,7 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
           <div className="summary-card total-card">
             <div className="card-content">
               <div className="total-summary">
-                <div className="total-row">
+                <div className="total-row base-premium">
                   <span className="total-label">Base Premium:</span>
                   <span className="total-value">€{formData.selectedQuote?.price}</span>
                 </div>
@@ -3607,17 +3686,17 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
 
   const renderPhase7 = () => (
     <div className="wizard-phase">
-      <h2>Payment Details</h2>
-      <p>Enter your payment information to complete your purchase.</p>
+      <h2 className="text-center">Payment Details</h2>
+      <p className="text-center">Enter your payment information to complete your purchase.</p>
       
       {/* Traveler Information and Billing Address - Grouped Background */}
       <div className="payment-traveler-billing-group">
         {/* Traveler Information Section */}
         <div className="form-section">
-          <h3>Traveler Information</h3>
+          <h3 className="text-center" style={{ fontWeight: 'bold' }}>Traveler Information</h3>
           {formData.travelers.map((traveler, index) => (
             <div key={index} className="traveler-info">
-              <h4>Traveler {index + 1}{index === 0 ? '/Policy holder' : ''}</h4>
+              <h4 className="text-center" style={{ fontWeight: 'bold' }}>Traveler {index + 1}{index === 0 ? '/Policy holder' : ''}</h4>
             
             <div className="form-row">
               <div className="form-group">
@@ -3734,7 +3813,7 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
                     id={`phone-${index}`}
                     value={traveler.phone}
                     onChange={(e) => handleTravelerChange(index, 'phone', e.target.value)}
-                    placeholder="+30 123 456 7890"
+                    placeholder="+(XX) XXX XXX XXXX"
                     title="Enter the traveler's phone number"
                     required
                   />
@@ -3746,7 +3825,7 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
             {index === 0 && (
               <>
                 <hr style={{ margin: '20px 0', border: 'none', borderTop: '1px solid #e0e0e0' }} />
-                <h4>Billing Address</h4>
+                <h4 className="text-center" style={{ fontWeight: 'bold' }} >Billing Address</h4>
                 <div className="form-row">
                   <div className="form-group">
                     <label htmlFor="street">Street Address</label>
@@ -3810,14 +3889,21 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
       <div className="payment-method-group">
         <div className="payment-section">
         <div className="payment-methods">
-          <h3>Payment Method</h3>
+          <h3 className="text-center">Payment Method</h3>
           <div className="payment-method-info">
-            <p>We accept all major credit and debit cards for secure payment processing.</p>
+            <p className="text-center">We accept all major credit and debit cards for secure payment processing.</p>
+            <div className="flex justify-center items-center gap-6 mt-4">
+              <img 
+                src="/visa_master.png" 
+                alt="VISA and Mastercard payment methods" 
+                style={{ maxWidth: '200px', height: 'auto' }}
+              />
+            </div>
           </div>
         </div>
 
         <div className="card-details">
-          <h3>Card Details</h3>
+          <h3 className="text-center">Card Details</h3>
           <div className="form-group">
             <label htmlFor="cardNumber">Card Number</label>
             <input
@@ -3848,18 +3934,16 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
                 type="text"
                 id="expiryDate"
                 value={formData.expiryDate}
-                onChange={(e) => {
-                  let value = e.target.value.replace(/\D/g, ''); // Remove non-digits
-                  if (value.length >= 2) {
-                    value = value.substring(0, 2) + ' / ' + value.substring(2, 6);
-                  }
-                  handleInputChange('expiryDate', value);
-                }}
+                onChange={(e) => handleExpiryDateChange(e.target.value)}
                 placeholder="MM / YYYY"
-                title="Enter card expiry date in MM / YYYY format"
+                title="Enter card expiry date in MM / YYYY format (Month: 01-12, Year: current year or later)"
                 maxLength={9}
                 required
+                className={expiryDateError ? 'border-red-500' : ''}
               />
+              {expiryDateError && (
+                <p className="text-red-500 text-sm mt-1">{expiryDateError}</p>
+              )}
             </div>
             <div className="form-group">
               <label htmlFor="cvv">CVV</label>
@@ -3929,10 +4013,10 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
 
   const renderPhase8 = () => (
     <div className="wizard-phase">
-      <h2>🎉 Congratulations!</h2>
-      <p>Your travel insurance has been successfully purchased.</p>
+      <h2 className="text-center">🎉 Congratulations!</h2>
+      <p className="text-center">Your travel insurance has been successfully purchased.</p>
       
-      <div className="success-message">
+      <div className="success-message bg-gray-900">
         <div className="policy-number">
           <strong>Policy Number:</strong> {policyNumber ? policyNumber : 'Processing...'}
         </div>
@@ -3942,8 +4026,8 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
       </div>
       
       <div className="documents-section">
-        <h3>Your Documents</h3>
-        <p style={{ fontSize: '14px', color: '#666', marginBottom: '15px' }}>
+        <h3 className="text-center">Your Documents</h3>
+        <p className="text-center" style={{ fontSize: '14px', color: '#666', marginBottom: '15px' }}>
           Click on any document to open it in a new tab
         </p>
         <div className="document-links">
@@ -4065,7 +4149,7 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
       </div>
       
       <div className="next-steps">
-        <h3>What's Next?</h3>
+        <h3 className="text-center">What's Next?</h3>
         <ul>
           <li>Save your policy documents in a safe place</li>
           <li>Keep the emergency contact numbers with you while traveling</li>
@@ -4109,18 +4193,35 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8">Travel Insurance Quote Wizard</h1>
             <div className="flex justify-center items-center gap-4 mb-8 relative px-8">
-              {[1, 2, 3, 4, 5, 6].map(phase => (
-                <div key={phase} className={`progress-step ${currentPhase >= phase ? 'active' : ''} ${currentPhase === phase ? 'current' : ''}`}>
-                  <div className="step-number">{phase}</div>
-                  <div className="step-label">
-                    {phase === 1 && 'Details'}
-                    {phase === 2 && 'Quotes'}
-                    {phase === 3 && 'Add-ons'}
-                    {phase === 4 && 'Review'}
-                    {phase === 5 && 'Payment'}
-                    {phase === 6 && 'Documents'}
+              {[1, 2, 3, 4, 5, 6].map((phase, index) => (
+                <React.Fragment key={phase}>
+                  <div className={`flex flex-col items-center relative flex-1 max-w-[120px] ${index < 5 ? 'w-full' : ''}`}>
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold mb-2 transition-all duration-300 relative z-10 ${
+                      currentPhase >= phase 
+                        ? currentPhase === phase 
+                          ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' 
+                          : 'bg-blue-600 text-white'
+                        : 'bg-gray-200 text-gray-600'
+                    }`}>
+                      {phase}
+                    </div>
+                    <div className={`text-sm font-medium ${
+                      currentPhase >= phase ? 'text-blue-600' : 'text-gray-600'
+                    }`}>
+                      {phase === 1 && 'Details'}
+                      {phase === 2 && 'Quotes'}
+                      {phase === 3 && 'Add-ons'}
+                      {phase === 4 && 'Review'}
+                      {phase === 5 && 'Payment'}
+                      {phase === 6 && 'Documents'}
+                    </div>
                   </div>
-                </div>
+                  {index < 5 && (
+                    <div className={`flex-1 h-0.5 rounded transition-all duration-300 ${
+                      currentPhase > phase ? 'bg-blue-600' : 'bg-gray-300'
+                    }`} style={{ maxWidth: 'calc(100% - 120px)' }} />
+                  )}
+                </React.Fragment>
               ))}
             </div>
         </div>
@@ -4132,7 +4233,7 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
         <div className="flex justify-between items-center px-4 gap-4">
           {currentPhase > 1 && currentPhase < 6 && (
             <button 
-              className="bg-transparent text-blue-600 border-2 border-blue-600 hover:bg-blue-600 hover:text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed" 
+              className="bg-transparent text-gray-900 border-2 border-gray-900 hover:bg-gray-900 hover:text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed" 
               onClick={prevPhase}
               aria-label="Go to previous step"
               title="Go back to the previous step"
@@ -4146,7 +4247,7 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
             <>
               <div></div>
               <button 
-                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-blue-600" 
+                className="bg-gray-900 hover:bg-gray-800 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-gray-900" 
                 onClick={nextPhase}
                 disabled={!isPhaseValid(currentPhase)}
                 aria-label="Go to next step"
@@ -4159,7 +4260,7 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
           )}
           {currentPhase > 1 && currentPhase < 5 && (
             <button 
-              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-blue-600" 
+              className="bg-gray-900 hover:bg-gray-800 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-gray-900" 
               onClick={nextPhase}
               disabled={!isPhaseValid(currentPhase)}
               aria-label={currentPhase === 4 ? 'Proceed to payment step' : 'Go to next step'}
@@ -4174,7 +4275,7 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
             <>
               <div></div>
               <button 
-                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-blue-600" 
+                className="bg-gray-900 hover:bg-gray-800 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-gray-900" 
                 onClick={processPayment}
                 disabled={!isPhaseValid(currentPhase) || isProcessing}
                 aria-label={isProcessing ? 'Processing payment, please wait' : `Pay €${calculateTotalPrice().toFixed(2)} for your travel insurance`}
@@ -4191,7 +4292,7 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
             <>
               <div></div>
               <button 
-                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300" 
+                className="bg-gray-900 hover:bg-gray-800 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300" 
                 onClick={() => window.location.href = '/'}
                 aria-label="Return to homepage"
                 title="Go back to the main homepage"

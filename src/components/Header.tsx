@@ -34,9 +34,6 @@ const Header: React.FC = () => {
     </div>
   </button>
 </div>
-
-
-
         {/* Mobile menu button */}
         <div className="flex lg:hidden">
           <button
@@ -58,7 +55,7 @@ const Header: React.FC = () => {
             <button
               onClick={() => setProductsOpen(!productsOpen)}
               onBlur={() => setTimeout(() => setProductsOpen(false), 200)}
-              className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-600 transition-colors"
+              className="flex items-center gap-x-1 text-3sm font-semibold leading-6 text-gray-900 hover:text-indigo-600 transition-colors"
             >
               Products
               <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" className="h-5 w-5 flex-none text-gray-400">
@@ -116,13 +113,13 @@ const Header: React.FC = () => {
             )}
           </div>
 
-          <button onClick={() => handleNavigation('/about')} className="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-600 transition-colors">
+          <button onClick={() => handleNavigation('/about')} className="text-3sm font-semibold leading-6 text-gray-900 hover:text-indigo-600 transition-colors">
             About
           </button>
-          <button onClick={() => handleNavigation('/contact')} className="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-600 transition-colors">
+          <button onClick={() => handleNavigation('/contact')} className="text-3sm font-semibold leading-6 text-gray-900 hover:text-indigo-600 transition-colors">
             Contact
           </button>
-          <button onClick={() => handleNavigation('/learn-more')} className="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-600 transition-colors">
+          <button onClick={() => handleNavigation('/learn-more')} className="text-3sm font-semibold leading-6 text-gray-900 hover:text-indigo-600 transition-colors border-0 outline-none focus:outline-none">
             Learn More
           </button>
         </div>
@@ -193,7 +190,7 @@ const Header: React.FC = () => {
                   <button onClick={() => handleNavigation('/contact')} className="-mx-3 block w-full text-left rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
                     Contact
                   </button>
-                  <button onClick={() => handleNavigation('/learn-more')} className="-mx-3 block w-full text-left rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                  <button onClick={() => handleNavigation('/learn-more')} className="-mx-3 block w-full text-left rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 border-0 outline-none focus:outline-none">
                     Learn More
                   </button>
                 </div>

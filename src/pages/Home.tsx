@@ -52,15 +52,6 @@ const Home: React.FC = () => {
     }
   };
 
-  const openModal = (policyType: keyof typeof policyInfo) => {
-    setModalState({
-      isOpen: true,
-      policyType,
-      title: policyInfo[policyType].title,
-      content: policyInfo[policyType].content
-    });
-  };
-
   const closeModal = () => {
     setModalState({
       isOpen: false,
@@ -141,9 +132,8 @@ const Home: React.FC = () => {
             <div className="mt-16 grid max-w-lg grid-cols-1 items-start gap-8 sm:mt-20 lg:max-w-6xl lg:grid-cols-3">
             
             {/* REGULAR Single Trip */}
-            <div className="rounded-3xl bg-white/60 p-8 ring-1 ring-gray-900/10 hover:ring-2 hover:ring-blue-600 transition-all duration-300 sm:p-10">
-              <h3 id="tier-regular" className="text-base/7 font-semibold text-blue-600 flex items-center gap-2">
-                <span className="text-2xl">🛡️</span>
+            <div className="rounded-3xl bg-white/60 p-8 ring-1 ring-gray-900/10 hover:ring-2 hover:ring-gray-900 transition-all duration-300 sm:p-10">
+              <h3 id="tier-regular" className="text-base/7 font-semibold text-gray-900 flex items-center gap-2">
                 Single Trip
               </h3>
               <p className="mt-6 text-base/7 text-gray-600 text-justify">
@@ -191,9 +181,8 @@ const Home: React.FC = () => {
             </div>
 
             {/* ANNUAL MULTI-TRIP */}
-            <div className="rounded-3xl bg-white/60 p-8 ring-1 ring-gray-900/10 hover:ring-2 hover:ring-orange-600 transition-all duration-300 sm:p-10">
-              <h3 id="tier-annual" className="text-base/7 font-semibold text-orange-600 flex items-center gap-2">
-                <span className="text-2xl">🌍</span>
+            <div className="rounded-3xl bg-white/60 p-8 ring-1 ring-gray-900/10 hover:ring-2 hover:ring-gray-900 transition-all duration-300 sm:p-10">
+              <h3 id="tier-annual" className="text-base/7 font-semibold text-gray-900 flex items-center gap-2">
                 Annual Multi-trip
               </h3>
               <p className="mt-6 text-base/7 text-gray-600 text-justify">
@@ -246,10 +235,9 @@ const Home: React.FC = () => {
               </a>
             </div>
 
-            {/* COMPREHENSIVE Single Trip */}
-            <div className="rounded-3xl bg-white/60 p-8 ring-1 ring-gray-900/10 hover:ring-2 hover:ring-purple-600 transition-all duration-300 sm:p-10">
-              <h3 id="tier-comprehensive" className="text-base/7 font-semibold text-purple-600 flex items-center gap-2">
-                <span className="text-2xl">⭐</span>
+            {/* Longstay Single Trip */}
+            <div className="rounded-3xl bg-white/60 p-8 ring-1 ring-gray-900/10 hover:ring-2 hover:ring-gray-900 transition-all duration-300 sm:p-10">
+              <h3 id="tier-comprehensive" className="text-base/7 font-semibold text-gray-900 flex items-center gap-2">
                 Longstay Trip
               </h3>
               <p className="mt-6 text-base/7 text-gray-600 text-justify">

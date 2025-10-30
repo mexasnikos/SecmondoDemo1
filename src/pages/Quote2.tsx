@@ -476,6 +476,7 @@ const Quote2: React.FC<QuoteProps> = ({ onNavigate }) => {
     console.log('Creating TerracottaService instance...');
     return TerracottaService.getInstance('4072', '111427');
   });
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [screeningQuestions, setScreeningQuestions] = useState<any[]>([]);
   const [screeningAnswers, setScreeningAnswers] = useState<{[key: number]: 'yes' | 'no'}>({});
   const [isLoadingQuotes, setIsLoadingQuotes] = useState(false);
@@ -733,7 +734,6 @@ const Quote2: React.FC<QuoteProps> = ({ onNavigate }) => {
   }, [destinationCategories]);
 
   // Generate quotes when component mounts or when form data is complete
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     const generateQuotesIfNeeded = async () => {
       // Only generate quotes if we have basic form data and we're in phase 2
@@ -749,6 +749,7 @@ const Quote2: React.FC<QuoteProps> = ({ onNavigate }) => {
     };
 
     generateQuotesIfNeeded();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPhase]);
 
   // Helper function to normalize SOAP policy type names to match database

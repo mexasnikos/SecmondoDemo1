@@ -491,6 +491,7 @@ const Quote: React.FC<QuoteProps> = ({ onNavigate }) => {
   const [isLoadingPolicyTypeDestinations, setIsLoadingPolicyTypeDestinations] = useState(false);
   
   // Destination categories state
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [destinationCategories, setDestinationCategories] = useState<string[]>([]);
   const [isLoadingCategories, setIsLoadingCategories] = useState(false);
   

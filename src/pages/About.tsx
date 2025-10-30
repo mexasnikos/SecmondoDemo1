@@ -15,7 +15,7 @@ const About: React.FC<AboutProps> = () => {
         {/* Header Section */}
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            About TravelSafe
+            About Secmondo
           </h1>
           <p className="text-xl md:text-2xl text-gray-600">
             Your trusted partner for travel insurance worldwide

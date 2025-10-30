@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 interface AnnualMultiTripProps {
   onNavigate?: (page: string) => void;
@@ -8,6 +8,31 @@ const AnnualMultiTrip: React.FC<AnnualMultiTripProps> = ({ onNavigate }) => {
   const [activeTab, setActiveTab] = useState('overview');
   const [destinationCategories, setDestinationCategories] = useState<{[key: string]: string[]}>({});
   const [isLoadingCategories, setIsLoadingCategories] = useState(false);
+  const tabMenuRef = useRef<HTMLDivElement>(null);
+  const [expandedCoverage, setExpandedCoverage] = useState<{[key: number]: boolean}>({});
+
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab);
+    // Scroll to the tab menu to show content from the beginning
+    if (tabMenuRef.current) {
+      const headerHeight = 64; // Height of the sticky header
+      const section = tabMenuRef.current.closest('section');
+      if (section) {
+        const sectionTop = section.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo({
+          top: sectionTop - headerHeight,
+          behavior: 'smooth'
+        });
+      }
+    }
+  };
+
+  const toggleCoverage = (index: number) => {
+    setExpandedCoverage(prev => ({
+      ...prev,
+      [index]: !prev[index]
+    }));
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -128,6 +153,310 @@ const AnnualMultiTrip: React.FC<AnnualMultiTripProps> = ({ onNavigate }) => {
                   <div className="pointer-events-none absolute inset-px rounded-lg shadow outline outline-1 outline-black/5 max-lg:rounded-b-[2rem] lg:rounded-r-[2rem]"></div>
             </div>
             </div>
+
+              {/* Section 1: Coverage */}
+              <section className="mt-24 max-w-7xl mx-auto px-6 lg:px-8">
+                <div className="text-center mb-12">
+                  <h2 className="text-4xl font-bold text-gray-900 mb-4">Annual Multi-Trip Coverage</h2>
+                  <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Unlimited trips with comprehensive protection for frequent travelers
+                  </p>
+                </div>
+                <div className="space-y-4">
+                  {[
+                    {
+                      title: 'Medical Coverage',
+                      description: 'Up to €10,000,000 medical expenses coverage for every trip, including emergency treatment and medical repatriation.'
+                    },
+                    {
+                      title: 'FREE Winter Sports',
+                      description: 'Enjoy 17 days of winter sports coverage included FREE with every annual multi-trip policy.'
+                    },
+                    {
+                      title: 'Unlimited Trips',
+                      description: 'Take as many trips as you want throughout the year, each up to 45 days duration.'
+                    },
+                    {
+                      title: 'Baggage Protection',
+                      description: 'Coverage up to €2,500 per trip for lost, stolen, or damaged luggage and belongings.'
+                    },
+                    {
+                      title: 'Business Travel',
+                      description: 'Perfect for business travelers with coverage for work-related trips and equipment.'
+                    },
+                    {
+                      title: 'Worldwide Coverage',
+                      description: 'Travel anywhere in the world with 24/7 emergency assistance on every trip.'
+                    }
+                  ].map((coverage, index) => (
+                    <div key={index} className="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden">
+                      <button
+                        onClick={() => toggleCoverage(index)}
+                        className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 transition-colors"
+                      >
+                        <div className="flex items-center space-x-4">
+                          <h3 className="text-xl font-bold text-gray-900">{coverage.title}</h3>
+                        </div>
+                        <div className="text-2xl font-bold text-blue-600">
+                          {expandedCoverage[index] ? '−' : '+'}
+                        </div>
+                      </button>
+                      {expandedCoverage[index] && (
+                        <div className="px-6 pb-6 pt-2">
+                          <p className="text-gray-600 leading-relaxed">{coverage.description}</p>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              {/* Section 2: Secmondo APP */}
+              <section className="mt-24 max-w-7xl mx-auto px-6 lg:px-8">
+                <div className="bg-gradient-to-br from-blue-600 to-purple-600 rounded-3xl p-12 text-white">
+                  <div className="grid lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                      <h2 className="text-4xl font-bold mb-6">Secmondo Mobile App</h2>
+                      <p className="text-xl text-blue-100 mb-8">
+                        Manage your travel insurance on-the-go with our intuitive mobile application. 
+                        Access your policy, file claims, and get emergency support anytime, anywhere.
+                      </p>
+                      <div className="space-y-4 mb-8">
+                        <div className="flex items-start space-x-3">
+                          <span className="text-2xl">📱</span>
+                          <div>
+                            <h4 className="font-semibold text-lg">Instant Policy Access</h4>
+                            <p className="text-blue-100">View and download your policy documents instantly</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start space-x-3">
+                          <span className="text-2xl">📸</span>
+                          <div>
+                            <h4 className="font-semibold text-lg">Quick Claims Submission</h4>
+                            <p className="text-blue-100">Submit claims with photos directly from your phone</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start space-x-3">
+                          <span className="text-2xl">🆘</span>
+                          <div>
+                            <h4 className="font-semibold text-lg">24/7 Emergency Support</h4>
+                            <p className="text-blue-100">One-tap access to emergency assistance worldwide</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex gap-4">
+                        <a href="https://apps.apple.com" className="inline-flex items-center px-6 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors">
+                          <span className="mr-2">📲</span> App Store
+                        </a>
+                        <a href="https://play.google.com" className="inline-flex items-center px-6 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors">
+                          <span className="mr-2">📲</span> Google Play
+                        </a>
+                      </div>
+                    </div>
+                    <div className="flex justify-center">
+                      <div className="relative">
+                        <div className="absolute inset-0 bg-white/20 rounded-3xl blur-xl"></div>
+                        <div className="relative bg-white rounded-3xl p-8 text-center">
+                          <div className="text-6xl mb-4">📱</div>
+                          <h3 className="text-2xl font-bold text-gray-900 mb-4">Secmondo App</h3>
+                          <div className="space-y-2 text-left text-gray-700">
+                            <div className="flex items-center">
+                              <span className="text-green-600 mr-2">✓</span>
+                              Digital policy cards
+                            </div>
+                            <div className="flex items-center">
+                              <span className="text-green-600 mr-2">✓</span>
+                              Offline access
+                            </div>
+                            <div className="flex items-center">
+                              <span className="text-green-600 mr-2">✓</span>
+                              Real-time claim tracking
+                            </div>
+                            <div className="flex items-center">
+                              <span className="text-green-600 mr-2">✓</span>
+                              Travel alerts & tips
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              {/* Section 3: Why Choose Secmondo */}
+              <section className="mt-24 max-w-7xl mx-auto px-6 lg:px-8">
+                <div className="text-center mb-12">
+                  <h2 className="text-4xl font-bold text-gray-900 mb-4">Why Choose Secmondo?</h2>
+                  <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Trusted by thousands of travelers worldwide for reliable coverage and exceptional service
+                  </p>
+                </div>
+                <div className="grid md:grid-cols-2 gap-8">
+                  <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-2xl">
+                    <h3 className="text-2xl font-bold text-gray-900 mb-3">Industry Leaders</h3>
+                    <p className="text-gray-700">Backed by Lloyd's of London and Helvetia Insurance, ensuring financial security and world-class coverage with over 500 years of combined experience.</p>
+                  </div>
+                  <div className="bg-gradient-to-br from-green-50 to-green-100 p-8 rounded-2xl">
+                    <h3 className="text-2xl font-bold text-gray-900 mb-3">Competitive Pricing</h3>
+                    <p className="text-gray-700">Get comprehensive coverage at affordable rates with no hidden fees. Transparent pricing and flexible payment options to suit your budget.</p>
+                  </div>
+                  <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-8 rounded-2xl">
+                    <h3 className="text-2xl font-bold text-gray-900 mb-3">Fast Claims Process</h3>
+                    <p className="text-gray-700">Quick and hassle-free claims processing. Our dedicated team ensures your claims are handled efficiently, getting you reimbursed faster.</p>
+                  </div>
+                  <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-8 rounded-2xl">
+                    <h3 className="text-2xl font-bold text-gray-900 mb-3">24/7 Support</h3>
+                    <p className="text-gray-700">Round-the-clock customer support in multiple languages. Our emergency assistance team is always ready to help, wherever you are in the world.</p>
+                  </div>
+                </div>
+              </section>
+
+              {/* Section 4: Opinions */}
+              <section className="mt-24 max-w-7xl mx-auto px-6 lg:px-8">
+                <div className="text-center mb-12">
+                  <h2 className="text-4xl font-bold text-gray-900 mb-4">What Our Customers Say</h2>
+                  <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Real experiences from travelers who trust Secmondo for their insurance needs
+                  </p>
+                </div>
+                <div className="grid md:grid-cols-3 gap-8">
+                  <div className="bg-white rounded-2xl shadow-lg p-8">
+                    <div className="flex items-center mb-4">
+                      <div className="w-12 h-12 bg-gray-900 rounded-full flex items-center justify-center text-white font-bold mr-4">
+                        SJ
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-gray-900">Sarah Johnson</h4>
+                        <p className="text-sm text-gray-600">Solo Traveler</p>
+                      </div>
+                    </div>
+                    <div className="text-yellow-400 text-xl mb-3">⭐⭐⭐⭐⭐</div>
+                    <p className="text-gray-700 leading-relaxed">
+                      "I fell ill in Thailand and needed emergency care. Secmondo covered everything - hospital bills and extended stay. The 24/7 support was amazing. Highly recommend!"
+                    </p>
+                  </div>
+                  <div className="bg-white rounded-2xl shadow-lg p-8">
+                    <div className="flex items-center mb-4">
+                      <div className="w-12 h-12 bg-gray-900 rounded-full flex items-center justify-center text-white font-bold mr-4">
+                        MC
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-gray-900">Mike Chen</h4>
+                        <p className="text-sm text-gray-600">Business Traveler</p>
+                      </div>
+                    </div>
+                    <div className="text-yellow-400 text-xl mb-3">⭐⭐⭐⭐⭐</div>
+                    <p className="text-gray-700 leading-relaxed">
+                      "As someone who travels 20+ times a year, the Annual Multi-Trip policy is a game-changer. Best value for money and hassle-free coverage!"
+                    </p>
+                  </div>
+                  <div className="bg-white rounded-2xl shadow-lg p-8">
+                    <div className="flex items-center mb-4">
+                      <div className="w-12 h-12 bg-gray-900 rounded-full flex items-center justify-center text-white font-bold mr-4">
+                        ER
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-gray-900">Emma Rodriguez</h4>
+                        <p className="text-sm text-gray-600">Family Traveler</p>
+                      </div>
+                    </div>
+                    <div className="text-yellow-400 text-xl mb-3">⭐⭐⭐⭐⭐</div>
+                    <p className="text-gray-700 leading-relaxed">
+                      "Perfect for our family! We take multiple vacations each year and this policy saves us money while providing excellent coverage for all our trips."
+                    </p>
+                  </div>
+                </div>
+              </section>
+
+              {/* Section 5: More Coverages */}
+              <section className="mt-24 mb-12 max-w-7xl mx-auto px-6 lg:px-8">
+                <div className="text-center mb-12">
+                  <h2 className="text-4xl font-bold text-gray-900 mb-4">Explore More Coverage Options</h2>
+                  <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Find the perfect insurance policy for your travel needs
+                  </p>
+                </div>
+                <div className="grid md:grid-cols-2 gap-8">
+                  {/* Single Trip */}
+                  <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-3xl p-8 border border-blue-200 hover:shadow-xl transition-all">
+                    <div className="flex items-center mb-4">
+                      <span className="text-5xl mr-4">✈️</span>
+                      <div>
+                        <h3 className="text-2xl font-bold text-gray-900">Single Trip</h3>
+                        <p className="text-blue-600 font-semibold">For occasional travelers</p>
+                      </div>
+                    </div>
+                    <p className="text-gray-700 mb-6 leading-relaxed">
+                      Perfect for one-time vacations or business trips. Comprehensive coverage for trips up to 365 days with flexible options.
+                    </p>
+                    <ul className="space-y-2 mb-6">
+                      <li className="flex items-center text-gray-700">
+                        <span className="text-green-600 mr-2">✓</span>
+                        Coverage up to 365 days
+                      </li>
+                      <li className="flex items-center text-gray-700">
+                        <span className="text-green-600 mr-2">✓</span>
+                        €10M medical coverage
+                      </li>
+                      <li className="flex items-center text-gray-700">
+                        <span className="text-green-600 mr-2">✓</span>
+                        Trip cancellation included
+                      </li>
+                      <li className="flex items-center text-gray-700">
+                        <span className="text-green-600 mr-2">✓</span>
+                        Best for single holidays
+                      </li>
+                    </ul>
+                    <a 
+                      href="/singletrip" 
+                      className="inline-block w-full text-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all"
+                    >
+                      Learn More
+                    </a>
+                  </div>
+
+                  {/* Long Stay Trip */}
+                  <div className="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-3xl p-8 border border-purple-200 hover:shadow-xl transition-all">
+                    <div className="flex items-center mb-4">
+                      <span className="text-5xl mr-4">🌏</span>
+                      <div>
+                        <h3 className="text-2xl font-bold text-gray-900">Long Stay Trip</h3>
+                        <p className="text-purple-600 font-semibold">Up to 15 months coverage</p>
+                      </div>
+                    </div>
+                    <p className="text-gray-700 mb-6 leading-relaxed">
+                      Ideal for gap years, working holidays, and digital nomads. Comprehensive coverage for extended 
+                      trips with enhanced benefits including business equipment and study materials.
+                    </p>
+                    <ul className="space-y-2 mb-6">
+                      <li className="flex items-center text-gray-700">
+                        <span className="text-green-600 mr-2">✓</span>
+                        Coverage up to 15 months
+                      </li>
+                      <li className="flex items-center text-gray-700">
+                        <span className="text-green-600 mr-2">✓</span>
+                        Enhanced medical coverage
+                      </li>
+                      <li className="flex items-center text-gray-700">
+                        <span className="text-green-600 mr-2">✓</span>
+                        Business equipment protection
+                      </li>
+                      <li className="flex items-center text-gray-700">
+                        <span className="text-green-600 mr-2">✓</span>
+                        Perfect for long-term adventures
+                      </li>
+                    </ul>
+                    <a 
+                      href="/longstaytrip" 
+                      className="inline-block w-full text-center px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg transition-all"
+                    >
+                      Learn More
+                    </a>
+                  </div>
+                </div>
+              </section>
+
             </div>
           </div>
         );
@@ -144,43 +473,43 @@ const AnnualMultiTrip: React.FC<AnnualMultiTripProps> = ({ onNavigate }) => {
                 <div className="text-gray-500">Loading destination categories...</div>
               </div>
             ) : (
-              <div className="grid md:grid-cols-3 gap-6 mt-8">
-                {Object.entries(destinationCategories).map(([category, countries], index) => {
-                  const categoryNames: {[key: string]: string} = {
-                    'Europe': 'Domestic and European',
-                    'Worldwide': 'Worldwide All Countries'
-                  };
-                  
-                  const displayName = categoryNames[category] || category;
-                  const colors = [
-                    { bg: 'bg-green-50', text: 'text-green-800' },
-                    { bg: 'bg-blue-50', text: 'text-blue-800' },
-                    { bg: 'bg-purple-50', text: 'text-purple-800' }
-                  ];
-                  
-                  return (
-                    <div key={category} className={`${colors[index % colors.length].bg} p-6 rounded-lg`}>
-                      <h4 className={`font-semibold ${colors[index % colors.length].text} mb-2`}>
-                        {displayName}
-                      </h4>
-                      <div className="text-gray-700 mb-3">
-                        {countries.length} countries covered
-                      </div>
-                      <div className="max-h-40 overflow-y-auto">
-                        <div className="text-sm text-gray-600 space-y-1">
-                          {countries.slice(0, 10).map((country, idx) => (
-                            <div key={idx} className="truncate">• {country}</div>
-                          ))}
-                          {countries.length > 10 && (
-                            <div className="text-gray-500 italic">
-                              ... and {countries.length - 10} more countries
+              <div className="mt-8 overflow-x-auto">
+                <table className="min-w-full bg-white border border-gray-300 rounded-lg">
+                  <thead>
+                    <tr className="bg-gray-900 text-white">
+                      <th className="py-4 px-6 text-left font-semibold text-lg border-b border-gray-300">
+                        Destination Category
+                      </th>
+                      <th className="py-4 px-6 text-left font-semibold text-lg border-b border-gray-300">
+                        Countries Covered
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {Object.entries(destinationCategories).map(([category, countries], index) => {
+                      const categoryNames: {[key: string]: string} = {
+                        'Europe': 'Domestic and European',
+                        'Worldwide': 'Worldwide All Countries'
+                      };
+                      
+                      const displayName = categoryNames[category] || category;
+                      
+                      return (
+                        <tr key={category} className={`${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-blue-50 transition-colors`}>
+                          <td className="py-4 px-6 border-b border-gray-200 font-medium text-gray-800 align-top">
+                            {displayName}
+                            <div className="text-sm text-gray-500 mt-1">
+                              ({countries.length} countries)
                             </div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
+                          </td>
+                          <td className="py-4 px-6 border-b border-gray-200 text-gray-700">
+                            {countries.join(', ')}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
               </div>
             )}
           </div>
@@ -193,24 +522,33 @@ const AnnualMultiTrip: React.FC<AnnualMultiTripProps> = ({ onNavigate }) => {
               Please review the detailed policy wording to understand the terms, conditions, and exclusions 
               of your Annual Multi-Trip Insurance coverage.
             </p>
-            <div className="bg-gray-50 p-6 rounded-lg">
-              <h4 className="font-semibold text-gray-800 mb-4">Important Policy Information</h4>
-              <div className="space-y-4">
-                <div>
-                  <h5 className="font-medium text-gray-700">Coverage Limits</h5>
-                  <p className="text-sm text-gray-600">Medical expenses: €10,000,000 | Personal liability: €2,000,000 | Baggage: €2,500 per trip</p>
+            
+            {/* Policy Document Download */}
+            <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-6 rounded-lg border border-blue-200">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-4">
+                  <div className="text-4xl">📄</div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 text-lg">Secmondo Policy Wording</h4>
+                    <p className="text-sm text-gray-600">Combined Policy Document - Version 1 (30-10-2025)</p>
+                  </div>
                 </div>
-                <div>
-                  <h5 className="font-medium text-gray-700">Trip Duration</h5>
-                  <p className="text-sm text-gray-600">Maximum 31 days per individual trip, unlimited trips per year</p>
-                </div>
-                <div>
-                  <h5 className="font-medium text-gray-700">Exclusions</h5>
-                  <p className="text-sm text-gray-600">Pre-existing medical conditions, extreme sports (unless specified), war zones</p>
-              </div>
-                <div>
-                  <h5 className="font-medium text-gray-700">Claims Process</h5>
-                  <p className="text-sm text-gray-600">Contact our 24/7 helpline immediately in case of emergency or claim</p>
+                <div className="flex gap-3">
+                  <a
+                    href="/Secmondo Policy Wording - COMBINED - V1 30-10-2025.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all duration-300 shadow-md hover:shadow-lg"
+                  >
+                    View PDF
+                  </a>
+                  <a
+                    href="/Secmondo Policy Wording - COMBINED - V1 30-10-2025.pdf"
+                    download
+                    className="px-6 py-3 bg-gray-900 hover:bg-gray-800 text-white font-semibold rounded-lg transition-all duration-300 shadow-md hover:shadow-lg"
+                  >
+                    Download PDF
+                  </a>
                 </div>
               </div>
             </div>
@@ -273,13 +611,13 @@ const AnnualMultiTrip: React.FC<AnnualMultiTripProps> = ({ onNavigate }) => {
 
       {/* Section 2: Tabbed Menu Content */}
       <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Tab Menu */}
-          <div className="border-b border-gray-200 mb-8">
-            <nav className="flex space-x-8">
+          <div ref={tabMenuRef} className="sticky top-16 bg-white z-40 border-b border-gray-200 mb-8 pb-4">
+            <nav className="flex space-x-8 justify-center pt-4">
               <button
-                onClick={() => setActiveTab('overview')}
-                className={`py-4 px-6 border-b-2 font-medium text-sm transition-colors duration-200 rounded-t-lg ${
+                onClick={() => handleTabChange('overview')}
+                className={`py-4 px-6 border-b-2 font-medium text-lg transition-colors duration-200 rounded-t-lg ${
                   activeTab === 'overview'
                     ? 'bg-gray-900 text-white border-gray-900'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
@@ -288,8 +626,8 @@ const AnnualMultiTrip: React.FC<AnnualMultiTripProps> = ({ onNavigate }) => {
                 Overview
               </button>
               <button
-                onClick={() => setActiveTab('geographical')}
-                className={`py-4 px-6 border-b-2 font-medium text-sm transition-colors duration-200 rounded-t-lg ${
+                onClick={() => handleTabChange('geographical')}
+                className={`py-4 px-6 border-b-2 font-medium text-lg transition-colors duration-200 rounded-t-lg ${
                   activeTab === 'geographical'
                     ? 'bg-gray-900 text-white border-gray-900'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
@@ -298,8 +636,8 @@ const AnnualMultiTrip: React.FC<AnnualMultiTripProps> = ({ onNavigate }) => {
                 Geographical
               </button>
               <button
-                onClick={() => setActiveTab('policy')}
-                className={`py-4 px-6 border-b-2 font-medium text-sm transition-colors duration-200 rounded-t-lg ${
+                onClick={() => handleTabChange('policy')}
+                className={`py-4 px-6 border-b-2 font-medium text-lg transition-colors duration-200 rounded-t-lg ${
                   activeTab === 'policy'
                     ? 'bg-gray-900 text-white border-gray-900'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'

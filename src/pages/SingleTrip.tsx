@@ -89,63 +89,271 @@ const SingleTrip: React.FC<SingleTripProps> = ({ onNavigate }) => {
                <p className="mt-2 !text-left text-lg leading-relaxed text-gray-600">
                  Single Trip Travel Insurance is designed for people travelling independently or on a package holiday with a maximum trip duration of up to 15 months, depending on age. Globelink travel insurance policies for a Single Trip are available to people who are living in UK, EU, and EEA countries including Iceland, Liechtenstein and Norway.
                </p>
-                <div className="mt-10 grid gap-4 sm:mt-16 lg:grid-cols-2 lg:grid-rows-[400px_350px]">
-                <div className="relative lg:row-span-1">
-                  <div className="absolute inset-px rounded-[3rem] bg-white"></div>
-                  <div className="relative flex h-full flex-col overflow-hidden rounded-[calc(3rem+1px)]">
-                    <div className="px-8 pb-3 pt-8 sm:px-10 sm:pb-0 sm:pt-10">
-                      <p className="mt-2 text-lg font-medium tracking-tight text-gray-600 max-lg:text-center">Single Trip Travel Insurance Key Benefits</p>
-                      <ul className="mt-2 max-w-lg text-sm/6 text-gray-600 max-lg:text-center space-y-1">
-                        <li>• Get exactly what you need</li>
-                        <li>• No hidden costs</li>
-                        <li>• Single trip policies for people aged up to 89</li>
-                        <li>• Large number of pre-existing medical conditions that are covered for free</li>
-                        <li>• Cover for Aussies, Kiwis and Saffas</li>
-                        <li>• We help you to customise your travel insurance policy, so it suits all your needs</li>
-                        <li>• Purchasing Travel Insurance takes less than 1 minute</li>
-                      </ul>
-                    </div>
-                  </div>
-                  <div className="pointer-events-none absolute inset-px rounded-[3rem] shadow outline outline-1 outline-black/5"></div>
-                </div>
-                <div className="relative lg:col-start-2 lg:row-start-1">
-                  <div className="absolute inset-px rounded-[3rem] bg-white"></div>
-                  <div className="relative flex h-full flex-col overflow-hidden rounded-[calc(3rem+1px)]">
-                    <div className="px-8 pt-8 sm:px-10 sm:pt-10">
-                      <p className="mt-2 text-lg font-medium tracking-tight text-gray-950 max-lg:text-center">Important Notice</p>
-                      <p className="mt-2 max-w-lg text-sm/6 text-gray-600 max-lg:text-center">Attention! The European Health Insurance Card (EHIC) / Global Health Insurance Card (GHIC) provides some emergency healthcare within the EU, but it does not cover Repatriation costs, or a doctor or nurse escort home; nor lost or stolen property. You need Travel Insurance for that.</p>
-                    </div>
-                    <div className="flex flex-1 items-center justify-center px-4 py-4">
-                      <img 
-                        src="/important_notice2.jpg" 
-                        alt="Important Notice" 
-                        className="w-1/4 h-4/4 object-cover rounded-xl shadow-lg" 
-                        style={{ borderRadius: '12px' }}
-                      />
-                    </div>
-                  </div>
-                  <div className="pointer-events-none absolute inset-px rounded-[3rem] shadow outline outline-1 outline-black/5"></div>
-                </div>
-                <div className="relative lg:col-span-2 lg:row-start-2">
-                  <div className="absolute inset-px rounded-[3rem] bg-white"></div>
-                  <div className="relative flex h-full flex-row overflow-hidden rounded-[calc(3rem+1px)]">
-                  <div className="flex-1 flex items-center justify-center px-4 py-4">
-                      <img 
-                        src="/travel_packing.jpg" 
-                        alt="Travel Packing" 
-                        className="w-3/4 h-3/4 object-cover rounded-xl shadow-lg" 
-                        style={{ borderRadius: '12px' }}
-                      />
-                    </div>
-                    <div className="flex-1 px-8 py-8 sm:px-10 sm:py-10">
-                      <p className="mt-2 text-lg font-medium tracking-tight text-gray-950 max-lg:text-center">Planning a Trip? Pack your Travel Insurance!</p>
-                      <p className="mt-2 max-w-lg text-sm/6 text-gray-600 max-lg:text-center">Whether you're planning a Staycation weekend away, going on a business to Rome, taking a family holiday to Cyprus, or thinking of a romantic getaway to Paris, don't overlook your travel insurance. This may not be the most exciting part of travel preparation, neither is it the first thing you might think of when getting ready for a trip but it is no less important than your passport and travel arrangements. An unforeseen mishap abroad could cost you thousands – so don't leave home without Travel Insurance.</p>
-                    </div>
 
-                  </div>
-                  <div className="pointer-events-none absolute inset-px rounded-[3rem] shadow outline outline-1 outline-black/5"></div>
+              {/* Insurance Plans Comparison */}
+              <section className="mt-24 max-w-7xl mx-auto px-6 lg:px-8">
+                <div className="text-center mb-12">
+                  <h2 className="text-4xl font-bold text-gray-900 mb-4">Choose Your Coverage Plan</h2>
+                  <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Select the perfect plan for your travel needs with comprehensive protection
+                  </p>
                 </div>
-              </div>
+
+                {/* Features Comparison Table */}
+                <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+                  <div className="overflow-x-auto">
+                    <table className="w-full">
+                      <thead>
+                        {/* Pricing Cards Row */}
+                        <tr>
+                          <th className="bg-gray-50"></th>
+                          {/* Value Plan */}
+                          <th className="bg-gray-50 py-6 px-4">
+                            <div className="bg-white rounded-xl shadow-md border-2 border-gray-200 overflow-hidden mx-auto max-w-xs">
+                              <div className="p-6">
+                                <h3 className="text-lg font-semibold text-gray-900 mb-2">Value</h3>
+                                <div className="flex items-baseline justify-center mb-4">
+                                  <span className="text-4xl font-bold text-gray-900">€39</span>
+                                  <span className="text-gray-500 ml-2">/trip</span>
+                                </div>
+                                <a href="/quote" className="block w-full py-2.5 px-4 border-2 border-blue-600 text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-colors text-sm text-center">
+                                  Get a Quote
+                                </a>
+                              </div>
+                            </div>
+                          </th>
+                          {/* Silver Plan - Featured */}
+                          <th className="bg-blue-50 py-6 px-4">
+                            <div className="bg-white rounded-xl shadow-xl border-2 border-blue-600 overflow-hidden relative mx-auto max-w-xs">
+                              <div className="absolute top-0 right-0 bg-blue-600 text-white px-3 py-1 text-xs font-semibold rounded-bl-lg">
+                                Popular
+                              </div>
+                              <div className="p-6">
+                                <h3 className="text-lg font-semibold text-gray-900 mb-2">Silver</h3>
+                                <div className="flex items-baseline justify-center mb-4">
+                                  <span className="text-4xl font-bold text-gray-900">€79</span>
+                                  <span className="text-gray-500 ml-2">/trip</span>
+                                </div>
+                                <a href="/quote" className="block w-full py-2.5 px-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-md text-sm text-center">
+                                  Get a Quote
+                                </a>
+                              </div>
+                            </div>
+                          </th>
+                          {/* Gold Plan */}
+                          <th className="bg-gray-50 py-6 px-4">
+                            <div className="bg-white rounded-xl shadow-md border-2 border-gray-200 overflow-hidden mx-auto max-w-xs">
+                              <div className="p-6">
+                                <h3 className="text-lg font-semibold text-gray-900 mb-2">Gold</h3>
+                                <div className="flex items-baseline justify-center mb-4">
+                                  <span className="text-4xl font-bold text-gray-900">€129</span>
+                                  <span className="text-gray-500 ml-2">/trip</span>
+                                </div>
+                                <a href="/quote" className="block w-full py-2.5 px-4 border-2 border-blue-600 text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-colors text-sm text-center">
+                                  Get a Quote
+                                </a>
+                              </div>
+                            </div>
+                          </th>
+                        </tr>
+                        {/* Column Headers Row */}
+                        <tr className="border-b border-gray-200">
+                          <th className="text-left py-6 px-8 font-semibold text-white bg-gray-900">Secmondo Insurance Plans</th>
+                          <th className="text-center py-6 px-8 font-semibold text-white bg-gray-900">Value</th>
+                          <th className="text-center py-6 px-8 font-semibold text-white bg-gray-900">Silver</th>
+                          <th className="text-center py-6 px-8 font-semibold text-white bg-gray-900">Gold</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {/* Cancellation & Curtailment */}
+                        <tr className="bg-gray-50 border-b border-gray-200">
+                          <td colSpan={4} className="py-4 px-8 font-bold text-gray-900">Cancellation & Curtailment</td>
+                        </tr>
+                        <tr className="border-b border-gray-100">
+                          <td className="py-4 px-12 font-medium text-gray-900">Cancellation or Curtailment Charges</td>
+                          <td className="text-center py-4 px-8 text-gray-700">Up to €500</td>
+                          <td className="text-center py-4 px-8 bg-blue-50 text-gray-700">Up to €3,500</td>
+                          <td className="text-center py-4 px-8 text-gray-700">Up to €7,000</td>
+                        </tr>
+
+                        {/* Medical Coverage Section */}
+                        <tr className="bg-gray-50 border-b border-gray-200">
+                          <td colSpan={4} className="py-4 px-8 font-bold text-gray-900">Emergency Medical, Repatriation and Other Expenses</td>
+                        </tr>
+                        <tr className="border-b border-gray-100">
+                          <td className="py-4 px-12 font-medium text-gray-900">Emergency Medical, Repatriation and Other Expenses</td>
+                          <td className="text-center py-4 px-8 text-gray-700">Up to €1,000,000</td>
+                          <td className="text-center py-4 px-8 bg-blue-50 text-gray-700">Up to €6,000,000</td>
+                          <td className="text-center py-4 px-8 text-gray-700">Up to €10,000,000</td>
+                        </tr>
+                        <tr className="border-b border-gray-100">
+                          <td className="py-4 px-12 font-medium text-gray-900">Including Dental Treatment</td>
+                          <td className="text-center py-4 px-8 text-gray-300">—</td>
+                          <td className="text-center py-4 px-8 bg-blue-50 text-gray-700">€200</td>
+                          <td className="text-center py-4 px-8 text-gray-700">€200</td>
+                        </tr>
+                        <tr className="border-b border-gray-100">
+                          <td className="py-4 px-12 font-medium text-gray-900">Hospital Confinement Benefit</td>
+                          <td className="text-center py-4 px-8 text-gray-300">—</td>
+                          <td className="text-center py-4 px-8 bg-blue-50 text-gray-700">€25 per 24hrs<br/>up to €2,500</td>
+                          <td className="text-center py-4 px-8 text-gray-700">€25 per 24hrs<br/>up to €2,500</td>
+                        </tr>
+
+                        {/* Personal Accident */}
+                        <tr className="bg-gray-50 border-b border-gray-200">
+                          <td colSpan={4} className="py-4 px-8 font-bold text-gray-900">Personal Accident</td>
+                        </tr>
+                        <tr className="border-b border-gray-100">
+                          <td className="py-4 px-12 font-medium text-gray-900">Accidental death</td>
+                          <td className="text-center py-4 px-8 text-gray-700">€10,000</td>
+                          <td className="text-center py-4 px-8 bg-blue-50 text-gray-700">€32,000</td>
+                          <td className="text-center py-4 px-8 text-gray-700">€64,000</td>
+                        </tr>
+                        <tr className="border-b border-gray-100">
+                          <td className="py-4 px-12 font-medium text-gray-900">Loss of limb(s) or loss of sight</td>
+                          <td className="text-center py-4 px-8 text-gray-700">€10,000</td>
+                          <td className="text-center py-4 px-8 bg-blue-50 text-gray-700">€32,000</td>
+                          <td className="text-center py-4 px-8 text-gray-700">€64,000</td>
+                        </tr>
+                        <tr className="border-b border-gray-100">
+                          <td className="py-4 px-12 font-medium text-gray-900">Permanent total disablement</td>
+                          <td className="text-center py-4 px-8 text-gray-700">€10,000</td>
+                          <td className="text-center py-4 px-8 bg-blue-50 text-gray-700">€32,000</td>
+                          <td className="text-center py-4 px-8 text-gray-700">€64,000</td>
+                        </tr>
+                        <tr className="border-b border-gray-100">
+                          <td className="py-4 px-12 font-medium text-gray-900">Travel Accident - Whilst on Public Transport only</td>
+                          <td className="text-center py-4 px-8 text-gray-300">—</td>
+                          <td className="text-center py-4 px-8 bg-blue-50 text-gray-300">—</td>
+                          <td className="text-center py-4 px-8 text-gray-700">€100,000</td>
+                        </tr>
+
+                        {/* Trip Disruption */}
+                        <tr className="bg-gray-50 border-b border-gray-200">
+                          <td colSpan={4} className="py-4 px-8 font-bold text-gray-900">Trip Disruption</td>
+                        </tr>
+                        <tr className="border-b border-gray-100">
+                          <td className="py-4 px-12 font-medium text-gray-900">Delayed Departure</td>
+                          <td className="text-center py-4 px-8 text-gray-700">€20 first 12hrs<br/>then €20/12hrs<br/>up to €400</td>
+                          <td className="text-center py-4 px-8 bg-blue-50 text-gray-700">€50 first 12hrs<br/>then €25/12hrs<br/>up to €600</td>
+                          <td className="text-center py-4 px-8 text-gray-700">€50 first 12hrs<br/>then €25/12hrs<br/>up to €600</td>
+                        </tr>
+                        <tr className="border-b border-gray-100">
+                          <td className="py-4 px-12 font-medium text-gray-900">Abandonment after full 24 hours delay</td>
+                          <td className="text-center py-4 px-8 text-gray-700">€500</td>
+                          <td className="text-center py-4 px-8 bg-blue-50 text-gray-700">Up to €3,500</td>
+                          <td className="text-center py-4 px-8 text-gray-700">Up to €7,000</td>
+                        </tr>
+                        <tr className="border-b border-gray-100">
+                          <td className="py-4 px-12 font-medium text-gray-900">Missed Departure</td>
+                          <td className="text-center py-4 px-8 text-gray-700">€200</td>
+                          <td className="text-center py-4 px-8 bg-blue-50 text-gray-700">Up to €1,300</td>
+                          <td className="text-center py-4 px-8 text-gray-700">Up to €1,800</td>
+                        </tr>
+
+                        {/* Baggage & Personal Items Section */}
+                        <tr className="bg-gray-50 border-b border-gray-200">
+                          <td colSpan={4} className="py-4 px-8 font-bold text-gray-900">Baggage & Personal Property</td>
+                        </tr>
+                        <tr className="border-b border-gray-100">
+                          <td className="py-4 px-12 font-medium text-gray-900">Baggage</td>
+                          <td className="text-center py-4 px-8 text-gray-700">Up to €1,000</td>
+                          <td className="text-center py-4 px-8 bg-blue-50 text-gray-700">Up to €1,800</td>
+                          <td className="text-center py-4 px-8 text-gray-700">Up to €3,000</td>
+                        </tr>
+                        <tr className="border-b border-gray-100">
+                          <td className="py-4 px-12 font-medium text-gray-900">Single Article/Pair/Set Limit</td>
+                          <td className="text-center py-4 px-8 text-gray-700">€150</td>
+                          <td className="text-center py-4 px-8 bg-blue-50 text-gray-700">€250</td>
+                          <td className="text-center py-4 px-8 text-gray-700">€500</td>
+                        </tr>
+                        <tr className="border-b border-gray-100">
+                          <td className="py-4 px-12 font-medium text-gray-900">Total Valuables Limit</td>
+                          <td className="text-center py-4 px-8 text-gray-700">€150</td>
+                          <td className="text-center py-4 px-8 bg-blue-50 text-gray-700">€250</td>
+                          <td className="text-center py-4 px-8 text-gray-700">€500</td>
+                        </tr>
+                        <tr className="border-b border-gray-100">
+                          <td className="py-4 px-12 font-medium text-gray-900">Spectacles/Sunglasses Limit</td>
+                          <td className="text-center py-4 px-8 text-gray-700">€50</td>
+                          <td className="text-center py-4 px-8 bg-blue-50 text-gray-700">€250</td>
+                          <td className="text-center py-4 px-8 text-gray-700">€300</td>
+                        </tr>
+                        <tr className="border-b border-gray-100">
+                          <td className="py-4 px-12 font-medium text-gray-900">Delayed Baggage (Minimum Delay of 12 hours)</td>
+                          <td className="text-center py-4 px-8 text-gray-700">€250</td>
+                          <td className="text-center py-4 px-8 bg-blue-50 text-gray-700">€150</td>
+                          <td className="text-center py-4 px-8 text-gray-700">€250</td>
+                        </tr>
+
+                        {/* Money & Documents */}
+                        <tr className="bg-gray-50 border-b border-gray-200">
+                          <td colSpan={4} className="py-4 px-8 font-bold text-gray-900">Personal Money, Passport & Documents</td>
+                        </tr>
+                        <tr className="border-b border-gray-100">
+                          <td className="py-4 px-12 font-medium text-gray-900">Personal Money, Passport & Documents</td>
+                          <td className="text-center py-4 px-8 text-gray-700">Up to €250</td>
+                          <td className="text-center py-4 px-8 bg-blue-50 text-gray-700">Up to €900</td>
+                          <td className="text-center py-4 px-8 text-gray-700">Up to €900</td>
+                        </tr>
+                        <tr className="border-b border-gray-100">
+                          <td className="py-4 px-12 font-medium text-gray-900">Passport & Documents Limit</td>
+                          <td className="text-center py-4 px-8 text-gray-300">—</td>
+                          <td className="text-center py-4 px-8 bg-blue-50 text-gray-700">€300</td>
+                          <td className="text-center py-4 px-8 text-gray-700">€300</td>
+                        </tr>
+
+                        {/* Additional Benefits */}
+                        <tr className="bg-gray-50 border-b border-gray-200">
+                          <td colSpan={4} className="py-4 px-8 font-bold text-gray-900">Additional Benefits</td>
+                        </tr>
+                        <tr className="border-b border-gray-100">
+                          <td className="py-4 px-12 font-medium text-gray-900">Extended Kennel and/or Cattery Fees</td>
+                          <td className="text-center py-4 px-8 text-gray-300">—</td>
+                          <td className="text-center py-4 px-8 bg-blue-50 text-gray-700">€35/day<br/>up to €350</td>
+                          <td className="text-center py-4 px-8 text-gray-700">€35/day<br/>up to €350</td>
+                        </tr>
+                        <tr className="border-b border-gray-100">
+                          <td className="py-4 px-12 font-medium text-gray-900">Personal Liability</td>
+                          <td className="text-center py-4 px-8 text-gray-300">—</td>
+                          <td className="text-center py-4 px-8 bg-blue-50 text-gray-700">Up to €2,000,000</td>
+                          <td className="text-center py-4 px-8 text-gray-700">Up to €2,000,000</td>
+                        </tr>
+                        <tr className="border-b border-gray-100">
+                          <td className="py-4 px-12 font-medium text-gray-900">Rented Accommodation Limit</td>
+                          <td className="text-center py-4 px-8 text-gray-300">—</td>
+                          <td className="text-center py-4 px-8 bg-blue-50 text-gray-700">Up to €120,000</td>
+                          <td className="text-center py-4 px-8 text-gray-700">Up to €120,000</td>
+                        </tr>
+                        <tr className="border-b border-gray-100">
+                          <td className="py-4 px-12 font-medium text-gray-900">Legal Expenses & Assistance</td>
+                          <td className="text-center py-4 px-8 text-gray-300">—</td>
+                          <td className="text-center py-4 px-8 bg-blue-50 text-gray-700">Up to €19,000</td>
+                          <td className="text-center py-4 px-8 text-gray-700">Up to €19,000</td>
+                        </tr>
+                        <tr className="border-b border-gray-100">
+                          <td className="py-4 px-12 font-medium text-gray-900">Mugging Benefit</td>
+                          <td className="text-center py-4 px-8 text-gray-700">€50/24hrs<br/>up to €1,000</td>
+                          <td className="text-center py-4 px-8 bg-blue-50 text-gray-700">€60/24hrs<br/>up to €1,200</td>
+                          <td className="text-center py-4 px-8 text-gray-700">€60/24hrs<br/>up to €1,200</td>
+                        </tr>
+                        <tr className="border-b border-gray-100">
+                          <td className="py-4 px-12 font-medium text-gray-900">Hijack Cover</td>
+                          <td className="text-center py-4 px-8 text-gray-700">€50/24hrs<br/>up to €500</td>
+                          <td className="text-center py-4 px-8 bg-blue-50 text-gray-700">€60/24hrs<br/>up to €600</td>
+                          <td className="text-center py-4 px-8 text-gray-700">€60/24hrs<br/>up to €600</td>
+                        </tr>
+                        <tr className="border-b border-gray-100">
+                          <td className="py-4 px-12 font-medium text-gray-900">Withdrawal of Services</td>
+                          <td className="text-center py-4 px-8 text-gray-300">—</td>
+                          <td className="text-center py-4 px-8 bg-blue-50 text-gray-300">—</td>
+                          <td className="text-center py-4 px-8 text-gray-700">€25 after 24hrs<br/>then €25/24hrs<br/>up to €250</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </section>
 
               {/* Section 1: Coverage */}
               <section className="mt-24 max-w-7xl mx-auto px-6 lg:px-8">
@@ -203,10 +411,9 @@ const SingleTrip: React.FC<SingleTripProps> = ({ onNavigate }) => {
                   ))}
                 </div>
               </section>
-
               {/* Section 2: Secmondo APP */}
-              <section className="mt-24 max-w-7xl mx-auto px-6 lg:px-8">
-                <div className="bg-gradient-to-br bg-gray-900 rounded-3xl p-12 text-white">
+              <section className="bg-gray-900 text-white py-20 rounded-[3rem] mx-4 sm:mx-6 lg:mx-8 mt-24">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                   <div className="grid lg:grid-cols-2 gap-12 items-center">
                     <div>
                       <h2 className="text-4xl font-bold mb-6">Secmondo Mobile App</h2>
@@ -650,7 +857,7 @@ const SingleTrip: React.FC<SingleTripProps> = ({ onNavigate }) => {
       </section>
 
       {/* Section 3: CTA Section */}
-      <section className="bg-gradient-to-r from-orange-500 to-red-500 text-white py-20 rounded-[3rem] mx-4 sm:mx-6 lg:mx-8 mb-6">
+      <section className="bg-gray-900 text-white py-20 rounded-[3rem] mx-4 sm:mx-6 lg:mx-8 mb-6">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">Ready to Get Your Single Trip Quote?</h2>
           <p className="text-xl text-orange-100 mb-8 max-w-2xl mx-auto">
@@ -659,7 +866,7 @@ const SingleTrip: React.FC<SingleTripProps> = ({ onNavigate }) => {
           <div className="flex flex-col sm:flex-row gap-6 justify-center mb-55">
             <a 
               href="/quote"
-              className="px-8 py-4 bg-white text-orange-600 font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg inline-block text-center"
+              className="px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg inline-block text-center"
             >
               Get Quote Now
             </a>

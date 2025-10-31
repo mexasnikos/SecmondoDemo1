@@ -601,7 +601,7 @@ const Home: React.FC = () => {
       </section>
 
         {/* Final CTA */}
-        <section className="bg-gradient-to-r from-orange-500 to-red-500 text-white py-20 rounded-[3rem] mx-4 sm:mx-6 lg:mx-8 mb-6">
+        <section className="bg-gray-900 text-white py-20 rounded-[3rem] mx-4 sm:mx-6 lg:mx-8 mb-6">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">Ready to Travel with Confidence?</h2>
             <p className="text-xl text-orange-100 mb-8 max-w-2xl mx-auto">
@@ -610,7 +610,7 @@ const Home: React.FC = () => {
             <div className="flex flex-col sm:flex-row gap-6 justify-center mb-55">
               <a 
                 href="/quote"
-                className="px-8 py-4 bg-white text-orange-600 font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg inline-block text-center"
+                className="px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg inline-block text-center"
               >
                 Get Quote Now
               </a>

@@ -44,7 +44,7 @@ const About: React.FC<AboutProps> = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="text-center p-6 rounded-xl bg-gradient-to-br from-blue-50 to-blue-100">
                 <h3 className="text-2xl font-semibold text-gray-900 mb-3">
-                  🏆 Award-Winning Service
+                  Award-Winning Service
                 </h3>
                 <p className="text-gray-600">
                   Recognized for excellence in customer service and claims processing
@@ -52,7 +52,7 @@ const About: React.FC<AboutProps> = () => {
               </div>
               <div className="text-center p-6 rounded-xl bg-gradient-to-br from-orange-50 to-orange-100">
                 <h3 className="text-2xl font-semibold text-gray-900 mb-3">
-                  🌍 Global Coverage
+                Global Coverage
                 </h3>
                 <p className="text-gray-600">
                   Protection in over 200 countries and territories worldwide
@@ -60,7 +60,7 @@ const About: React.FC<AboutProps> = () => {
               </div>
               <div className="text-center p-6 rounded-xl bg-gradient-to-br from-purple-50 to-purple-100">
                 <h3 className="text-2xl font-semibold text-gray-900 mb-3">
-                  ⚡ Fast Claims
+                Fast Claims
                 </h3>
                 <p className="text-gray-600">
                   Average claim processing time of just 48 hours
@@ -68,58 +68,13 @@ const About: React.FC<AboutProps> = () => {
               </div>
               <div className="text-center p-6 rounded-xl bg-gradient-to-br from-green-50 to-green-100">
                 <h3 className="text-2xl font-semibold text-gray-900 mb-3">
-                  💰 Competitive Rates
+                Competitive Rates
                 </h3>
                 <p className="text-gray-600">
                   Best value coverage with transparent pricing
                 </p>
               </div>
             </div>
-          </section>
-
-          {/* Coverage Section */}
-          <section>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-              Our Coverage
-            </h2>
-            <ul className="space-y-4">
-              <li className="flex items-start gap-3 p-4 border-b border-gray-200">
-                <svg className="h-6 w-6 flex-none text-blue-600 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clipRule="evenodd" />
-                </svg>
-                <span className="text-lg text-gray-700">Emergency medical expenses up to $1,000,000</span>
-              </li>
-              <li className="flex items-start gap-3 p-4 border-b border-gray-200">
-                <svg className="h-6 w-6 flex-none text-blue-600 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clipRule="evenodd" />
-                </svg>
-                <span className="text-lg text-gray-700">Emergency evacuation and repatriation</span>
-              </li>
-              <li className="flex items-start gap-3 p-4 border-b border-gray-200">
-                <svg className="h-6 w-6 flex-none text-blue-600 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clipRule="evenodd" />
-                </svg>
-                <span className="text-lg text-gray-700">Trip cancellation and interruption</span>
-              </li>
-              <li className="flex items-start gap-3 p-4 border-b border-gray-200">
-                <svg className="h-6 w-6 flex-none text-blue-600 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clipRule="evenodd" />
-                </svg>
-                <span className="text-lg text-gray-700">Baggage loss and delay protection</span>
-              </li>
-              <li className="flex items-start gap-3 p-4 border-b border-gray-200">
-                <svg className="h-6 w-6 flex-none text-blue-600 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clipRule="evenodd" />
-                </svg>
-                <span className="text-lg text-gray-700">Personal liability coverage</span>
-              </li>
-              <li className="flex items-start gap-3 p-4">
-                <svg className="h-6 w-6 flex-none text-blue-600 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clipRule="evenodd" />
-                </svg>
-                <span className="text-lg text-gray-700">24/7 emergency assistance</span>
-              </li>
-            </ul>
           </section>
 
           {/* Team Section */}
